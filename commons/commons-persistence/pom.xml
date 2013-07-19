@@ -1,0 +1,142 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>gambler.commons</groupId>
+		<artifactId>commons</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>commons-persistence</artifactId>
+	<name>Commons Persistence</name>
+	<dependencies>
+		<!-- mysql数据库驱动 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.18</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- c3p0数据库连接池 -->
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
+		</dependency>
+		<!-- ======================================================================= -->
+
+		<!-- spring必须包 -->
+		<!-- spring核心包 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>3.0.6.RELEASE</version>
+			<!-- spring-asm-3.0.6.RELEASE.jar -->
+			<!-- commons-logging-1.1.1.jar -->
+		</dependency>
+		<!-- 利用IOC管理Bean的包 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>3.0.6.RELEASE</version>
+		</dependency>
+		<!-- 对bean再次封装后的包，方便性强。 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>3.0.6.RELEASE</version>
+			<!-- spring-expression-3.0.6.RELEASE.jar -->
+			<!-- spring-aop-3.0.6.RELEASE.jar -->
+			<!-- aopalliance-1.0.jar -->
+		</dependency>
+
+		<!-- spring扩展包 -->
+		<!-- SpringWeb下的工具包 -->
+		<!-- 对struts支持包 -->
+		<!-- 支持hibernate,对对象映射框架的支持 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>3.0.6.RELEASE</version>
+			<!-- spring-tx-3.0.6.RELEASE.jar -->
+			<!-- spring-jdbc-3.0.6.RELEASE.jar -->
+		</dependency>
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<!-- ======================================================================= -->
+
+		<!-- struts2.2.3必须包 -->
+		<!-- 日志功能 -->
+		<!-- ASM字节码库 -->
+		<dependency>
+			<groupId>asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<!-- struts2对于spring的支持 -->
+		<!-- struts2中对于注解的支持 -->
+
+
+		<!-- hibernate3.6.8必须包 -->
+		<!-- hibernate核心包 -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>3.6.8.Final</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-collections</groupId>
+					<artifactId>commons-collections</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>dom4j</groupId>
+					<artifactId>dom4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+			<!-- hibernate-commons-annotations-3.2.0.Final.jar1 -->
+			<!-- hibernate-jpa-2.0-api-1.0.1.Final.jar -->
+			<!-- jta-1.1.jar -->
+		</dependency>
+		<!-- hibernate使用的一个日志系统 -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+		<!-- 集合类 -->
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+		<!-- XML配置和映射管理器 -->
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<!-- ASM字节码库 -->
+		<dependency>
+			<groupId>asm</groupId>
+			<artifactId>asm-attrs</artifactId>
+			<version>2.2.3</version>
+		</dependency>
+		<!-- cglib字节码解释器 -->
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.11.0.GA</version>
+		</dependency>
+	</dependencies>
+</project>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{ISO8601} [%-t] %-5p %c{3} - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="LIFE_CYCLE" class="org.apache.log4j.FileAppender">
+		<param name="File" value="${gb.log4j.path}/lifecycle.log" />
+		<param name="Threshold" value="INFO" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{ISO8601} [%-t] %-5p %c{3} - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="ROLLING"
+		class="org.apache.log4j.RollingFileAppender">
+		<param name="Threshold" value="INFO" />
+		<param name="File" value="${gb.log4j.path}/rolling.log" />
+		<param name="MaxFileSize" value="1024KB" />
+		<param name="MaxBackupIndex" value="6" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{ISO8601} [%-t] %-5p %c{3} - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="DAILY_ROLLING"
+		class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Threshold" value="INFO" />
+		<param name="File" value="${gb.log4j.path}/dailyrolling.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{ISO8601} [%-t] %-5p %c{3} - %m%n" />
+		</layout>
+	</appender>
+
+	<logger name="org.apache.struts2">
+		<level value="WARN" />
+	</logger>
+
+	<logger name="org.hibernate">
+		<level value="WARN" />
+	</logger>
+
+	<logger name="net.fckeditor">
+		<level value="WARN" />
+	</logger>
+
+	<logger name="org.springframework">
+		<level value="WARN" />
+	</logger>
+
+	<logger name="com.opensymphony">
+		<level value="WARN" />
+	</logger>
+	
+	<logger name="freemarker">
+		<level value="WARN" />
+	</logger>
+
+    <logger name="org.jasypt">
+		<level value="WARN" />
+	</logger>
+	
+	<logger name="gambler">
+		<level value="WARN" />
+	</logger>
+
+	<root>
+		<level value="${gb.log4j.level}" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="DAILY_ROLLING" />
+	</root>
+</log4j:configuration>
