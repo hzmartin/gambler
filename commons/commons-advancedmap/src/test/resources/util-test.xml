@@ -11,6 +11,7 @@ http://www.springframework.org/schema/tx
 http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 http://www.springframework.org/schema/aop
 http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
 	<bean id="gb.placeholderConfig"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location" value="classpath:/datasource.properties" />
@@ -19,7 +20,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 	<context:annotation-config />
 
-	<context:component-scan base-package="gambler.commons.persistence.test"/>
+	<context:component-scan base-package="gambler.commons.advmap"/>
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
@@ -44,7 +45,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 		<property name="mappingResources">
 			<list>
 				<value>
-					gambler/commons/persistence/test/SysAppLevel.hbm.xml
+					AdvancedEntry.hbm.xml
 				</value>
 			</list>
 		</property>
@@ -72,14 +73,32 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<bean id="testAppLevelService" class="gambler.commons.persistence.test.AppLevelService">
-		<property name="persistence" ref="simpleHibernatePersistence" />
-	</bean>
-
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory">
 			<ref local="sessionFactory" />
 		</property>
 	</bean>
+	
+	<bean id="xml-properties"
+		class="gambler.commons.advmap.XMLMap">
+		<constructor-arg index="0" value="xmlmap.xml"></constructor-arg>
+	</bean>
+	
+	<bean id="db-properties"
+		class="gambler.commons.advmap.DBMap">
+		<constructor-arg index="0">
+			<ref bean="simpleHibernatePersistence" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="global-properties"
+		class="gambler.commons.advmap.SimpleAdvancedMap">
+		<constructor-arg index="0">
+			<list>
+				<ref bean="xml-properties" />
+				<ref bean="db-properties" />
+			</list>
+		</constructor-arg>
+	</bean>	
 </beans>

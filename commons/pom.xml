@@ -12,5 +12,6 @@
   <modules>
   	<module>commons-util</module>
   	<module>commons-persistence</module>
+  	<module>commons-advancedmap</module>
   </modules>
 </project>

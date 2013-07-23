@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE map [
+
+<!ELEMENT map (prop*)>
+<!ELEMENT prop (key*)>
+
+<!ELEMENT key (#PCDATA)>
+
+<!ATTLIST map namespace CDATA #IMPLIED>
+<!ATTLIST map locale CDATA #IMPLIED>
+
+<!ATTLIST key name CDATA #REQUIRED>
+<!ATTLIST key order CDATA #IMPLIED>

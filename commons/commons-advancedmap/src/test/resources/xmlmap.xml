@@ -1,0 +1,18 @@
+<map>
+
+	<prop namespace="base" locale="zh_CN">
+		<key name="jack">北京欢迎您</key>
+	</prop>
+	<prop namespace="base">
+		<key name="jenny">Welcome to Beijing</key>
+	</prop>
+	<prop namespace="base" locale="zh_CN">
+		<key name="third">Welcome to Beijing #{base.jack.zh_CN}</key>
+	</prop>
+	<prop>
+		<key name="hello" order="2">Nice</key>
+		<key name="hello" order="3">Nice Hello</key>
+	</prop>
+	<prop></prop>
+
+</map>

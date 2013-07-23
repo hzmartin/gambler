@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- update the table name to any you like -->
+  <class name="gambler.commons.advmap.AdvancedEntry" table="gb_advanced_map_01">
+    <composite-id class="gambler.commons.advmap.AdvancedKey" name="id">
+      <key-property column="NAMESPACE" length="40" name="namespace" type="string"/>
+      <key-property column="KEY_NAME" length="40" name="key" type="string"/>
+      <key-property column="ORDER_NUM" name="order" type="integer"/>
+      <key-property column="LOCALE" length="6" name="locale" type="locale"/>
+    </composite-id>
+    <property column="VALUE" insert="true" length="200" name="value" not-null="false" type="string" update="true"/>
+  </class>
+</hibernate-mapping>
