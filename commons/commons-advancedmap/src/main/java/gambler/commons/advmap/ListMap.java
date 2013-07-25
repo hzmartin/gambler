@@ -12,7 +12,7 @@ import java.util.List;
  * @auther Martin
  */
 
-public final class SimpleAdvancedMap extends AbstractAdvancedMap {
+public final class ListMap extends AbstractAdvancedMap {
 
 	/**
 	 * serialVersionUID
@@ -24,7 +24,7 @@ public final class SimpleAdvancedMap extends AbstractAdvancedMap {
 	 */
 	private List<AbstractAdvancedMap> baseMaps;
 	
-	public SimpleAdvancedMap(List<AbstractAdvancedMap> maps){
+	public ListMap(List<AbstractAdvancedMap> maps){
 		this.baseMaps = maps;
 		this.load();
 	}

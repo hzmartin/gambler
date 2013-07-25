@@ -93,7 +93,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 	</bean>
 
 	<bean id="global-properties"
-		class="gambler.commons.advmap.SimpleAdvancedMap">
+		class="gambler.commons.advmap.ListMap">
 		<constructor-arg index="0">
 			<list>
 				<ref bean="xml-properties" />

@@ -1,7 +1,7 @@
 package gambler.commons.advmap;
 
 /**
- * table gb_advanced_map_01 mapped class
+ * table mapped class
  * it stores a lot properties for the application
  * 
  * @auther Martin

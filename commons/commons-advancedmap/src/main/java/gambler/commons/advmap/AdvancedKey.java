@@ -44,9 +44,9 @@ public class AdvancedKey implements java.io.Serializable,
 	public static final Locale DEFAULT_LOCALE = Locale.getDefault();
 
 	/**
-	 * default order number: 0
+	 * default order number: 1
 	 */
-	public static final Integer DEFAULT_ORDER = 0;
+	public static final Integer DEFAULT_ORDER = 1;
 
 	/**
 	 * default namespace: gambler

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="gambler.commons.auth.User" table="auth_users">
+        <id name="id" column="id" type="long">
+            <generator class="native" />
+        </id>
+        <property name="userId" type="string" update="true"
+        insert="true" length="40" not-null="false" unique="true">
+            <column name="user_id" length="40" not-null="false" unique="true" />
+        </property>
+        <property name="lastName" type="string" update="true"
+        insert="true" column="last_name" length="80" not-null="false" />
+        <property name="firstName" type="string" update="true"
+        insert="true" column="first_name" length="80" not-null="false" />
+        <property name="organization" type="string" update="true" insert="true"
+        column="organization" length="100" not-null="false" />
+        <property name="department" type="string" update="true"
+        insert="true" column="department" length="100" not-null="false" />
+        <property name="telephone" type="string" update="true"
+        insert="true" column="telephone" length="20" not-null="false" />
+        <property name="email" type="string" update="true" insert="true"
+        column="email" length="40" not-null="false" />
+        <property name="note" type="string" update="true" insert="true"
+        column="note" length="100" not-null="false" />
+        <property name="password" type="string" update="true"
+        insert="true" column="password" length="200" not-null="false" />
+        <property name="fax" type="string" update="true" insert="true"
+        column="fax" length="20" not-null="false" />
+        <property name="cell" type="string" update="true" insert="true"
+        column="cell" length="20" not-null="false" />
+        <property name="gender" type="string" update="true" insert="true" length="10" not-null="false" >
+            <column name="gender" length="10" not-null="false" />
+        </property>
+        <property name="dateJoined" type="timestamp" update="true"
+        insert="true" column="date_joined" not-null="false" />
+        <property name="active" type="boolean" update="true"
+        insert="true" not-null="false">
+            <column name="is_active" not-null="false" default="false" />
+        </property>
+        <property name="superUser" type="boolean" update="true"
+        insert="true" not-null="false">
+            <column name="is_super" not-null="false" default="false" />
+        </property>
+        <property name="lastLogin" type="timestamp" update="true"
+        insert="true" column="last_login" not-null="false" />
+    </class>
+    <class name="gambler.commons.auth.Permission" table="auth_permission">
+        <id name="id" column="id" type="long">
+            <generator class="native" />
+        </id>
+        <property name="codename" type="string" update="true" insert="true"
+        length="40" not-null="false" >
+            <column name="codename" length="40" not-null="false"/>
+        </property>
+        <property name="content" type="string" update="true" insert="true"
+        length="40" not-null="false" >
+            <column name="content" length="40" not-null="false" />
+        </property>
+        <property name="description" type="string" update="true" insert="true"
+        length="100" not-null="false">
+            <column name="description" length="100" not-null="false"/>
+        </property>
+    </class>
+    <class name="gambler.commons.auth.Role" table="auth_role">
+        <id name="id" column="id" type="long">
+            <generator class="native" />
+        </id>
+        <property name="name" type="string" update="true" insert="true" length="40" not-null="false">
+            <column name="name" length="40" not-null="false" />
+        </property>
+        <property name="description" type="string" update="true" insert="true"
+        length="100" not-null="false" >
+            <column name="description" length="100" not-null="false"/>
+        </property>
+    </class>
+    <class name="gambler.commons.auth.RolePermission"
+    table="auth_role_permission">
+        <id name="id" column="id" type="long">
+            <generator class="native" />
+        </id>
+        <property name="permId" type="long" update="true" insert="true"
+        column="perm_id" not-null="false" />
+        <property name="roleId" type="long" update="true" insert="true"
+        column="role_id" not-null="false" />
+    </class>
+    <class name="gambler.commons.auth.UserPermission"
+    table="auth_user_permission">
+        <id name="id" column="id" type="long">
+            <generator class="native" />
+        </id>
+        <property name="permId" type="long" update="true" insert="true"
+        column="perm_id" not-null="false" />
+        <property name="userId" type="long" update="true" insert="true"
+        column="user_id" not-null="false" />
+    </class>
+    <class name="gambler.commons.auth.UserRole"
+    table="auth_user_role">
+        <id name="id" column="id" type="long">
+            <generator class="native" />
+        </id>
+        <property name="roleId" type="long" update="true" insert="true"
+        column="role_id" not-null="false" />
+        <property name="userId" type="long" update="true" insert="true"
+        column="user_id" not-null="false" />
+    </class>
+
+</hibernate-mapping>
