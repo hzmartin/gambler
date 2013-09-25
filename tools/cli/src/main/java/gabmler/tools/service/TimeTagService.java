@@ -1,7 +1,6 @@
 /*
  * @(#) TimeTagService.java 2013-9-16
  * 
- * Copyright 2010 NetEase.com, Inc. All rights reserved.
  */
 package gabmler.tools.service;
 
