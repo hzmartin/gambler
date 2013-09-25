@@ -1,0 +1,6 @@
+<map>
+	<prop namespace="password">
+		<key name="algorithm">PBEWithMD5AndDES</key>
+		<key name="password">gambler-martin</key>
+	</prop>
+</map>

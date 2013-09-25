@@ -13,6 +13,10 @@ public class GBEnvironmentStringPBEConfig extends EnvironmentStringPBEConfig{
 
     private String defaultPassword = "gambler-martin";
     
+    public GBEnvironmentStringPBEConfig() {
+		setPassword(defaultPassword);
+	}
+    
     public void setDefaultPassword(String defaultPassword){
         this.defaultPassword = defaultPassword;
     }

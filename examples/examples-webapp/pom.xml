@@ -14,7 +14,7 @@
 
 	<profiles>
 		<profile>
-			<id>production</id>
+			<id>prod</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 				<property>
@@ -51,7 +51,7 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>development</id>
+			<id>dev</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 				<property>
@@ -63,8 +63,8 @@
 				<gb.log4j.path>/tmp/gambler/logs</gb.log4j.path>
 				<gb.log4j.level>DEBUG</gb.log4j.level>
 				<gb.datasource.url>jdbc:mysql://localhost:3306/test</gb.datasource.url>
-				<gb.datasource.userName></gb.datasource.userName>
-				<gb.datasource.password></gb.datasource.password>
+				<gb.datasource.userName>root</gb.datasource.userName>
+				<gb.datasource.password>ENC(wg0Q9wvH9lr6miEyZ735lw==)</gb.datasource.password>
 				<gb.datasource.driverClassName>org.gjt.mm.mysql.Driver</gb.datasource.driverClassName>
 				<gb.datasource.initialSize>5</gb.datasource.initialSize>
 				<gb.datasource.maxActive>60</gb.datasource.maxActive>
@@ -112,7 +112,6 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.18</version>
-			<scope>test</scope>
 		</dependency>
 		<!-- c3p0数据库连接池 -->
 		<dependency>
@@ -322,4 +321,5 @@
 			</resource>
 		</resources>
 	</build>
+	<description>Related Technologies: Struts, Hibernate, Spring, Sitemesh, DWR etc.,</description>
 </project>
