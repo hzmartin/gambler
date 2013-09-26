@@ -62,7 +62,7 @@
 			<properties>
 				<gb.log4j.path>/tmp/gambler/logs</gb.log4j.path>
 				<gb.log4j.level>DEBUG</gb.log4j.level>
-				<gb.datasource.url>jdbc:mysql://localhost:3306/test</gb.datasource.url>
+				<gb.datasource.url>jdbc:mysql://localhost:3306/demo</gb.datasource.url>
 				<gb.datasource.userName>root</gb.datasource.userName>
 				<gb.datasource.password>ENC(wg0Q9wvH9lr6miEyZ735lw==)</gb.datasource.password>
 				<gb.datasource.driverClassName>org.gjt.mm.mysql.Driver</gb.datasource.driverClassName>
