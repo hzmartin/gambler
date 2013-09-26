@@ -9,13 +9,10 @@ import gambler.examples.webapp.auth.service.UserService;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
-import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 
-@ParentPackage("json-default")
 @Namespace("/user")
 public class UserAction extends GBActionSupport {
 
@@ -75,17 +72,6 @@ public class UserAction extends GBActionSupport {
 		}
 
 		return INPUT;
-	}
-
-	@Action(value = "/checkuid", results = {
-			@Result(name = SUCCESS, type = "json"),
-			@Result(name = ERROR, type = "json") })
-	public String validateUserId() {
-		if (StringUtils.isEmpty(getUser().getUserId())) {
-			addFieldError("user.userId", (getText("username.required")));
-			return ERROR;
-		}
-		return SUCCESS;
 	}
 
 	public User getUser() {

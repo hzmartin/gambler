@@ -1,12 +1,12 @@
 package gambler.examples.webapp.demo.dwr;
 
-public class Message {
+public class DemoMessage {
 	private String message;
 
-	public Message() {
+	public DemoMessage() {
 	}
 	
-	public Message(String message) {
+	public DemoMessage(String message) {
 		this.message = message;
 	}
 	

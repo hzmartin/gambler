@@ -4,12 +4,12 @@
 
 <dwr>
   <allow>
-    <create creator="new" javascript="JDate">
-      <param name="class" value="java.util.Date"/>
+    <create creator="new" javascript="UserValidator">
+      <param name="class" value="gambler.examples.webapp.auth.dwr.DwrUserValidator"/>
     </create>
     <create creator="new" javascript="Demo">
       <param name="class" value="gambler.examples.webapp.demo.dwr.DwrExampleService"/>
     </create>
-	<convert converter="bean" match="gambler.examples.webapp.demo.dwr.Message"/>
+	<convert converter="bean" match="gambler.examples.webapp.demo.dwr.DemoMessage"/>
   </allow>
 </dwr>
