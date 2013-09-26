@@ -95,7 +95,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 		<property name="mappingResources">
 			<list>
 				<value>
-					gambler/examples/webapp/domain/UserAccount.hbm.xml
+					AuthDomains.hbm.xml
 				</value>
 			</list>
 		</property>

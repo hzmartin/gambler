@@ -8,27 +8,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript" src="../scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="../scripts/json.js"></script>
+<script type='text/javascript' src='../dwr/engine.js'>
+</script>
+<script type='text/javascript' src='../dwr/util.js'>
+</script>
+<script type='text/javascript' src='../dwr/interface/Demo.js'>
+</script>
 <script>
 	$(document).ready(function() {
 		$('#button_test').click(function(event) {
-			var name = $('#username').val();
+			var name = "Demo";
+			Demo.hello(name, function(data) {
+				$("#result").text(data);
+				$("#json").text(data.message);
+			});
 			event.preventDefault();
 		})
 	});
 </script>
 </head>
 <body>
-<s:if test="hasActionErrors()">
-		<div>
-			<s:actionerror />
-		</div>
-	</s:if>
-	<s:form action="create" method="post" id="user-create">
-		<s:textfield label="User Name" name="user.userId" id="username" />
-		<s:textfield label="Password" name="user.password" id="password" />
-		<s:submit type="button" id="button_create" value="Create"></s:submit>
-		<s:submit type="button" id="button_test" value="Test"></s:submit>
-	</s:form>
+	<button id="button_test" value="Test">Test</button>
 	<div id="result"></div>
+	<div id="json"></div>
 </body>
 </html>

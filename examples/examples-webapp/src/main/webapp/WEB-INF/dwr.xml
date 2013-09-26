@@ -8,8 +8,8 @@
       <param name="class" value="java.util.Date"/>
     </create>
     <create creator="new" javascript="Demo">
-      <param name="class" value="gambler.examples.webapp.dwr.DwrExampleService"/>
+      <param name="class" value="gambler.examples.webapp.demo.dwr.DwrExampleService"/>
     </create>
-	<convert converter="bean" match="gambler.examples.webapp.dwr.Message"/>
+	<convert converter="bean" match="gambler.examples.webapp.demo.dwr.Message"/>
   </allow>
 </dwr>

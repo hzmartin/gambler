@@ -1,4 +1,4 @@
-package gambler.examples.webapp.dwr;
+package gambler.examples.webapp.demo.dwr;
 
 public class Message {
 	private String message;
