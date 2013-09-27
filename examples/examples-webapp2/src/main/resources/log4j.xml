@@ -70,10 +70,6 @@
 		<level value="WARN" />
 	</logger>
 	
-	<logger name="gambler">
-		<level value="WARN" />
-	</logger>
-
 	<root>
 		<level value="${gb.log4j.level}" />
 		<appender-ref ref="CONSOLE" />
