@@ -23,7 +23,7 @@
 				</property>
 			</activation>
 			<properties>
-				<gb.log4j.path>/tmp/gambler/logs</gb.log4j.path>
+				<gb.log4j.path>logs</gb.log4j.path>
 				<gb.log4j.level>INFO</gb.log4j.level>
 				<gb.datasource.url>jdbc:mysql://localhost:3306/production</gb.datasource.url>
 				<gb.datasource.userName>analytics</gb.datasource.userName>
@@ -60,7 +60,7 @@
 				</property>
 			</activation>
 			<properties>
-				<gb.log4j.path>/tmp/gambler/logs</gb.log4j.path>
+				<gb.log4j.path>logs</gb.log4j.path>
 				<gb.log4j.level>DEBUG</gb.log4j.level>
 				<gb.datasource.url>jdbc:mysql://localhost:3306/demo</gb.datasource.url>
 				<gb.datasource.userName>root</gb.datasource.userName>
