@@ -17,7 +17,7 @@ public class CLI {
 
 	/**
 	 * @param args
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
 		// welcome and display system menu
@@ -27,7 +27,7 @@ public class CLI {
 		System.out.println("||");
 		System.out.println("|| Welcome to use Gambler CLI :)");
 		System.out.println("||");
-		System.out.println("|| Author: Martin wqihui@yeah.net");
+		System.out.println("|| Author: Martin hzwangqihui@gmail.com");
 		System.out
 				.println("|| Any problem please don't hesitate to contact me!");
 		System.out.println("|| Note: try command 'help' first");
@@ -35,8 +35,8 @@ public class CLI {
 				.println("=========================================================");
 
 		// init system
-		CLISystem appSupportSystem = new CLISystem();
-		appSupportSystem.init();
+		CLISystem cli = new CLISystem();
+		cli.init();
 		Scanner console = new Scanner(System.in);
 		while (true) {
 			System.out.print("CLI>> ");
@@ -45,13 +45,15 @@ public class CLI {
 				continue;
 			try {
 				String[] params = parseCmdString(cmdString.trim());
-				ICommand cmd = appSupportSystem.createCommand(params);
+				ICommand cmd = cli.createCommand(params);
 				if (cmd == null) {
 					continue;
 				}
-				if (!cmd.isIgnorablePrevCommand()) {
-					appSupportSystem.setPrevCommand(cmd);
+				if (!cmd.isIgnorableCommand()) {
+					cli.setPrevCommand(cmd);
+					cli.addHistoryCommand(cmd);
 				}
+				cmd.setCLISystem(cli);
 				cmd.execute();
 			} catch (Exception e) {
 				e.printStackTrace(System.out);

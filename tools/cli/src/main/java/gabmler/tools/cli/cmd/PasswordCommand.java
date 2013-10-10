@@ -1,19 +1,19 @@
 package gabmler.tools.cli.cmd;
 
-import gabmler.tools.cli.CommandExecException;
-import gabmler.tools.service.IService;
 import gabmler.tools.service.PasswordService;
+import gabmler.tools.service.ServiceException;
 
 public class PasswordCommand extends AbstractCommand implements ICommand {
 
-	public PasswordCommand(IService service) {
-		super("password", service);
+	private PasswordService pService = new PasswordService();
+
+	public PasswordCommand() {
+		super("password");
 	}
 
 	@Override
-	public void execute() throws CommandExecException {
-		String[] params = getParameter();
-		PasswordService pService = (PasswordService) service;
+	public void service(String[] params) throws CommandUsageException,
+			ServiceException {
 		if (params[0].equalsIgnoreCase("encrypt")) {
 			String password = params[1];
 			String encrypt = pService.encrypt(password);
@@ -25,7 +25,7 @@ public class PasswordCommand extends AbstractCommand implements ICommand {
 			System.out
 					.println(String.format("decrypted password: %s", decrypt));
 		} else {
-			throw new CommandExecException("Unknown command!");
+			throw new CommandUsageException("Command Usage Error!");
 		}
 
 	}

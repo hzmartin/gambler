@@ -3,4 +3,7 @@
 		<key name="algorithm">PBEWithMD5AndDES</key>
 		<key name="password">gambler-martin</key>
 	</prop>
+	<prop namespace="cli">
+		<key name="maxHistorySize">100</key>
+	</prop>
 </map>

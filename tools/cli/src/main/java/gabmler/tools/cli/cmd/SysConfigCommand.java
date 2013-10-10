@@ -1,7 +1,7 @@
 package gabmler.tools.cli.cmd;
 
 import gabmler.tools.cli.CLISystem;
-import gabmler.tools.cli.CommandExecException;
+import gabmler.tools.service.ServiceException;
 import gambler.commons.advmap.AdvancedKey;
 import gambler.commons.advmap.XMLMap;
 
@@ -11,12 +11,12 @@ import java.util.Set;
 public class SysConfigCommand extends AbstractCommand implements ICommand {
 
 	public SysConfigCommand() {
-		super("config", null);
+		super("config");
 	}
 
 	@Override
-	public void execute() throws CommandExecException {
-		String[] params = getParameter();
+	public void service(String[] params) throws CommandUsageException,
+			ServiceException {
 		XMLMap sysConfig = CLISystem.SYSCONFIG;
 		if (params[0].equalsIgnoreCase("set")) {
 			String key = params[1];
@@ -32,7 +32,7 @@ public class SysConfigCommand extends AbstractCommand implements ICommand {
 						+ entry.getValue());
 			}
 		} else {
-			throw new CommandExecException("Unknown command!");
+			throw new CommandUsageException("Command Usage Error!");
 		}
 
 	}
@@ -44,7 +44,7 @@ public class SysConfigCommand extends AbstractCommand implements ICommand {
 
 	@Override
 	public String[] getSyntax() {
-		return new String[] { "c set key value", "c get key", "c list" };
+		return new String[] { "config set key value", "config get key", "config list" };
 	}
 
 	@Override

@@ -4,8 +4,12 @@
  */
 package gabmler.tools.cli.cmd;
 
-import gabmler.tools.service.ExitSysService;
-import gabmler.tools.service.IService;
+import gabmler.tools.cli.CLISystem;
+import gabmler.tools.service.ServiceException;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 
 /**
  * Class ExitSysCommand
@@ -18,8 +22,8 @@ public class ExitSysCommand extends AbstractCommand {
 	/**
 	 * @param name
 	 */
-	public ExitSysCommand(IService handler) {
-		super("exit", handler);
+	public ExitSysCommand() {
+		super("exit");
 	}
 
 	/*
@@ -32,14 +36,32 @@ public class ExitSysCommand extends AbstractCommand {
 		return new String[] { "bye", "quit" };
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.chinatelecom.yixin.support.cli.ICommand#execute()
-	 */
 	@Override
-	public void execute() {
-		((ExitSysService) service).exit();
+	public void service(String[] params) throws CommandUsageException,
+			ServiceException {
+		saveHistory();
+		System.out.println("Bye ... ...");
+		System.out.println();
+		System.exit(0);
+	}
+
+	public void saveHistory() {
+		try {
+			String historyFile = CLISystem.SYSCONFIG.getProperty(
+					CLISystem.HISTORY_COMMAND_FILE,
+					CLISystem.DEFAULT_HISTORY_COMMAND_FILE);
+			FileWriter fileWriter = new FileWriter(new File(historyFile));
+			BufferedWriter writer = new BufferedWriter(fileWriter);
+			for (int index = 0; index < getCLISystem().sizeOfHistoryCommands(); index++) {
+				ICommand history = getCLISystem().getHistoryCommand(index);
+				writer.write(history + "\n");
+			}
+			writer.flush();
+			fileWriter.close();
+			writer.close();
+		} catch (Exception e) {
+			e.printStackTrace(System.out);
+		}
 	}
 
 	/*
@@ -60,6 +82,11 @@ public class ExitSysCommand extends AbstractCommand {
 	@Override
 	public String[] getSyntax() {
 		return new String[] { "exit | bye | quit" };
+	}
+
+	@Override
+	public boolean isIgnorableCommand() {
+		return true;
 	}
 
 }

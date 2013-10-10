@@ -1,6 +1,6 @@
 package gabmler.tools.cli.cmd;
 
-import gabmler.tools.cli.CommandExecException;
+import gabmler.tools.cli.CLISystem;
 
 public interface ICommand {
 
@@ -18,6 +18,9 @@ public interface ICommand {
 
 	void setParameter(String[] parameter);
 
-	boolean isIgnorablePrevCommand();
+	boolean isIgnorableCommand();
 
+	void setCLISystem(CLISystem cli);
+	
+	CLISystem getCLISystem();
 }

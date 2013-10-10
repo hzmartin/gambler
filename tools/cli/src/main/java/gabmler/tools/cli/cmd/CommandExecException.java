@@ -1,4 +1,4 @@
-package gabmler.tools.cli;
+package gabmler.tools.cli.cmd;
 
 public class CommandExecException extends Exception {
 

@@ -4,8 +4,7 @@
  */
 package gabmler.tools.cli.cmd;
 
-import gabmler.tools.cli.CommandExecException;
-import gabmler.tools.service.IService;
+import gabmler.tools.service.ServiceException;
 import gabmler.tools.service.TimeTagService;
 
 /**
@@ -16,48 +15,40 @@ import gabmler.tools.service.TimeTagService;
  */
 public class TimeTagCommand extends AbstractCommand {
 
+	private TimeTagService timeTagService = new TimeTagService();
+
 	/**
 	 * @param name
 	 * @param handler
 	 */
-	public TimeTagCommand(IService service) {
-		super("timetag", service);
+	public TimeTagCommand() {
+		super("timetag");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.chinatelecom.yixin.support.cli.ICommand#execute()
-	 */
 	@Override
-	public void execute() throws CommandExecException {
-		TimeTagService timeTagService = (TimeTagService) service;
-		String[] param = getParameter();
-		try {
-			if (param.length == 1) {
-				System.out.println(timeTagService.getNowDateString());
-			} else if (param.length == 2) {
-				if (param[0].equalsIgnoreCase("now")) {
-					if (param[1].equalsIgnoreCase("date")) {
-						System.out.println(timeTagService.getNowDateString());
-					} else if (param[1].equalsIgnoreCase("time")) {
-						System.out.println(timeTagService.getNowTimeTag());
-					} else {
-						throw new CommandExecException("Invalid command usage!");
-					}
-				} else if (param[0].equalsIgnoreCase("date")) {
-					long seconds = Long.parseLong(param[1]);
-					System.out.println(timeTagService.getDate(seconds * 1000));
-				} else if (param[0].equalsIgnoreCase("time")) {
-					System.out.println(timeTagService.getTimeTag(param[1]));
+	public void service(String[] params) throws CommandUsageException,
+			ServiceException {
+		if (params.length == 1) {
+			System.out.println(timeTagService.getNowDateString());
+		} else if (params.length == 2) {
+			if (params[0].equalsIgnoreCase("now")) {
+				if (params[1].equalsIgnoreCase("date")) {
+					System.out.println(timeTagService.getNowDateString());
+				} else if (params[1].equalsIgnoreCase("time")) {
+					System.out.println(timeTagService.getNowTimeTag());
 				} else {
-					throw new CommandExecException("Invalid command usage!");
+					throw new CommandUsageException("Command Usage Error!");
 				}
+			} else if (params[0].equalsIgnoreCase("date")) {
+				long seconds = Long.parseLong(params[1]);
+				System.out.println(timeTagService.getDate(seconds * 1000));
+			} else if (params[0].equalsIgnoreCase("time")) {
+				System.out.println(timeTagService.getTimeTag(params[1]));
 			} else {
-				throw new CommandExecException("Unknown command!");
+				throw new CommandUsageException("Command Usage Error!");
 			}
-		} catch (Exception e) {
-			throw new CommandExecException(e);
+		} else {
+			throw new CommandUsageException("Command Usage Error!");
 		}
 
 	}

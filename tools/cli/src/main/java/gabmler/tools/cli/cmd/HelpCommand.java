@@ -5,7 +5,7 @@
 package gabmler.tools.cli.cmd;
 
 import gabmler.tools.service.HelpService;
-import gabmler.tools.service.IService;
+import gabmler.tools.service.ServiceException;
 
 /**
  * Class HelpCommand
@@ -15,26 +15,24 @@ import gabmler.tools.service.IService;
  */
 public class HelpCommand extends AbstractCommand implements ICommand {
 
+	private HelpService helpService = new HelpService();
+
 	/**
 	 * @param name
 	 * @param handler
 	 */
-	public HelpCommand(IService handler) {
-		super("help", handler);
+	public HelpCommand() {
+		super("help");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.chinatelecom.yixin.support.cli.ICommand#execute()
-	 */
 	@Override
-	public void execute() {
+	public void service(String[] params) throws CommandUsageException,
+			ServiceException {
 		String[] param = getParameter();
 		if (param.length == 1) {
-			((HelpService) service).showCommand(param[0].trim());
+			helpService.showCommand(param[0].trim());
 		} else {
-			((HelpService) service).showAllCommands();
+			helpService.showAllCommands();
 		}
 
 	}
@@ -57,6 +55,11 @@ public class HelpCommand extends AbstractCommand implements ICommand {
 	@Override
 	public String[] getSyntax() {
 		return new String[] { "help", "help /command/" };
+	}
+
+	@Override
+	public String[] getAlias() {
+		return new String[] { "h" };
 	}
 
 }
