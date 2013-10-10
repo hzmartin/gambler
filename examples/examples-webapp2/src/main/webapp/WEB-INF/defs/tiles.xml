@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>  
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN" "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">  
 <tiles-definitions>  
-    <definition name="dgts.tiles" template="/jsp/main.jsp"> 
-    	<put-attribute name="title" value="My Dgts." />  
-        <put-attribute name="header" value="/WEB-INF/templates/html/header.html" />  
-        <put-attribute name="menu" value="/WEB-INF/templates/html/menu.html" />  
-        <put-attribute name="helloContent" value="/WEB-INF/templates/ftl/helloContent.ftl" />  
-        <put-attribute name="footer" value="/WEB-INF/templates/html/footer.html" /> 
+    <definition name="base" template="/WEB-INF/templates/layout.jsp"> 
+    	<put-attribute name="title" value="" />  
+        <put-attribute name="header" value="/WEB-INF/templates/header.jsp" />  
+        <put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" /> 
     </definition>  
+    
+    <definition name="welcome" extends="base">
+        <put-attribute name="title" value="Welcome"/>
+        <put-attribute name="content" value="/jsp/welcome.jsp" />
+    </definition>
 </tiles-definitions> 
