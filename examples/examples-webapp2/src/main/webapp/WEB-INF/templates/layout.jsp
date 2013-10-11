@@ -37,13 +37,13 @@
 	</div>
 	<!-- /.container -->
 
-
+	<tiles:insertAttribute name="footer" />
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="../../assets/js/jquery.js"></script>
-	<script src="../../dist/js/bootstrap.min.js"></script>
-
-	<tiles:insertAttribute name="footer" />
+	<script src="/bootstrap3/assets/js/jquery.js"></script>
+	<script src="/bootstrap3/dist/js/bootstrap.min.js"></script>
+	<script src="<tiles:getAsString name="script" />"></script>
+	
 </body>
 </html>

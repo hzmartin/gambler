@@ -4,6 +4,7 @@
     <definition name="base" template="/WEB-INF/templates/layout.jsp">
     	<put-attribute name="title" value="" />
     	<put-attribute name="css" value="" />
+    	<put-attribute name="script" value="" />
         <put-attribute name="header" value="/WEB-INF/templates/header.jsp" />  
         <put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" /> 
     </definition>  
@@ -11,6 +12,7 @@
     <definition name="hello" extends="base">
         <put-attribute name="title" value="Hello"/>
         <put-attribute name="css" value="/jsp/hello.css" />
+        <put-attribute name="script" value="/jsp/hello.js" />
         <put-attribute name="content" value="/jsp/hello.jsp" />
     </definition>
 </tiles-definitions> 
