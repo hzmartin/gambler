@@ -8,5 +8,5 @@ Test Environment Required:
 
     MySql with account root/root access
 
-	1. mysqladmin -u root password NEWPASSWORD
-	2. mysqladmin -u root -p'oldpassword' password newpass
+	1. mysqladmin -u root password /NEWPASSWORD/
+	2. mysqladmin -u root -p'/OLDPASSWORD/' password /NEWPASSWORD/
