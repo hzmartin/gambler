@@ -111,7 +111,7 @@ public final class XMLMap extends AbstractAdvancedMap {
 		if (file.exists()) {
 			load(new FileInputStream(file));
 		} else {
-			log.warn("File " + file.getAbsolutePath()
+			log.info("File " + file.getAbsolutePath()
 					+ " doesn't exist, try to find " + file.getName()
 					+ " in the classpath.");
 			load(Thread.currentThread().getContextClassLoader()
@@ -140,7 +140,7 @@ public final class XMLMap extends AbstractAdvancedMap {
 				load(xmlFilePaths[i]);
 			}
 		} catch (Exception e) {
-			log.error("Load xml properties failed", e);
+			log.warn("Load xml properties failed", e);
 		}
 
 	}

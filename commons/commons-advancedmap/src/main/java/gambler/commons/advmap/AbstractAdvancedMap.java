@@ -206,7 +206,7 @@ public abstract class AbstractAdvancedMap extends HashMap<AdvancedKey, String> {
 	 * @see AdvancedKey#buildAdvancedKey(String)
 	 */
 	public String setProperty(String fullPathKey, String value) {
-		log.info("Invoking setProperty(" + fullPathKey + ", " + value + ")");
+		log.info("set property: key=" + fullPathKey + ", value=" + value);
 		AdvancedKey key = AdvancedKey.buildAdvancedKey(fullPathKey);
 		return put(key, value);
 	}

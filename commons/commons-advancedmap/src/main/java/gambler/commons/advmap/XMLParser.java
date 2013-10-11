@@ -105,8 +105,7 @@ public class XMLParser extends DefaultHandler {
 
 	/**
 	 * It stores the value between key tag pairs. <br/>
-	 * ex: 
-	 * &lt;key&gt; a &lt;/key&gt;<br/>
+	 * ex: &lt;key&gt; a &lt;/key&gt;<br/>
 	 * <br/>
 	 * <code>value</code> = a<br/>
 	 * When characters('\n', ' ', '\t', '\r') appear at the start or end of the
@@ -232,10 +231,10 @@ public class XMLParser extends DefaultHandler {
 				AdvancedKey gkey = new AdvancedKey(namespace, key, order,
 						LocaleUtils.toLocale(locale));
 				if (xmlmap.keySet().contains(gkey)) {
-					log.warn("Property [" + gkey + "] already exists");
+					log.warn("Property[" + gkey + "] already exists");
 				} else {
 					xmlmap.put(gkey, value.toString());
-					log.info("Property [" + gkey
+					log.info("Property[" + gkey + ", " + value.toString()
 							+ "] has been stored in xml map");
 				}
 			} catch (Exception e) {

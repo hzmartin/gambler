@@ -49,7 +49,7 @@ public final class DBMap extends AbstractAdvancedMap {
 		try {
 			properties = persistence.loadAll(AdvancedEntry.class);
 		} catch (PersistenceException e1) {
-			log.error("Load db properties failed", e1);
+			log.warn("Load db properties failed", e1);
 			return;
 		}
 
@@ -68,9 +68,10 @@ public final class DBMap extends AbstractAdvancedMap {
 	/**
 	 * it will update the map and store the property to the database
 	 * 
-	 * @throws PersistenceException 
+	 * @throws PersistenceException
 	 */
-	public AdvancedEntry save(AdvancedKey key, String value) throws PersistenceException {
+	public AdvancedEntry save(AdvancedKey key, String value)
+			throws PersistenceException {
 		put(key, value);
 		AdvancedEntry prop = new AdvancedEntry(key, value);
 		persistence.saveOrUpdate(prop);

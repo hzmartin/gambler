@@ -13,8 +13,17 @@ import org.apache.commons.lang.StringUtils;
  * <ol>
  * <li>namespace</li>
  * <li>key</li>
- * <li>locale</li>
  * <li>order</li>
+ * <li>locale</li>
+ * </ol>
+ * 
+ * the string key has five styles<br/>
+ * <ol>
+ * <li>key</li>
+ * <li>namespace.key</li>
+ * <li>namespace.key.order</li>
+ * <li>namespace.key.locale</li>
+ * <li>namespace.key.order.locale</li>
  * </ol>
  * 
  * @auther Martin
@@ -32,7 +41,7 @@ public class AdvancedKey implements java.io.Serializable,
 	 * Separator between namespace, key name and locale. It's value is "."
 	 */
 	public static final String SEPARATOR = ".";
-	
+
 	/**
 	 * Regular expression for the key separator
 	 */
