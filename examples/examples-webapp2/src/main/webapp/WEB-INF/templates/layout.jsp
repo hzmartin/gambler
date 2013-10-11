@@ -9,10 +9,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
-<meta name="author" content="">
+<meta name="author" content="Martin">
 <link rel="shortcut icon" href="/bootstrap3/assets/ico/favicon.png">
-
-<title>Starter Template for Bootstrap</title>
 
 <!-- Bootstrap core CSS -->
 <link href="/bootstrap3/dist/css/bootstrap.css" rel="stylesheet">
