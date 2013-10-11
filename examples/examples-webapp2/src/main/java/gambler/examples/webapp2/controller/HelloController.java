@@ -25,10 +25,10 @@ public class HelloController {
 	@Resource
 	private UserDao userDao;
 
-	@RequestMapping("/welcome")
+	@RequestMapping("/hello")
 	public ModelAndView helloWorld() {
 		String message = "Hello World<br/>";
-		return new ModelAndView("welcome", "message", message);
+		return new ModelAndView("hello", "message", message);
 	}
 
 	/**
