@@ -114,4 +114,8 @@ public abstract class AbstractCommand implements ICommand {
 		}
 		return cmdString;
 	}
+
+	public boolean isSubCommand(String subCmd) {
+		return subCmd.equalsIgnoreCase(params[0]);
+	}
 }

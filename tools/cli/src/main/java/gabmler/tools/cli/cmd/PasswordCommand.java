@@ -14,12 +14,12 @@ public class PasswordCommand extends AbstractCommand implements ICommand {
 	@Override
 	public void service(String[] params) throws CommandUsageException,
 			ServiceException {
-		if (params[0].equalsIgnoreCase("encrypt")) {
+		if (isSubCommand("encrypt")) {
 			String password = params[1];
 			String encrypt = pService.encrypt(password);
 			System.out.println(String.format("encrypted password for %s: %s",
 					password, encrypt));
-		} else if (params[0].equalsIgnoreCase("decrypt")) {
+		} else if (isSubCommand("decrypt")) {
 			String password = params[1];
 			String decrypt = pService.decrypt(password);
 			System.out

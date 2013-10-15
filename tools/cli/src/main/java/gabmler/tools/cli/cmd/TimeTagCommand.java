@@ -28,21 +28,23 @@ public class TimeTagCommand extends AbstractCommand {
 	@Override
 	public void service(String[] params) throws CommandUsageException,
 			ServiceException {
-		if (params.length == 1) {
+		if (params.length == 0) {
+			System.out.println(timeTagService.getNowDateString());
+		} else if (params.length == 1 && isSubCommand("now")) {
 			System.out.println(timeTagService.getNowDateString());
 		} else if (params.length == 2) {
-			if (params[0].equalsIgnoreCase("now")) {
-				if (params[1].equalsIgnoreCase("date")) {
+			if (isSubCommand("now")) {
+				if ("date".equalsIgnoreCase(params[1])) {
 					System.out.println(timeTagService.getNowDateString());
-				} else if (params[1].equalsIgnoreCase("time")) {
+				} else if ("time".equalsIgnoreCase(params[1])) {
 					System.out.println(timeTagService.getNowTimeTag());
 				} else {
 					throw new CommandUsageException("Command Usage Error!");
 				}
-			} else if (params[0].equalsIgnoreCase("date")) {
+			} else if (isSubCommand("date")) {
 				long seconds = Long.parseLong(params[1]);
 				System.out.println(timeTagService.getDate(seconds * 1000));
-			} else if (params[0].equalsIgnoreCase("time")) {
+			} else if (isSubCommand("time")) {
 				System.out.println(timeTagService.getTimeTag(params[1]));
 			} else {
 				throw new CommandUsageException("Command Usage Error!");
@@ -60,7 +62,7 @@ public class TimeTagCommand extends AbstractCommand {
 	 */
 	@Override
 	public String[] getDescription() {
-		return new String[] { "get current time",
+		return new String[] { "get current time", "get current time",
 				"get time, default date format: yyyy-MM-dd", "get date" };
 	}
 
@@ -71,7 +73,7 @@ public class TimeTagCommand extends AbstractCommand {
 	 */
 	@Override
 	public String[] getSyntax() {
-		return new String[] { "timetag now (time|date)",
+		return new String[] { "time", "timetag now (time|date)",
 				"timetag date (time in second)", "timetag time (date string)" };
 	}
 
