@@ -30,7 +30,7 @@ public class PrevCmdCommand extends AbstractCommand {
 			return;
 		}
 		String cmdString = prevCommand.getName() + " ";
-		for (String param : prevCommand.getParameter()) {
+		for (String param : prevCommand.getParams()) {
 			cmdString += param + " ";
 		}
 		System.out.println(cmdString);

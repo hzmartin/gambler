@@ -15,7 +15,7 @@ public abstract class AbstractCommand implements ICommand {
 
 	private final String name;
 
-	private String[] parameter;
+	private String[] params;
 
 	/**
 	 * @param name
@@ -33,7 +33,7 @@ public abstract class AbstractCommand implements ICommand {
 
 	@Override
 	public final void execute() throws CommandExecException {
-		String[] params = getParameter();
+		String[] params = getParams();
 		try {
 			service(params);
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -70,13 +70,20 @@ public abstract class AbstractCommand implements ICommand {
 	}
 
 	@Override
-	public String[] getParameter() {
-		return parameter;
+	public String[] getParams() {
+		String[] paramCopy = new String[params.length];
+		for (int i = 0; i < params.length; i++) {
+			paramCopy[i] = params[i];
+			if (params[i].equalsIgnoreCase("null")) {
+				paramCopy[i] = null;
+			}
+		}
+		return paramCopy;
 	}
 
 	@Override
-	public void setParameter(String[] parameter) {
-		this.parameter = parameter;
+	public void setParams(String[] parameter) {
+		this.params = parameter;
 	}
 
 	/*
@@ -102,7 +109,7 @@ public abstract class AbstractCommand implements ICommand {
 	@Override
 	public String toString() {
 		String cmdString = getName() + " ";
-		for (String param : getParameter()) {
+		for (String param : getParams()) {
 			cmdString += param + " ";
 		}
 		return cmdString;

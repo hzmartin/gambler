@@ -120,7 +120,7 @@ public final class CLISystem {
 		}
 		String[] parameter = new String[command.length - 1];
 		System.arraycopy(command, 1, parameter, 0, command.length - 1);
-		cmd.setParameter(parameter);
+		cmd.setParams(parameter);
 		return cmd;
 	}
 

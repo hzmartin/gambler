@@ -14,9 +14,9 @@ public interface ICommand {
 
 	String[] getSyntax();
 
-	String[] getParameter();
+	String[] getParams();
 
-	void setParameter(String[] parameter);
+	void setParams(String[] parameter);
 
 	boolean isIgnorableCommand();
 

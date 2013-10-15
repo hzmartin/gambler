@@ -28,7 +28,7 @@ public class HelpCommand extends AbstractCommand implements ICommand {
 	@Override
 	public void service(String[] params) throws CommandUsageException,
 			ServiceException {
-		String[] param = getParameter();
+		String[] param = getParams();
 		if (param.length == 1) {
 			helpService.showCommand(param[0].trim());
 		} else {
