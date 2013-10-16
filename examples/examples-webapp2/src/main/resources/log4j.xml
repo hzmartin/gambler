@@ -11,7 +11,7 @@
 	</appender>
 
 	<appender name="LIFE_CYCLE" class="org.apache.log4j.FileAppender">
-		<param name="File" value="${gb.log4j.path}/lifecycle.log" />
+		<param name="File" value="${gb.log4j.path}/${project.artifactId}.log" />
 		<param name="Threshold" value="INFO" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
@@ -22,7 +22,7 @@
 	<appender name="ROLLING"
 		class="org.apache.log4j.RollingFileAppender">
 		<param name="Threshold" value="INFO" />
-		<param name="File" value="${gb.log4j.path}/rolling.log" />
+		<param name="File" value="${gb.log4j.path}/${project.artifactId}.log" />
 		<param name="MaxFileSize" value="1024KB" />
 		<param name="MaxBackupIndex" value="6" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -34,7 +34,7 @@
 	<appender name="DAILY_ROLLING"
 		class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="Threshold" value="INFO" />
-		<param name="File" value="${gb.log4j.path}/dailyrolling.log" />
+		<param name="File" value="${gb.log4j.path}/${project.artifactId}.log" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
