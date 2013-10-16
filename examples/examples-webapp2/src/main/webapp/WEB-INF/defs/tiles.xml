@@ -15,4 +15,5 @@
         <put-attribute name="script" value="/jsp/hello.js" />
         <put-attribute name="content" value="/jsp/hello.jsp" />
     </definition>
+    
 </tiles-definitions> 
