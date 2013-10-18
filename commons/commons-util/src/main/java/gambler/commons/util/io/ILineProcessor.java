@@ -9,5 +9,7 @@ package gambler.commons.util.io;
 public interface ILineProcessor {
 
 	void process(int lineNumber, String line);
+	
+	void cleanUp();
 
 }

@@ -46,6 +46,8 @@ public class FileProcessor {
 		while ((line = lineNumberReader.readLine()) != null) {
 			processor.process(lineNumberReader.getLineNumber(), line);
 		}
+		
+		processor.cleanUp();
 	}
 
 }

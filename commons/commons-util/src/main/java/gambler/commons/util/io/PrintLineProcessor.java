@@ -7,4 +7,8 @@ public class PrintLineProcessor implements ILineProcessor {
 		System.out.println("Line " + lineNumber + ": " + line);
 	}
 
+	@Override
+	public void cleanUp() {
+		
+	}
 }
