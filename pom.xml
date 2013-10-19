@@ -70,6 +70,44 @@
                 <version>2.4.3</version>
             </plugin>
         </plugins>
+        
+        <finalName>${project.artifactId}</finalName>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>log4j.xml</include>
+                    <include>datasource.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>log4j.properties</exclude>
+                    <exclude>datasource.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>${project.basedir}/src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>log4j.xml</include>
+                    <include>datasource.properties</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <directory>${project.basedir}/src/test/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>log4j.properties</exclude>
+                    <exclude>datasource.properties</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
     </build>
     <dependencies>
         <dependency>

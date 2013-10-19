@@ -2,10 +2,10 @@
  * @(#) ExitSysCommand.java 2013-9-16
  * 
  */
-package gabmler.tools.cli.cmd;
+package gambler.tools.cli.cmd;
 
-import gabmler.tools.cli.CLISystem;
-import gabmler.tools.service.ServiceException;
+import gambler.tools.cli.CLISystem;
+import gambler.tools.service.ServiceException;
 
 import java.io.BufferedWriter;
 import java.io.File;

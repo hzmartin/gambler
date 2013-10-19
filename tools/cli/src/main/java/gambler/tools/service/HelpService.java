@@ -2,10 +2,10 @@
  * @(#) HelpService.java 2013-9-16
  * 
  */
-package gabmler.tools.service;
+package gambler.tools.service;
 
-import gabmler.tools.cli.CLISystem;
-import gabmler.tools.cli.cmd.ICommand;
+import gambler.tools.cli.CLISystem;
+import gambler.tools.cli.cmd.ICommand;
 
 /**
  * Class HelpService

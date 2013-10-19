@@ -1,7 +1,7 @@
-package gabmler.tools.cli.cmd;
+package gambler.tools.cli.cmd;
 
-import gabmler.tools.service.PasswordService;
-import gabmler.tools.service.ServiceException;
+import gambler.tools.service.PasswordService;
+import gambler.tools.service.ServiceException;
 
 public class PasswordCommand extends AbstractCommand implements ICommand {
 
@@ -25,14 +25,14 @@ public class PasswordCommand extends AbstractCommand implements ICommand {
 			System.out
 					.println(String.format("decrypted password: %s", decrypt));
 		} else {
-			throw new CommandUsageException("Command Usage Error!");
+			throw new CommandUsageException("Command usage error!");
 		}
 
 	}
 
 	@Override
 	public String[] getDescription() {
-		return new String[] { "加密密码", "解密密码" };
+		return new String[] { "Encrypt password", "Decrypt password" };
 	}
 
 	@Override

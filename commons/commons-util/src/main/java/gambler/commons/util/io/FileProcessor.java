@@ -6,48 +6,50 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 
 /**
- * 
+ *
  * simple file processor
- * 
+ *
  * @author Martin
- * 
+ *
  */
 public class FileProcessor {
 
-	private File file;
+    private File file;
 
-	private ILineProcessor processor;
+    private ILineProcessor processor;
 
-	public FileProcessor(File file) {
-		super();
-		this.file = file;
-	}
+    public FileProcessor(File file) {
+        super();
+        this.file = file;
+    }
 
-	public ILineProcessor getProcessor() {
-		return processor;
-	}
+    public ILineProcessor getProcessor() {
+        return processor;
+    }
 
-	public void setProcessor(ILineProcessor processor) {
-		this.processor = processor;
-	}
+    public void setProcessor(ILineProcessor processor) {
+        this.processor = processor;
+    }
 
-	public File getFile() {
-		return file;
-	}
+    public File getFile() {
+        return file;
+    }
 
-	public void setFile(File file) {
-		this.file = file;
-	}
+    public void setFile(File file) {
+        this.file = file;
+    }
 
-	public void processLines() throws IOException {
-		LineNumberReader lineNumberReader = new LineNumberReader(
-				new FileReader(file));
-		String line = null;
-		while ((line = lineNumberReader.readLine()) != null) {
-			processor.process(lineNumberReader.getLineNumber(), line);
-		}
-		
-		processor.cleanUp();
-	}
+    public void processLines() throws IOException {
+        LineNumberReader lineNumberReader = new LineNumberReader(
+                new FileReader(file));
+        String line = null;
+        while ((line = lineNumberReader.readLine()) != null) {
+            processor.process(lineNumberReader.getLineNumber(), line);
+        }
+
+        processor.cleanUp();
+
+        lineNumberReader.close();
+    }
 
 }

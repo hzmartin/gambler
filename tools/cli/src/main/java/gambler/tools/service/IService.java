@@ -1,4 +1,4 @@
-package gabmler.tools.service;
+package gambler.tools.service;
 
 public interface IService {
 

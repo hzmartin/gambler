@@ -1,7 +1,7 @@
-package gabmler.tools.cli.cmd;
+package gambler.tools.cli.cmd;
 
-import gabmler.tools.cli.CLISystem;
-import gabmler.tools.service.ServiceException;
+import gambler.tools.cli.CLISystem;
+import gambler.tools.service.ServiceException;
 import gambler.commons.advmap.AdvancedKey;
 import gambler.commons.advmap.XMLMap;
 
@@ -32,19 +32,19 @@ public class SysConfigCommand extends AbstractCommand implements ICommand {
 						+ entry.getValue());
 			}
 		} else {
-			throw new CommandUsageException("Command Usage Error!");
+			throw new CommandUsageException("Command usage error!");
 		}
 
 	}
 
 	@Override
 	public String[] getDescription() {
-		return new String[] { "设置配置项", "查询配置项", "查看所有配置项" };
+		return new String[] { "set environment", "get environment setting for the key", "list all environment settings" };
 	}
 
 	@Override
 	public String[] getSyntax() {
-		return new String[] { "config set key value", "config get key",
+		return new String[] { "config set /key/ /value/", "config get /key/",
 				"config list" };
 	}
 

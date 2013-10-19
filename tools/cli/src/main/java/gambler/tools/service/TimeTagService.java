@@ -2,7 +2,7 @@
  * @(#) TimeTagService.java 2013-9-16
  * 
  */
-package gabmler.tools.service;
+package gambler.tools.service;
 
 
 import java.text.SimpleDateFormat;
@@ -18,11 +18,11 @@ public class TimeTagService implements IService {
 
 	public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd";
 
-	public Date getDate(long timetag) {
-		return new Date(timetag);
+	public Date getDate(int timetag) {
+		return new Date(timetag * 1000L);
 	}
 
-	public long getTimeTag(String date) throws ServiceException {
+	public int getTimeTag(String date) throws ServiceException {
 		return getTimeTag(date, DEFAULT_DATE_PATTERN);
 	}
 
@@ -34,10 +34,10 @@ public class TimeTagService implements IService {
 	 * @return
 	 * @throws AppSupportServiceException
 	 */
-	public long getTimeTag(String date, String pattern) throws ServiceException {
+	public int getTimeTag(String date, String pattern) throws ServiceException {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-			return sdf.parse(date).getTime() / 1000;
+			return (int) (sdf.parse(date).getTime() / 1000);
 		} catch (Exception e) {
 			throw new ServiceException(e);
 		}

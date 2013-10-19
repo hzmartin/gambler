@@ -2,10 +2,10 @@
  * @(#) HelpCommand.java 2013-9-16
  * 
  */
-package gabmler.tools.cli.cmd;
+package gambler.tools.cli.cmd;
 
-import gabmler.tools.service.HelpService;
-import gabmler.tools.service.ServiceException;
+import gambler.tools.service.HelpService;
+import gambler.tools.service.ServiceException;
 
 /**
  * Class HelpCommand
@@ -28,9 +28,8 @@ public class HelpCommand extends AbstractCommand implements ICommand {
 	@Override
 	public void service(String[] params) throws CommandUsageException,
 			ServiceException {
-		String[] param = getParams();
-		if (param.length == 1) {
-			helpService.showCommand(param[0].trim());
+		if (params.length == 1) {
+			helpService.showCommand(params[0].trim());
 		} else {
 			helpService.showAllCommands();
 		}
@@ -44,7 +43,7 @@ public class HelpCommand extends AbstractCommand implements ICommand {
 	 */
 	@Override
 	public String[] getDescription() {
-		return new String[] { "show all commands", "show help of command" };
+		return new String[] { "show all commands' help", "show help of the command" };
 	}
 
 	/*

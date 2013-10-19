@@ -1,10 +1,10 @@
-package gabmler.tools.cli.cmd;
+package gambler.tools.cli.cmd;
 
-import gabmler.tools.cli.CLISystem;
+import gambler.tools.cli.CLISystem;
 
 public interface ICommand {
 
-	void execute() throws CommandExecException;
+	void execute() throws CommandExecException, CommandUsageException;
 
 	String getName();
 
@@ -23,4 +23,6 @@ public interface ICommand {
 	void setCLISystem(CLISystem cli);
 	
 	CLISystem getCLISystem();
+        
+        void printCommandUsage();
 }

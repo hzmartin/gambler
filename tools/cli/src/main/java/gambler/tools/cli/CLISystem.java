@@ -1,0 +1,199 @@
+package gambler.tools.cli;
+
+import gambler.tools.cli.cmd.ExitSysCommand;
+import gambler.tools.cli.cmd.HelpCommand;
+import gambler.tools.cli.cmd.HistoryCommand;
+import gambler.tools.cli.cmd.ICommand;
+import gambler.tools.cli.cmd.PrevCmdCommand;
+import gambler.tools.cli.cmd.SysConfigCommand;
+import gambler.tools.cli.cmd.TimeTagCommand;
+import gambler.commons.advmap.AdvancedKey;
+import gambler.commons.advmap.XMLMap;
+import gambler.commons.util.io.FileProcessor;
+import gambler.commons.util.io.ILineProcessor;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.log4j.Logger;
+
+/**
+ * Class CLISystem
+ *
+ * example command: ex-cmd1 param1 null param3
+ *
+ * for the sencond parameter, null will be set
+ *
+ * @author hzwangqh
+ * @version 2013-9-16
+ */
+public final class CLISystem implements IConfigrableConstants {
+
+    private static final Logger logger = Logger.getLogger(CLISystem.class);
+
+    private static final Map<String, Class> commandMap = new HashMap<String, Class>();
+
+    private static final List<ICommand> commandList = new ArrayList<ICommand>();
+
+    private static final List<ICommand> historyCommands = new LinkedList<ICommand>();
+
+    private ICommand prevCommand = null;
+
+    public static final XMLMap SYSCONFIG = new XMLMap(ClassLoader
+            .getSystemResource("cli.conf.xml").getFile());
+
+    public CLISystem() {
+        super();
+    }
+
+    public final void init() throws CLISysInitException {
+        loadBuiltinCommands();
+
+        loadExtCommands();
+
+        initCommandMap();
+
+        loadHistoryCommands();
+    }
+
+    private void initCommandMap() throws CLISysInitException {
+        for (ICommand cmd : commandList) {
+            if (commandMap.containsKey(cmd.getName())) {
+                throw new CLISysInitException("Command name " + cmd.getName()
+                        + " conflicts!");
+            }
+            commandMap.put(cmd.getName(), cmd.getClass());
+            for (String alias : cmd.getAlias()) {
+                if (commandMap.containsKey(alias)) {
+                    throw new CLISysInitException("Command(" + cmd.getName()
+                            + ") alias  " + alias + " conflicts!");
+                }
+                commandMap.put(alias, cmd.getClass());
+            }
+        }
+    }
+
+    private void loadBuiltinCommands() {
+        // system command list
+        commandList.add(new ExitSysCommand());
+        commandList.add(new HelpCommand());
+        commandList.add(new TimeTagCommand());
+        commandList.add(new PrevCmdCommand());
+        commandList.add(new SysConfigCommand());
+        commandList.add(new HistoryCommand());
+    }
+
+    private void loadExtCommands() {
+        Set<AdvancedKey> keySet = SYSCONFIG.keySet();
+        for (AdvancedKey key : keySet) {
+            if (EXT_CMD_NAMESPACE.equals(key.getNamespace())) {
+                try {
+                    String cmdClass = SYSCONFIG.get(key);
+                    Object cmdInst = Class.forName(cmdClass).newInstance();
+                    commandList.add((ICommand) cmdInst);
+                } catch (Exception ex) {
+                    logger.warn("Load external command error!", ex);
+                    System.out.println("WARN: Load external command " + key.getNsKey() + " error!");
+                }
+            }
+        }
+    }
+
+    private void loadHistoryCommands() {
+        try {
+            File historyFile = new File(SYSCONFIG.getProperty(
+                    CLISystem.HISTORY_COMMAND_FILE,
+                    DEFAULT_HISTORY_COMMAND_FILE));
+            if (!historyFile.exists()) {
+                historyFile.getParentFile().mkdirs();
+                historyFile.createNewFile();
+            }
+            FileProcessor fileProcessor = new FileProcessor(historyFile);
+            fileProcessor.setProcessor(new ILineProcessor() {
+
+                @Override
+                public void process(int lineNumber, String line) {
+                    String[] tmpStr = line.trim().split("\\s+");
+                    ICommand cmd = createCommand(tmpStr);
+                    if (cmd == null) {
+                        return;
+                    }
+                    if (!cmd.isIgnorableCommand()) {
+                        addHistoryCommand(cmd);
+                    }
+                }
+
+                @Override
+                public void cleanUp() {
+                }
+            });
+            fileProcessor.processLines();
+        } catch (Exception e) {
+            logger.warn("Load history commands failed！");
+        }
+
+    }
+
+    public ICommand createCommand(String[] command) {
+        String name = command[0];
+        ICommand cmd = getCommandByName(name);
+        if (cmd == null) {
+            return null;
+        }
+        String[] parameter = new String[command.length - 1];
+        System.arraycopy(command, 1, parameter, 0, command.length - 1);
+        cmd.setParams(parameter);
+        return cmd;
+    }
+
+    public static final int sizeOfCommands() {
+        return commandList.size();
+    }
+
+    public static final ICommand getCommand(int index) {
+        return commandList.get(index);
+    }
+
+    public static final ICommand getCommandByName(String name) {
+        try {
+            return (ICommand) commandMap.get(name.toLowerCase()).newInstance();
+        } catch (Exception e) {
+            logger.warn("Init command instance error", e);
+            return null;
+        }
+    }
+
+    public ICommand getPrevCommand() {
+        return prevCommand;
+    }
+
+    public void setPrevCommand(ICommand prevCommand) {
+        this.prevCommand = prevCommand;
+    }
+
+    public void addHistoryCommand(ICommand command) {
+        historyCommands.add(command);
+        Integer max = Integer.parseInt(CLISystem.SYSCONFIG.getProperty(
+                MAX_HISTORY_SIZE, "100"));
+        if (historyCommands.size() > max) {
+            historyCommands.remove(0);
+        }
+    }
+
+    public ICommand removeHistoryCommand(int index) {
+        return historyCommands.remove(index);
+    }
+
+    public int sizeOfHistoryCommands() {
+        return historyCommands.size();
+    }
+
+    public ICommand getHistoryCommand(int index) {
+        return historyCommands.get(index);
+    }
+}

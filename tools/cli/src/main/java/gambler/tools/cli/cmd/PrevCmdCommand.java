@@ -2,9 +2,9 @@
  * @(#) PrevCmdCommand.java 2013-9-17
  * 
  */
-package gabmler.tools.cli.cmd;
+package gambler.tools.cli.cmd;
 
-import gabmler.tools.service.ServiceException;
+import gambler.tools.service.ServiceException;
 
 /**
  * Class PrevCmdCommand
@@ -44,7 +44,7 @@ public class PrevCmdCommand extends AbstractCommand {
 	 */
 	@Override
 	public String[] getDescription() {
-		return new String[] { "Previous Command" };
+		return new String[] { "previous command" };
 	}
 
 	/*

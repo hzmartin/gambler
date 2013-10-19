@@ -1,8 +1,8 @@
-package gabmler.tools.cli.cmd;
+package gambler.tools.cli.cmd;
 
-import gabmler.tools.cli.CLISystem;
-import gabmler.tools.service.HelpService;
-import gabmler.tools.service.ServiceException;
+import gambler.tools.cli.CLISystem;
+import gambler.tools.service.HelpService;
+import gambler.tools.service.ServiceException;
 
 /**
  * Class AbstractCommand
@@ -36,22 +36,21 @@ public abstract class AbstractCommand implements ICommand {
 		String[] params = getParams();
 		try {
 			service(params);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			printCommandUsage();
 		} catch (CommandUsageException e) {
 			printCommandUsage();
 		} catch (ServiceException e) {
-			throw new CommandExecException("Command Execution Error!", e);
+			throw new CommandExecException("Execute command error!", e);
 		} catch (Exception e) {
-			throw new CommandExecException("Unexpected Error!", e);
+			throw new CommandExecException("Unexpected error!", e);
 		}
 
 	}
 
-	private void printCommandUsage() {
-		System.out.println("Command Usage Error!");
+        @Override
+	public void printCommandUsage() {
+		System.out.println("Command usage error!");
 		System.out.println();
-		System.out.println("Command " + getName() + " Usage:");
+		System.out.println("Usage of command " + getName() + ":");
 		System.out.println("=======");
 		new HelpService().showCommand(getName());
 	}

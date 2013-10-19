@@ -1,6 +1,6 @@
-package gabmler.tools.service;
+package gambler.tools.service;
 
-import gabmler.tools.cli.CLISystem;
+import gambler.tools.cli.CLISystem;
 import gambler.commons.advmap.XMLMap;
 import gambler.commons.util.jasypt.GBEnvironmentStringPBEConfig;
 

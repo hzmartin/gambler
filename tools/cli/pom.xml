@@ -1,23 +1,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>gambler.tools</groupId>
-    <artifactId>tools</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>cli</artifactId>
-  <name>CLI</name>
-  <description>Command Line Tools</description>
-  <dependencies>
-  	<dependency>
-  		<groupId>gambler.commons</groupId>
-  		<artifactId>commons-util</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>gambler.commons</groupId>
-  		<artifactId>commons-advancedmap</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  </dependencies>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>gambler.tools</groupId>
+        <artifactId>tools</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>cli</artifactId>
+    <name>CLI</name>
+    <description>Command Line Tools</description>
+    <properties>
+        <gb.log4j.path>logs</gb.log4j.path>
+        <gb.log4j.level>INFO</gb.log4j.level>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>gambler.commons</groupId>
+            <artifactId>commons-util</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>gambler.commons</groupId>
+            <artifactId>commons-advancedmap</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
