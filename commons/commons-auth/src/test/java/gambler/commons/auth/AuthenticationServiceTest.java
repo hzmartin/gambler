@@ -28,8 +28,8 @@ public class AuthenticationServiceTest extends TestCase {
 	public void testCheckUserPermission() throws Exception {
 		User superUser = new User();
 		superUser.setUserId("super");
-		superUser.setSuperUser(true);
-		superUser.setActive(true);
+		superUser.setSuperUser(1);
+		superUser.setActive(1);
 		authService.getPersistence().save(superUser);
 		assertTrue(authService.checkUserPermission(superUser.getUserId(),
 				"can_publish", "news"));
@@ -39,7 +39,7 @@ public class AuthenticationServiceTest extends TestCase {
 	public void testCheckUserPermission2() throws Exception {
 		User helloUser = new User();
 		helloUser.setUserId("hello");
-		helloUser.setActive(true);
+		helloUser.setActive(1);
 		Permission p1 = new Permission();
 		p1.setCodename("can_publish");
 		p1.setContent("news");
@@ -61,7 +61,7 @@ public class AuthenticationServiceTest extends TestCase {
 	public void testCheckUserPermission3() throws Exception {
 		User helloUser = new User();
 		helloUser.setUserId("hello");
-		helloUser.setActive(true);
+		helloUser.setActive(1);
 		authService.getPersistence().save(helloUser);
 		assertFalse(authService.checkUserPermission(helloUser.getUserId(),
 				"can_publish", "news"));

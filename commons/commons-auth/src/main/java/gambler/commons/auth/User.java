@@ -41,13 +41,13 @@ public class User implements Serializable {
 
 	private String gender;
 
-	private Date dateJoined;
+	private Long dateJoined;
 
-	private Date lastLogin;
+	private Long lastLogin;
 
-	private boolean active;
+	private int active;
 	
-	private boolean superUser;
+	private int superUser;
 
 	public User() {
 	}
@@ -160,35 +160,35 @@ public class User implements Serializable {
 		this.gender = gender;
 	}
 
-	public Date getDateJoined() {
+	public Long getDateJoined() {
 		return dateJoined;
 	}
 
-	public void setDateJoined(Date dateJoined) {
+	public void setDateJoined(Long dateJoined) {
 		this.dateJoined = dateJoined;
 	}
 
-	public Date getLastLogin() {
+	public Long getLastLogin() {
 		return lastLogin;
 	}
 
-	public void setLastLogin(Date lastLogin) {
+	public void setLastLogin(Long lastLogin) {
 		this.lastLogin = lastLogin;
 	}
 
-	public boolean isActive() {
+	public int isActive() {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(int active) {
 		this.active = active;
 	}
 
-	public boolean isSuperUser() {
+	public int isSuperUser() {
 		return superUser;
 	}
 
-	public void setSuperUser(boolean superUser) {
+	public void setSuperUser(int superUser) {
 		this.superUser = superUser;
 	}
 

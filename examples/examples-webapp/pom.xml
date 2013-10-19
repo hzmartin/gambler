@@ -1,335 +1,326 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>gambler.examples</groupId>
-		<artifactId>examples</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-	<artifactId>examples-webapp</artifactId>
-	<packaging>war</packaging>
-	<name>Example SSH Webapp</name>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>gambler.examples</groupId>
+        <artifactId>examples</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>examples-webapp</artifactId>
+    <packaging>war</packaging>
+    <name>Example SSH Webapp</name>
 
-	<profiles>
-		<profile>
-			<id>prod</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-				<property>
-					<name>environment.type</name>
-					<value>prod</value>
-				</property>
-			</activation>
-			<properties>
-				<gb.log4j.path>logs</gb.log4j.path>
-				<gb.log4j.level>INFO</gb.log4j.level>
-				<gb.datasource.url>jdbc:mysql://localhost:3306/production</gb.datasource.url>
-				<gb.datasource.userName>analytics</gb.datasource.userName>
-				<gb.datasource.password>ENC(4y6q7AVTJ9ZLuTDL7pLOQcD81tAHdcOP)</gb.datasource.password>
-				<gb.datasource.driverClassName>org.gjt.mm.mysql.Driver</gb.datasource.driverClassName>
-				<gb.datasource.initialSize>10</gb.datasource.initialSize>
-				<gb.datasource.maxActive>60</gb.datasource.maxActive>
-				<gb.datasource.maxIdle>10</gb.datasource.maxIdle>
-				<gb.datasource.removeAbandoned>true</gb.datasource.removeAbandoned>
-				<gb.datasource.removeAbandonedTimeout>60</gb.datasource.removeAbandonedTimeout>
-				<gb.datasource.logAbandoned>true</gb.datasource.logAbandoned>
-				<gb.datasource.maxWait>60</gb.datasource.maxWait>
-				<gb.datasource.minPoolSize>5</gb.datasource.minPoolSize>
-				<gb.datasource.maxPoolSize>20</gb.datasource.maxPoolSize>
-				<gb.datasource.acquireIncrement>5</gb.datasource.acquireIncrement>
-				<gb.datasource.acquireRetryAttempts>1</gb.datasource.acquireRetryAttempts>
-				<gb.datasource.idleConnectionTestPeriod>600</gb.datasource.idleConnectionTestPeriod>
-				<gb.datasource.checkoutTimeout>300000</gb.datasource.checkoutTimeout>
-				<gb.datasource.maxConnectionAge>1800</gb.datasource.maxConnectionAge>
-				<gb.datasource.maxIdleTime>1000</gb.datasource.maxIdleTime>
-				<gb.datasource.maxStatements>0</gb.datasource.maxStatements>
-				<gb.hibernate.dialect>org.hibernate.dialect.MySQLDialect</gb.hibernate.dialect>
-				<gb.hibernate.show_sql>false</gb.hibernate.show_sql>
-				<gb.hibernate.hbm2ddl.auto>validate</gb.hibernate.hbm2ddl.auto>
-			</properties>
-		</profile>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-				<property>
-					<name>environment.type</name>
-					<value>dev</value>
-				</property>
-			</activation>
-			<properties>
-				<gb.log4j.path>logs</gb.log4j.path>
-				<gb.log4j.level>DEBUG</gb.log4j.level>
-				<gb.datasource.url>jdbc:mysql://localhost:3306/demo</gb.datasource.url>
-				<gb.datasource.userName>root</gb.datasource.userName>
-				<gb.datasource.password>ENC(wg0Q9wvH9lr6miEyZ735lw==)</gb.datasource.password>
-				<gb.datasource.driverClassName>org.gjt.mm.mysql.Driver</gb.datasource.driverClassName>
-				<gb.datasource.initialSize>5</gb.datasource.initialSize>
-				<gb.datasource.maxActive>60</gb.datasource.maxActive>
-				<gb.datasource.maxIdle>5</gb.datasource.maxIdle>
-				<gb.datasource.removeAbandoned>true</gb.datasource.removeAbandoned>
-				<gb.datasource.removeAbandonedTimeout>60</gb.datasource.removeAbandonedTimeout>
-				<gb.datasource.logAbandoned>true</gb.datasource.logAbandoned>
-				<gb.datasource.maxWait>60</gb.datasource.maxWait>
-				<gb.datasource.minPoolSize>5</gb.datasource.minPoolSize>
-				<gb.datasource.maxPoolSize>20</gb.datasource.maxPoolSize>
-				<gb.datasource.acquireIncrement>5</gb.datasource.acquireIncrement>
-				<gb.datasource.acquireRetryAttempts>1</gb.datasource.acquireRetryAttempts>
-				<gb.datasource.idleConnectionTestPeriod>600</gb.datasource.idleConnectionTestPeriod>
-				<gb.datasource.checkoutTimeout>300000</gb.datasource.checkoutTimeout>
-				<gb.datasource.maxConnectionAge>1800</gb.datasource.maxConnectionAge>
-				<gb.datasource.maxIdleTime>1000</gb.datasource.maxIdleTime>
-				<gb.datasource.maxStatements>0</gb.datasource.maxStatements>
-				<gb.hibernate.dialect>org.hibernate.dialect.MySQLDialect</gb.hibernate.dialect>
-				<gb.hibernate.show_sql>true</gb.hibernate.show_sql>
-				<gb.hibernate.hbm2ddl.auto>update</gb.hibernate.hbm2ddl.auto>
-			</properties>
-		</profile>
-	</profiles>
-	<dependencies>
-		<!-- J2EE容器所需包 -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>2.1</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-			<version>1.6.12</version>
-		</dependency>
-		<!-- mysql数据库驱动 -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.18</version>
-		</dependency>
-		<!-- c3p0数据库连接池 -->
-		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>0.9.1.2</version>
-		</dependency>
-		<!-- ======================================================================= -->
+    <profiles>
+        <profile>
+            <id>prod</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>environment.type</name>
+                    <value>prod</value>
+                </property>
+            </activation>
+            <properties>
+                <gb.log4j.path>logs</gb.log4j.path>
+                <gb.log4j.level>INFO</gb.log4j.level>
+                <gb.datasource.url>jdbc:mysql://localhost:3306/production</gb.datasource.url>
+                <gb.datasource.userName>analytics</gb.datasource.userName>
+                <gb.datasource.password>ENC(4y6q7AVTJ9ZLuTDL7pLOQcD81tAHdcOP)</gb.datasource.password>
+                <gb.datasource.driverClassName>org.gjt.mm.mysql.Driver</gb.datasource.driverClassName>
+                <gb.datasource.initialSize>10</gb.datasource.initialSize>
+                <gb.datasource.maxActive>60</gb.datasource.maxActive>
+                <gb.datasource.maxIdle>10</gb.datasource.maxIdle>
+                <gb.datasource.removeAbandoned>true</gb.datasource.removeAbandoned>
+                <gb.datasource.removeAbandonedTimeout>60</gb.datasource.removeAbandonedTimeout>
+                <gb.datasource.logAbandoned>true</gb.datasource.logAbandoned>
+                <gb.datasource.maxWait>60</gb.datasource.maxWait>
+                <gb.datasource.minPoolSize>5</gb.datasource.minPoolSize>
+                <gb.datasource.maxPoolSize>20</gb.datasource.maxPoolSize>
+                <gb.datasource.acquireIncrement>5</gb.datasource.acquireIncrement>
+                <gb.datasource.acquireRetryAttempts>1</gb.datasource.acquireRetryAttempts>
+                <gb.datasource.idleConnectionTestPeriod>600</gb.datasource.idleConnectionTestPeriod>
+                <gb.datasource.checkoutTimeout>300000</gb.datasource.checkoutTimeout>
+                <gb.datasource.maxConnectionAge>1800</gb.datasource.maxConnectionAge>
+                <gb.datasource.maxIdleTime>1000</gb.datasource.maxIdleTime>
+                <gb.datasource.maxStatements>0</gb.datasource.maxStatements>
+                <gb.hibernate.dialect>org.hibernate.dialect.MySQLDialect</gb.hibernate.dialect>
+                <gb.hibernate.show_sql>false</gb.hibernate.show_sql>
+                <gb.hibernate.hbm2ddl.auto>validate</gb.hibernate.hbm2ddl.auto>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>environment.type</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+            <properties>
+                <gb.log4j.path>logs</gb.log4j.path>
+                <gb.log4j.level>DEBUG</gb.log4j.level>
+                <gb.datasource.url>jdbc:derby:examplederby;create=true</gb.datasource.url>
+                <gb.datasource.userName>root</gb.datasource.userName>
+                <gb.datasource.password>ENC(wg0Q9wvH9lr6miEyZ735lw==)</gb.datasource.password>
+                <gb.datasource.driverClassName>org.apache.derby.jdbc.EmbeddedDriver</gb.datasource.driverClassName>
+                <gb.datasource.initialSize>5</gb.datasource.initialSize>
+                <gb.datasource.maxActive>60</gb.datasource.maxActive>
+                <gb.datasource.maxIdle>5</gb.datasource.maxIdle>
+                <gb.datasource.removeAbandoned>true</gb.datasource.removeAbandoned>
+                <gb.datasource.removeAbandonedTimeout>60</gb.datasource.removeAbandonedTimeout>
+                <gb.datasource.logAbandoned>true</gb.datasource.logAbandoned>
+                <gb.datasource.maxWait>60</gb.datasource.maxWait>
+                <gb.datasource.minPoolSize>5</gb.datasource.minPoolSize>
+                <gb.datasource.maxPoolSize>20</gb.datasource.maxPoolSize>
+                <gb.datasource.acquireIncrement>5</gb.datasource.acquireIncrement>
+                <gb.datasource.acquireRetryAttempts>1</gb.datasource.acquireRetryAttempts>
+                <gb.datasource.idleConnectionTestPeriod>600</gb.datasource.idleConnectionTestPeriod>
+                <gb.datasource.checkoutTimeout>300000</gb.datasource.checkoutTimeout>
+                <gb.datasource.maxConnectionAge>1800</gb.datasource.maxConnectionAge>
+                <gb.datasource.maxIdleTime>1000</gb.datasource.maxIdleTime>
+                <gb.datasource.maxStatements>0</gb.datasource.maxStatements>
+                <gb.hibernate.dialect>org.hibernate.dialect.DerbyDialect</gb.hibernate.dialect>
+                <gb.hibernate.show_sql>true</gb.hibernate.show_sql>
+                <gb.hibernate.hbm2ddl.auto>update</gb.hibernate.hbm2ddl.auto>
+            </properties>
+        </profile>
+    </profiles>
+    <dependencies>
 
-		<!-- spring必须包 -->
-		<!-- spring核心包 -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>3.0.6.RELEASE</version>
-			<!-- spring-asm-3.0.6.RELEASE.jar -->
-			<!-- commons-logging-1.1.1.jar -->
-		</dependency>
-		<!-- 利用IOC管理Bean的包 -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>3.0.6.RELEASE</version>
-		</dependency>
-		<!-- 对bean再次封装后的包，方便性强。 -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>3.0.6.RELEASE</version>
-			<!-- spring-expression-3.0.6.RELEASE.jar -->
-			<!-- spring-aop-3.0.6.RELEASE.jar -->
-			<!-- aopalliance-1.0.jar -->
-		</dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.6.12</version>
+        </dependency>
 
-		<!-- spring扩展包 -->
-		<!-- 对struts支持包 -->
-		<!-- 支持hibernate,对对象映射框架的支持 -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>3.0.6.RELEASE</version>
-			<!-- spring-tx-3.0.6.RELEASE.jar -->
-			<!-- spring-jdbc-3.0.6.RELEASE.jar -->
-		</dependency>
-		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-			<version>1.4</version>
-		</dependency>
-		<!-- ======================================================================= -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.18</version>
+        </dependency>
 
-		<!-- struts2.2.3必须包 -->
-		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-core</artifactId>
-			<version>2.2.3.1</version>
-			<!-- ognl-3.0.1.jar -->
-			<!-- asm-commons-3.1.jar -->
-			<!-- asm-tree-3.1.jar -->
-			<!-- commons-lang-2.5.jar -->
-			<!-- commons-fileupload-1.2.2.jar -->
-			<!-- commons-io-2.0.1.jar -->
-			<!-- xwork-core-2.2.3.1.jar -->
-			<!-- javassist-3.11.0.GA.jar -->
-			<!-- freemarker-2.3.16.jar -->
-		</dependency>
-		<!-- 日志功能 -->
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1</version>
-			<!-- avalon-framework-4.1.3.jar -->
-			<!-- servlet-api-2.3.jar -->
-			<!-- logkit-1.0.1.jar -->
-			<!-- log4j-1.2.12.jar -->
-		</dependency>
-		<!-- ASM字节码库 -->
-		<dependency>
-			<groupId>asm</groupId>
-			<artifactId>asm</artifactId>
-			<version>3.1</version>
-		</dependency>
-		<!-- struts2对于spring的支持 -->
-		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-spring-plugin</artifactId>
-			<version>2.2.3.1</version>
-		</dependency>
-		<!-- struts2中对于注解的支持 -->
-		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-convention-plugin</artifactId>
-			<version>2.2.3.1</version>
-		</dependency>
+        <dependency>
+            <groupId>c3p0</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>0.9.1.2</version>
+        </dependency>
+        <!-- ======================================================================= -->
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>3.0.6.RELEASE</version>
+            <!-- spring-asm-3.0.6.RELEASE.jar -->
+            <!-- commons-logging-1.1.1.jar -->
+        </dependency>
 
-		<!-- hibernate3.6.8必须包 -->
-		<!-- hibernate核心包 -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>3.6.8.Final</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-collections</groupId>
-					<artifactId>commons-collections</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>dom4j</groupId>
-					<artifactId>dom4j</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
-			<!-- hibernate-commons-annotations-3.2.0.Final.jar1 -->
-			<!-- hibernate-jpa-2.0-api-1.0.1.Final.jar -->
-			<!-- jta-1.1.jar -->
-		</dependency>
-		<!-- hibernate使用的一个日志系统 -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.6.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-nop</artifactId>
-			<version>1.6.4</version>
-		</dependency>
-		<!-- 集合类 -->
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>3.2.1</version>
-		</dependency>
-		<!-- XML配置和映射管理器 -->
-		<dependency>
-			<groupId>dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			<version>1.6.1</version>
-		</dependency>
-		<!-- ASM字节码库 -->
-		<dependency>
-			<groupId>asm</groupId>
-			<artifactId>asm-attrs</artifactId>
-			<version>2.2.3</version>
-		</dependency>
-		<!-- cglib字节码解释器 -->
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib-nodep</artifactId>
-			<version>2.2.2</version>
-		</dependency>
-		<dependency>
-			<groupId>gambler.commons</groupId>
-			<artifactId>commons-util</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>gambler.commons</groupId>
-			<artifactId>commons-persistence</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>3.0.6.RELEASE</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-json-plugin</artifactId>
-			<version>2.3.15</version>
-		</dependency>
-		<dependency>
-			<groupId>opensymphony</groupId>
-			<artifactId>sitemesh</artifactId>
-			<version>2.4.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.directwebremoting</groupId>
-			<artifactId>dwr</artifactId>
-			<version>3.0.M1</version>
-		</dependency>
-		<dependency>
-			<groupId>gambler.commons</groupId>
-			<artifactId>commons-auth</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>3.0.6.RELEASE</version>
+            <!-- spring-expression-3.0.6.RELEASE.jar -->
+            <!-- spring-aop-3.0.6.RELEASE.jar -->
+            <!-- aopalliance-1.0.jar -->
+        </dependency>
 
-	<build>
-		<finalName>${project.artifactId}</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-				<version>6.1.5</version>
-				<configuration>
-					<scanIntervalSeconds>10</scanIntervalSeconds>
-				</configuration>
-			</plugin>
-		</plugins>
-		<resources>
-			<resource>
-				<directory>${project.basedir}/src/main/resources</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>log4j.xml</include>
-					<include>datasource.properties</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>${project.basedir}/src/main/resources</directory>
-				<filtering>false</filtering>
-				<excludes>
-					<exclude>log4j.properties</exclude>
-					<exclude>datasource.properties</exclude>
-				</excludes>
-			</resource>
-		</resources>
-	</build>
-	<description>Related Technologies: Struts, Hibernate, Spring, Sitemesh, DWR etc.,</description>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>3.0.6.RELEASE</version>
+            <!-- spring-tx-3.0.6.RELEASE.jar -->
+            <!-- spring-jdbc-3.0.6.RELEASE.jar -->
+        </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <!-- ======================================================================= -->
+
+        <dependency>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts2-core</artifactId>
+            <version>2.2.3.1</version>
+            <!-- ognl-3.0.1.jar -->
+            <!-- asm-commons-3.1.jar -->
+            <!-- asm-tree-3.1.jar -->
+            <!-- commons-lang-2.5.jar -->
+            <!-- commons-fileupload-1.2.2.jar -->
+            <!-- commons-io-2.0.1.jar -->
+            <!-- xwork-core-2.2.3.1.jar -->
+            <!-- javassist-3.11.0.GA.jar -->
+            <!-- freemarker-2.3.16.jar -->
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1</version>
+            <!-- avalon-framework-4.1.3.jar -->
+            <!-- servlet-api-2.3.jar -->
+            <!-- logkit-1.0.1.jar -->
+            <!-- log4j-1.2.12.jar -->
+        </dependency>
+
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts2-spring-plugin</artifactId>
+            <version>2.2.3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts2-convention-plugin</artifactId>
+            <version>2.2.3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>3.6.8.Final</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-collections</groupId>
+                    <artifactId>commons-collections</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>dom4j</groupId>
+                    <artifactId>dom4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+            <!-- hibernate-commons-annotations-3.2.0.Final.jar1 -->
+            <!-- hibernate-jpa-2.0-api-1.0.1.Final.jar -->
+            <!-- jta-1.1.jar -->
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.6.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm-attrs</artifactId>
+            <version>2.2.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>gambler.commons</groupId>
+            <artifactId>commons-util</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>gambler.commons</groupId>
+            <artifactId>commons-persistence</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts2-json-plugin</artifactId>
+            <version>2.3.15</version>
+        </dependency>
+        <dependency>
+            <groupId>opensymphony</groupId>
+            <artifactId>sitemesh</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.directwebremoting</groupId>
+            <artifactId>dwr</artifactId>
+            <version>3.0.M1</version>
+        </dependency>
+        <dependency>
+            <groupId>gambler.commons</groupId>
+            <artifactId>commons-auth</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.5</version>
+                <configuration>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>log4j.xml</include>
+                    <include>datasource.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>log4j.properties</exclude>
+                    <exclude>datasource.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
+    </build>
+    <description>Related Technologies: Struts, Hibernate, Spring, Sitemesh, DWR etc.,</description>
 </project>

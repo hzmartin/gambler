@@ -35,17 +35,17 @@
         <property name="gender" type="string" update="true" insert="true" length="10" not-null="false" >
             <column name="gender" length="10" not-null="false" />
         </property>
-        <property name="dateJoined" type="timestamp" update="true"
+        <property name="dateJoined" type="long" update="true"
         insert="true" column="date_joined" not-null="false" />
-        <property name="active" type="boolean" update="true"
+        <property name="active" type="int" update="true"
         insert="true" not-null="false">
-            <column name="is_active" not-null="false" default="false" />
+            <column name="is_active" not-null="false" default="0" />
         </property>
-        <property name="superUser" type="boolean" update="true"
+        <property name="superUser" type="int" update="true"
         insert="true" not-null="false">
-            <column name="is_super" not-null="false" default="false" />
+            <column name="is_super" not-null="false" default="0" />
         </property>
-        <property name="lastLogin" type="timestamp" update="true"
+        <property name="lastLogin" type="long" update="true"
         insert="true" column="last_login" not-null="false" />
     </class>
     <class name="gambler.commons.auth.Permission" table="auth_permission">

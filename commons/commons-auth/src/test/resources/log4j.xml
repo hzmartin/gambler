@@ -10,44 +10,23 @@
 		</layout>
 	</appender>
 
-	<appender name="LIFE_CYCLE" class="org.apache.log4j.FileAppender">
-		<param name="File" value="logs/lifecyle.log" />
-		<param name="Threshold" value="INFO" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="%d{ISO8601} [%-t] %-5p %c{3} - %m%n" />
-		</layout>
-	</appender>
-
-	<appender name="ROLLING"
-		class="org.apache.log4j.RollingFileAppender">
-		<param name="Threshold" value="INFO" />
-		<param name="File" value="logs/rolling.log" />
-		<param name="MaxFileSize" value="2048KB" />
-		<param name="MaxBackupIndex" value="10" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				value="%d{ISO8601} [%-t] %-5p %c{3} - %m%n" />
-		</layout>
-	</appender>
-
 	<appender name="DAILY_ROLLING"
 		class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="Threshold" value="INFO" />
-		<param name="File" value="logs/dailyrolling.log" />
+		<param name="File" value="${project.build.testOutputDirectory}/logs/${project.artifactId}.log" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
 				value="%d{ISO8601} [%-t] %-5p %c{3} - %m%n" />
 		</layout>
 	</appender>
-
-	<logger name="gambler">
-		<level value="DEBUG" />
+        
+        <logger name="org.springframework">
+		<level value="WARN" />
 	</logger>
 
 	<root>
 		<level value="DEBUG" />
 		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="DAILY_ROLLING" />
 	</root>
 </log4j:configuration>

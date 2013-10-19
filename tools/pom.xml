@@ -10,5 +10,6 @@
   <name>Tools</name>
   <groupId>gambler.tools</groupId>
   <modules>
+        <module>cli</module>
   </modules>
 </project>

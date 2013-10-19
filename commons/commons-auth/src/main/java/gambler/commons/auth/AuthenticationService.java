@@ -75,10 +75,10 @@ public class AuthenticationService {
 		try {
 			User user = (User) persistence.unique(
 					"from User where userId = ? ", userId);
-			if (!user.isActive()) {
+			if (user.isActive() == 0) {
 				return false;
 			}
-			if (user.isSuperUser()) {
+			if (user.isSuperUser() != 0) {
 				return true;
 			}
 			List perms = persistence.find(
