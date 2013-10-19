@@ -74,6 +74,10 @@ public final class XMLMap extends AbstractAdvancedMap {
 	 */
 	private static final long serialVersionUID = 7486290035316643518L;
 
+        public XMLMap(){
+            
+        }
+        
 	public XMLMap(String xmlFilePath) {
 		this(new String[] { xmlFilePath });
 	}
