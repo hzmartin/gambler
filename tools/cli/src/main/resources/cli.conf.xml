@@ -8,6 +8,6 @@
 	</prop>
         <prop namespace="cmd">
             <!-- make sure the unique name for each command, and must start with 'class_' -->
-            <key name="password">xgambler.tools.cli.cmd.PasswordCommand</key>
+            <key name="password">gambler.tools.cli.cmd.PasswordCommand</key>
         </prop>
 </map>
