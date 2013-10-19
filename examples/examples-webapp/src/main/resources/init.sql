@@ -1,1 +1,0 @@
-create table ignore_this_table( id int );

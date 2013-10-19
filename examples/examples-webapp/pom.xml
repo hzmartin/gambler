@@ -62,9 +62,9 @@
             <properties>
                 <gb.log4j.path>logs</gb.log4j.path>
                 <gb.log4j.level>DEBUG</gb.log4j.level>
-                <gb.datasource.url>jdbc:derby:examplederby;create=true</gb.datasource.url>
-                <gb.datasource.userName>root</gb.datasource.userName>
-                <gb.datasource.password>ENC(wg0Q9wvH9lr6miEyZ735lw==)</gb.datasource.password>
+                <gb.datasource.url>jdbc:derby:${project.parent.basedir}/example-derby</gb.datasource.url>
+                <gb.datasource.userName></gb.datasource.userName>
+                <gb.datasource.password></gb.datasource.password>
                 <gb.datasource.driverClassName>org.apache.derby.jdbc.EmbeddedDriver</gb.datasource.driverClassName>
                 <gb.datasource.initialSize>5</gb.datasource.initialSize>
                 <gb.datasource.maxActive>60</gb.datasource.maxActive>
@@ -89,7 +89,11 @@
         </profile>
     </profiles>
     <dependencies>
-
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>10.10.1.1</version>
+        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>

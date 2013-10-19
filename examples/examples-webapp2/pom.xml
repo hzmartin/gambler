@@ -22,9 +22,9 @@
             <properties>
                 <gb.log4j.path>logs</gb.log4j.path>
                 <gb.log4j.level>DEBUG</gb.log4j.level>
-                <gb.datasource.url>jdbc:derby:examplederby;create=true</gb.datasource.url>
-                <gb.datasource.userName>root</gb.datasource.userName>
-                <gb.datasource.password>ENC(wg0Q9wvH9lr6miEyZ735lw==)</gb.datasource.password>
+                <gb.datasource.url>jdbc:derby:${project.parent.basedir}/example-derby</gb.datasource.url>
+                <gb.datasource.userName></gb.datasource.userName>
+                <gb.datasource.password></gb.datasource.password>
                 <gb.datasource.driverClassName>org.apache.derby.jdbc.EmbeddedDriver</gb.datasource.driverClassName>
                 <gb.datasource.initialSize>5</gb.datasource.initialSize>
                 <gb.datasource.maxActive>60</gb.datasource.maxActive>
@@ -200,11 +200,6 @@
             <version>1.2.0</version>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.18</version>
-        </dependency>
-        <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
             <version>2.3.16</version>
@@ -273,6 +268,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
             <version>1.6.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>10.10.1.1</version>
         </dependency>
     </dependencies>
     <build>
