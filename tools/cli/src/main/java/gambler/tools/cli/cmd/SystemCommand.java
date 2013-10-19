@@ -1,13 +1,17 @@
 package gambler.tools.cli.cmd;
 
+import gambler.tools.cli.CommandNameConflictException;
 import gambler.tools.cli.LoadExtCommandException;
 import gambler.tools.service.ServiceException;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Martin
  */
 public class SystemCommand extends AbstractCommand {
+
+    private Logger logger = Logger.getLogger(SystemCommand.class);
 
     public SystemCommand() {
         super("system");
@@ -21,6 +25,9 @@ public class SystemCommand extends AbstractCommand {
                 getCLISystem().loadExtCommand(cmdClass);
             } catch (LoadExtCommandException ex) {
                 throw new ServiceException(ex);
+            } catch (CommandNameConflictException ex) {
+                System.out.println("load external command " + cmdClass + " error: command name conflicts!");
+                logger.warn(ex, ex);
             }
         } else {
             throw new CommandUsageException("command usage error!");

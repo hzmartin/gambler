@@ -19,9 +19,9 @@ public class CLI {
 
     /**
      * @param args
-     * @throws CLISysInitException
+     * @throws CommandNameConflictException
      */
-    public static void main(String[] args) throws CLISysInitException {
+    public static void main(String[] args) throws CommandNameConflictException {
         // welcome and display system menu
         System.out.println();
         System.out
@@ -64,7 +64,7 @@ public class CLI {
 
                 cmd.execute();
             } catch (CommandExecException ex) {
-                System.out.println("execute comand(" + cmd + ") error!");
+                System.out.println("execute comand [" + cmd + "] error!");
             } catch (CommandUsageException ex) {
                 cmd.printCommandUsage();
             } catch (Exception e) {

@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.apache.log4j.Logger;
 
@@ -51,35 +52,37 @@ public final class CLISystem implements IConfigrableConstants {
         super();
     }
 
-    final void init() throws CLISysInitException {
+    final void init() throws CommandNameConflictException {
 
         loadBuiltinCommands();
 
         loadExtCommands();
 
-        initCommandMap();
-
         loadHistoryCommands();
     }
 
-    private void initCommandMap() throws CLISysInitException {
+    private void initCommandMaps() throws CommandNameConflictException {
         for (ICommand cmd : commandList) {
-            if (commandMap.containsKey(cmd.getName())) {
-                throw new CLISysInitException("command name " + cmd.getName()
-                        + " conflicts!");
-            }
-            commandMap.put(cmd.getName(), cmd.getClass());
-            for (String alias : cmd.getAlias()) {
-                if (commandMap.containsKey(alias)) {
-                    throw new CLISysInitException("command(" + cmd.getName()
-                            + ") alias  " + alias + " conflicts!");
-                }
-                commandMap.put(alias, cmd.getClass());
-            }
+            initCommandMap(cmd);
         }
     }
 
-    private void loadBuiltinCommands() {
+    private void initCommandMap(ICommand cmd) throws CommandNameConflictException {
+        if (commandMap.containsKey(cmd.getName())) {
+            throw new CommandNameConflictException("command name " + cmd.getName()
+                    + " conflicts!");
+        }
+        commandMap.put(cmd.getName(), cmd.getClass());
+        for (String alias : cmd.getAlias()) {
+            if (commandMap.containsKey(alias)) {
+                throw new CommandNameConflictException("command(" + cmd.getName()
+                        + ") alias  " + alias + " conflicts!");
+            }
+            commandMap.put(alias, cmd.getClass());
+        }
+    }
+
+    private void loadBuiltinCommands() throws CommandNameConflictException {
         // system command list
         commandList.add(new ExitSysCommand());
         commandList.add(new HelpCommand());
@@ -88,6 +91,7 @@ public final class CLISystem implements IConfigrableConstants {
         commandList.add(new SysConfigCommand());
         commandList.add(new HistoryCommand());
         commandList.add(new SystemCommand());
+        initCommandMaps();
     }
 
     private void loadExtCommands() {
@@ -98,18 +102,26 @@ public final class CLISystem implements IConfigrableConstants {
                     String cmdClass = SYSCONFIG.get(key);
                     loadExtCommand(cmdClass);
                 } catch (LoadExtCommandException ex) {
-                    logger.warn("load external command " + key.getNsKey() + " error!", ex);
+                    logger.warn(ex, ex);
                     System.out.println("WARN: load external command " + key.getNsKey() + " error!");
+                } catch (CommandNameConflictException ex) {
+                    logger.warn(ex, ex);
+                    System.out.println("load external command " + key.getNsKey() + " error: command name conflicts!");
                 }
             }
         }
     }
 
-    public final void loadExtCommand(String cmdClass) throws LoadExtCommandException {
+    public final void loadExtCommand(String cmdClass) throws LoadExtCommandException, CommandNameConflictException {
         try {
-            Object cmdInst = Class.forName(cmdClass).newInstance();
-            commandList.add((ICommand) cmdInst);
-        } catch (Exception ex) {
+            ICommand cmdInst = (ICommand) Class.forName(cmdClass).newInstance();
+            commandList.add(cmdInst);
+            initCommandMap(cmdInst);
+        }  catch (ClassNotFoundException ex) {
+            throw new LoadExtCommandException("load external command error!", ex);
+        } catch (IllegalAccessException ex) {
+            throw new LoadExtCommandException("load external command error!", ex);
+        } catch (InstantiationException ex) {
             throw new LoadExtCommandException("load external command error!", ex);
         }
     }
