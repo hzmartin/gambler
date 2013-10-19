@@ -11,6 +11,7 @@ import gambler.commons.advmap.AdvancedKey;
 import gambler.commons.advmap.XMLMap;
 import gambler.commons.util.io.FileProcessor;
 import gambler.commons.util.io.ILineProcessor;
+import gambler.tools.cli.cmd.SystemCommand;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -64,13 +65,13 @@ public final class CLISystem implements IConfigrableConstants {
     private void initCommandMap() throws CLISysInitException {
         for (ICommand cmd : commandList) {
             if (commandMap.containsKey(cmd.getName())) {
-                throw new CLISysInitException("Command name " + cmd.getName()
+                throw new CLISysInitException("command name " + cmd.getName()
                         + " conflicts!");
             }
             commandMap.put(cmd.getName(), cmd.getClass());
             for (String alias : cmd.getAlias()) {
                 if (commandMap.containsKey(alias)) {
-                    throw new CLISysInitException("Command(" + cmd.getName()
+                    throw new CLISysInitException("command(" + cmd.getName()
                             + ") alias  " + alias + " conflicts!");
                 }
                 commandMap.put(alias, cmd.getClass());
@@ -86,6 +87,7 @@ public final class CLISystem implements IConfigrableConstants {
         commandList.add(new PrevCmdCommand());
         commandList.add(new SysConfigCommand());
         commandList.add(new HistoryCommand());
+        commandList.add(new SystemCommand());
     }
 
     private void loadExtCommands() {
@@ -94,13 +96,21 @@ public final class CLISystem implements IConfigrableConstants {
             if (EXT_CMD_NAMESPACE.equals(key.getNamespace())) {
                 try {
                     String cmdClass = SYSCONFIG.get(key);
-                    Object cmdInst = Class.forName(cmdClass).newInstance();
-                    commandList.add((ICommand) cmdInst);
-                } catch (Exception ex) {
-                    logger.warn("Load external command error!", ex);
-                    System.out.println("WARN: Load external command " + key.getNsKey() + " error!");
+                    loadExtCommand(cmdClass);
+                } catch (LoadExtCommandException ex) {
+                    logger.warn("load external command " + key.getNsKey() + " error!", ex);
+                    System.out.println("WARN: load external command " + key.getNsKey() + " error!");
                 }
             }
+        }
+    }
+
+    public final void loadExtCommand(String cmdClass) throws LoadExtCommandException {
+        try {
+            Object cmdInst = Class.forName(cmdClass).newInstance();
+            commandList.add((ICommand) cmdInst);
+        } catch (Exception ex) {
+            throw new LoadExtCommandException("load external command error!", ex);
         }
     }
 
@@ -134,7 +144,7 @@ public final class CLISystem implements IConfigrableConstants {
             });
             fileProcessor.processLines();
         } catch (Exception e) {
-            logger.warn("Load history commands failed！");
+            logger.warn("load history commands failed！");
         }
 
     }
@@ -163,7 +173,7 @@ public final class CLISystem implements IConfigrableConstants {
         try {
             return (ICommand) commandMap.get(name.toLowerCase()).newInstance();
         } catch (Exception e) {
-            logger.warn("Init command instance error", e);
+            logger.warn("create command instance error", e);
             return null;
         }
     }

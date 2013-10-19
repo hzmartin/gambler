@@ -32,7 +32,7 @@ public class TimeTagService implements IService {
 	 * @param pattern
 	 *            - can be null, default pattern: 'yyyy-MM-dd'
 	 * @return
-	 * @throws AppSupportServiceException
+	 * @throws ServiceException
 	 */
 	public int getTimeTag(String date, String pattern) throws ServiceException {
 		try {

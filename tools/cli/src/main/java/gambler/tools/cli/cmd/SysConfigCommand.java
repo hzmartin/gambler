@@ -32,7 +32,7 @@ public class SysConfigCommand extends AbstractCommand implements ICommand {
 						+ entry.getValue());
 			}
 		} else {
-			throw new CommandUsageException("Command usage error!");
+			throw new CommandUsageException("command usage error!");
 		}
 
 	}

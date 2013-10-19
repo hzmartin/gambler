@@ -19,12 +19,12 @@ public class PasswordService implements IService {
 		String ePassword = sysConfig.getProperty("password.password");
 		if (StringUtils.isEmpty(ePassword)) {
 			System.out
-					.println("password missing, default encrypt password will be used!");
+					.println("WARN: password missing, default encrypt password will be used!");
 		}
 		String algorithm = sysConfig.getProperty("password.algorithm");
 		if (StringUtils.isEmpty(algorithm)) {
 			System.out
-					.println("algorightm missing, PBEWithMD5AndDES will be used");
+					.println("WARN: algorightm missing, PBEWithMD5AndDES will be used");
 			algorithm = "PBEWithMD5AndDES";
 		}
 		StandardPBEStringEncryptor encryptor = new org.jasypt.encryption.pbe.StandardPBEStringEncryptor();

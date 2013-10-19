@@ -39,18 +39,18 @@ public abstract class AbstractCommand implements ICommand {
 		} catch (CommandUsageException e) {
 			printCommandUsage();
 		} catch (ServiceException e) {
-			throw new CommandExecException("Execute command error!", e);
+			throw new CommandExecException("execute command error!", e);
 		} catch (Exception e) {
-			throw new CommandExecException("Unexpected error!", e);
+			throw new CommandExecException("unexpected error!", e);
 		}
 
 	}
 
         @Override
 	public void printCommandUsage() {
-		System.out.println("Command usage error!");
+		System.out.println("command usage error!");
 		System.out.println();
-		System.out.println("Usage of command " + getName() + ":");
+		System.out.println("usage of command " + getName() + ":");
 		System.out.println("=======");
 		new HelpService().showCommand(getName());
 	}

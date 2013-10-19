@@ -64,7 +64,7 @@ public class CLI {
 
                 cmd.execute();
             } catch (CommandExecException ex) {
-                System.out.println("Error execute comand(" + cmd + ")!");
+                System.out.println("execute comand(" + cmd + ") error!");
             } catch (CommandUsageException ex) {
                 cmd.printCommandUsage();
             } catch (Exception e) {
@@ -88,7 +88,7 @@ public class CLI {
 
             // 引号数量不匹配
             if (tmpArray.length % 2 == 0 && !line.endsWith("'")) {
-                throw new CommandUsageException("Single quotation marks is not matched!");
+                throw new CommandUsageException("single quotation marks is not matched!");
             }
 
             List<String> columnList = new ArrayList<String>();

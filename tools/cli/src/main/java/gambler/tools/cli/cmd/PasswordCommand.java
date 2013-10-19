@@ -25,14 +25,14 @@ public class PasswordCommand extends AbstractCommand implements ICommand {
 			System.out
 					.println(String.format("decrypted password: %s", decrypt));
 		} else {
-			throw new CommandUsageException("Command usage error!");
+			throw new CommandUsageException("command usage error!");
 		}
 
 	}
 
 	@Override
 	public String[] getDescription() {
-		return new String[] { "Encrypt password", "Decrypt password" };
+		return new String[] { "encrypt password", "decrypt password" };
 	}
 
 	@Override

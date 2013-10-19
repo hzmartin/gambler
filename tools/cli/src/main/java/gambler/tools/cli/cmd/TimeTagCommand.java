@@ -39,7 +39,7 @@ public class TimeTagCommand extends AbstractCommand {
                 } else if ("time".equalsIgnoreCase(params[1])) {
                     System.out.println(timeTagService.getNowTimeTag());
                 } else {
-                    throw new CommandUsageException("Command usage error!");
+                    throw new CommandUsageException("command usage error!");
                 }
             } else if (isSubCommand("date")) {
                 int seconds = Integer.parseInt(params[1]);
@@ -47,10 +47,10 @@ public class TimeTagCommand extends AbstractCommand {
             } else if (isSubCommand("time")) {
                 System.out.println(timeTagService.getTimeTag(params[1]));
             } else {
-                throw new CommandUsageException("Command usage error!");
+                throw new CommandUsageException("command usage error!");
             }
         } else {
-            throw new CommandUsageException("Command usage error!");
+            throw new CommandUsageException("command usage error!");
         }
 
     }
