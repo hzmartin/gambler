@@ -7,7 +7,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>commons-util</artifactId>
-	<name>Utilities</name>
+	<name>Commons Util</name>
 
 	<dependencies>
 		<dependency>
