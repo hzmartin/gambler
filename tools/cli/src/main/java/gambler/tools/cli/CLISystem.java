@@ -45,14 +45,13 @@ public final class CLISystem implements IConfigrableConstants {
 
     private ICommand prevCommand = null;
 
-    public static XMLMap SYSCONFIG = new XMLMap();
+    public static final XMLMap SYSCONFIG = new XMLMap("cli.conf.xml");
 
     public CLISystem() {
         super();
     }
 
     final void init() throws CLISysInitException {
-        loadSysConf();
 
         loadBuiltinCommands();
 
@@ -61,16 +60,6 @@ public final class CLISystem implements IConfigrableConstants {
         initCommandMap();
 
         loadHistoryCommands();
-    }
-
-    private void loadSysConf() {
-        final String confFile =  "cli.conf.xml";
-		try {
-            SYSCONFIG = new XMLMap(confFile);
-        } catch (Exception ex) {
-            logger.warn("failed load conf file " + confFile);
-            System.out.println("WARN: failed load conf file " + confFile);
-        }
     }
 
     private void initCommandMap() throws CLISysInitException {
