@@ -64,9 +64,8 @@ public final class CLISystem implements IConfigrableConstants {
     }
 
     private void loadSysConf() {
-        final String confFile = ClassLoader
-                .getSystemResource("cli.conf.xml").getFile();
-        try {
+        final String confFile =  "cli.conf.xml";
+		try {
             SYSCONFIG = new XMLMap(confFile);
         } catch (Exception ex) {
             logger.warn("failed load conf file " + confFile);
