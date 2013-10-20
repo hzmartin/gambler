@@ -82,7 +82,7 @@ public final class XMLMap extends AbstractAdvancedMap {
 		this(new String[] { xmlFilePath });
 	}
 
-	public XMLMap(String[] xmlFilePaths) {
+	public XMLMap(String... xmlFilePaths) {
 		this.xmlFilePaths = xmlFilePaths;
 		this.load();
 	}

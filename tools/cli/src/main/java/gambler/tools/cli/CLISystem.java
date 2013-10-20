@@ -46,7 +46,7 @@ public final class CLISystem implements IConfigrableConstants {
 
     private ICommand prevCommand = null;
 
-    public static final XMLMap SYSCONFIG = new XMLMap("cli.conf.xml");
+    public static final XMLMap SYSCONFIG = new XMLMap("cli.conf.xml", "cli.conf.ext.xml");
 
     public CLISystem() {
         super();
@@ -185,7 +185,7 @@ public final class CLISystem implements IConfigrableConstants {
         try {
             return (ICommand) commandMap.get(name.toLowerCase()).newInstance();
         } catch (Exception e) {
-            logger.warn("create command instance error", e);
+            logger.warn("create command[ " + name + "] instance error", e);
             return null;
         }
     }

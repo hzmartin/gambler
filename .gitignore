@@ -213,5 +213,6 @@ pip-log.txt
 *.mo
 
 #Mr Developer
-.mr.developer.cfg
-examples/examples-webapp2/logs
+log/
+logs/
+example-derby/
