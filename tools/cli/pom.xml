@@ -58,7 +58,7 @@
                         </manifest>
                     </archive>
                     <excludes>
-                        <exclude>log4j.xml</exclude>  
+                        <exclude>log4j.dtd</exclude>  
                     </excludes>  
                 </configuration>
             </plugin>
