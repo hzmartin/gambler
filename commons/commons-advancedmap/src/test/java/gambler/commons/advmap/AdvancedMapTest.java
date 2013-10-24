@@ -21,7 +21,7 @@ public class AdvancedMapTest extends TestCase {
         ctx = new ClassPathXmlApplicationContext("util-test.xml");
     }
 
-    private AbstractAdvancedMap global = null;
+    private AdvancedMap global = null;
 
     private DBMap db = null;
 
@@ -30,7 +30,7 @@ public class AdvancedMapTest extends TestCase {
     protected void setUp() throws Exception {
         xml = (XMLMap) ctx.getBean("xml-properties");
         db = (DBMap) ctx.getBean("db-properties");
-        global = (AbstractAdvancedMap) ctx.getBean("global-properties");
+        global = (AdvancedMap) ctx.getBean("global-properties");
     }
 
     protected void tearDown() throws Exception {
@@ -75,7 +75,7 @@ public class AdvancedMapTest extends TestCase {
         Thread.sleep(1000 * 5L);
         assertEquals("Welcome to Beijing",
                 xml.getProperty("base.jenny." + Locale.getDefault()));
-        
+
     }
 
 }

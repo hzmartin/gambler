@@ -46,14 +46,15 @@ import org.apache.log4j.Logger;
  * </code>
  * </p>
  * <p>
- *  3. refresh map at interval <br/>
- *      i. config <tt>mapRefreshInterval</tt> in second(s) under default namespace<br/>
- *      ii. invoke <code>AbstractAdvancedMap#enableMapRefreshAtIntervals</code><br/>
+ * 3. refresh map at interval <br/>
+ * i. config <tt>mapRefreshInterval</tt>(default:10s) in second(s) under default
+ * namespace<br/>
+ * ii. invoke <code>AdvancedMap#enableMapRefreshAtIntervals</code><br/>
  * </p>
  *
  * @auther Martin
  */
-public abstract class AbstractAdvancedMap extends HashMap<AdvancedKey, String> {
+public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
 
     /**
      * serialVersionUID
@@ -61,7 +62,7 @@ public abstract class AbstractAdvancedMap extends HashMap<AdvancedKey, String> {
     private static final long serialVersionUID = -5248960418733175757L;
 
     private static final Logger log = Logger
-            .getLogger(AbstractAdvancedMap.class);
+            .getLogger(AdvancedMap.class);
 
     /**
      * refresh map at intervals <br/>
@@ -96,20 +97,24 @@ public abstract class AbstractAdvancedMap extends HashMap<AdvancedKey, String> {
 
     private Set<String> recursiveKeys = new HashSet<String>();
 
+    private String name;
+
     public void enableMapRefreshAtIntervals() {
         String refreshInterval = getProperty(MAP_REFRESH_INTERVAL);
+        int interval = 10;
         if (NumberUtils.isNumber(refreshInterval)) {
-            int interval = Integer.parseInt(refreshInterval);
-            Timer timer = new Timer("Map Refresh", true);
-            timer.schedule(new TimerTask() {
-
-                @Override
-                public void run() {
-                    log.info("map will be refreshed by scheduled task!");
-                    AbstractAdvancedMap.this.load();
-                }
-            }, interval * 1000L, interval * 1000L);
+            interval = Integer.parseInt(refreshInterval);
         }
+        Timer timer = new Timer("Map Refresh", true);
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                log.info("map(" + AdvancedMap.this.getName() + ") will be refreshed by scheduled task!");
+                AdvancedMap.this.load();
+            }
+        }, interval * 1000L, interval * 1000L);
+
     }
 
     public boolean isVarReplaceEnable() {
@@ -238,6 +243,20 @@ public abstract class AbstractAdvancedMap extends HashMap<AdvancedKey, String> {
         log.info("set property: key=" + fullPathKey + ", value=" + value);
         AdvancedKey key = AdvancedKey.buildAdvancedKey(fullPathKey);
         return put(key, value);
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @auther Martin
  */
-public final class ListMap extends AbstractAdvancedMap {
+public final class ListMap extends AdvancedMap {
 
     /**
      * serialVersionUID
@@ -21,12 +21,12 @@ public final class ListMap extends AbstractAdvancedMap {
     /**
      * all base maps
      */
-    private List<AbstractAdvancedMap> baseMaps;
+    private List<AdvancedMap> baseMaps;
 
     public ListMap() {
     }
 
-    public ListMap(List<AbstractAdvancedMap> maps) {
+    public ListMap(List<AdvancedMap> maps) {
         this.baseMaps = maps;
         this.load();
     }
@@ -36,14 +36,14 @@ public final class ListMap extends AbstractAdvancedMap {
      */
     @Override
     public void load() {
-        Iterator<AbstractAdvancedMap> iter = baseMaps.iterator();
+        Iterator<AdvancedMap> iter = baseMaps.iterator();
         while (iter.hasNext()) {
-            AbstractAdvancedMap map = iter.next();
+            AdvancedMap map = iter.next();
             loadMap(map);
         }
     }
 
-    public void loadMap(AbstractAdvancedMap map) {
+    public void loadMap(AdvancedMap map) {
         super.putAll(map);
     }
 

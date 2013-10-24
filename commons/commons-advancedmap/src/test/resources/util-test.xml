@@ -83,6 +83,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 	<bean id="xml-properties"
 		class="gambler.commons.advmap.XMLMap">
 		<constructor-arg index="0" value="xmlmap.xml"></constructor-arg>
+                <property name="name" value="xml config map"></property>
 	</bean>
 	
 	<bean id="db-properties"

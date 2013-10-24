@@ -18,9 +18,9 @@ import org.xml.sax.helpers.DefaultHandler;
  * @auther Martin
  * @see XMLMap
  */
-public class XMLParser extends DefaultHandler {
+public class XMLMapFileParser extends DefaultHandler {
 
-    private Logger log = Logger.getLogger(XMLParser.class);
+    private Logger log = Logger.getLogger(XMLMapFileParser.class);
 
     /**
      * It represents tag <properties>.
@@ -153,7 +153,7 @@ public class XMLParser extends DefaultHandler {
      * @throws SAXException - if parsing xml file failed.
      * @throws IOException - if an IO error occurs.
      */
-    public XMLParser(InputStream in, XMLMap xmlprop) throws SAXException,
+    public XMLMapFileParser(InputStream in, XMLMap xmlprop) throws SAXException,
             IOException {
         this.xmlmap = xmlprop;
         state = IN_NOTHING;

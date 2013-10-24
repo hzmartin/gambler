@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
  *
  * @auther Martin
  */
-public final class DBMap extends AbstractAdvancedMap {
+public final class DBMap extends AdvancedMap {
 
     /**
      * serialVersionUID

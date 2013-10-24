@@ -10,7 +10,8 @@ import org.xml.sax.SAXException;
 
 /**
  * <p>
- * The class represents a transformer between <tt>Properties</tt> and XML data.<br/>
+ * The class represents a transformer between <tt>Properties</tt> and XML
+ * data.<br/>
  * ex:<br/>
  * Sample xml file:<br/>
  * <properties><br/>
@@ -59,93 +60,89 @@ import org.xml.sax.SAXException;
  * xmlprop.get("keyname1")<br/>
  * //get keyname1's value in namespace2<br/>
  * xmlprop.get("namespace2","keyname1")<br/>
- * 
+ *
  * </p>
- * 
+ *
  * @auther Martin
  */
+public final class XMLMap extends AdvancedMap {
 
-public final class XMLMap extends AbstractAdvancedMap {
+    private static final Logger log = Logger.getLogger(XMLMap.class);
 
-	private static final Logger log = Logger.getLogger(XMLMap.class);
+    /**
+     * serial version uid
+     */
+    private static final long serialVersionUID = 7486290035316643518L;
 
-	/**
-	 * serial version uid
-	 */
-	private static final long serialVersionUID = 7486290035316643518L;
+    public XMLMap() {
 
-        public XMLMap(){
-            
+    }
+
+    public XMLMap(String xmlFilePath) {
+        this(new String[]{xmlFilePath});
+    }
+
+    public XMLMap(String... xmlFilePaths) {
+        this.xmlFilePaths = xmlFilePaths;
+        this.load();
+    }
+
+    private String[] xmlFilePaths;
+
+    /**
+     * Load XML file, parse it and store the properties
+     *
+     * @throws SAXException - parse error
+     * @throws IOException - if IO error occurs.
+     */
+    public synchronized void load(InputStream in) throws SAXException,
+            IOException {
+        new XMLMapFileParser(in, this);
+    }
+
+    /**
+     * Load XML file, parse it and store the properties
+     *
+     * @param file - xml file
+     * @throws IOException
+     * @throws SAXException
+     * @see #load(InputStream)
+     */
+    public void load(File file) throws SAXException, IOException {
+        if (file.exists()) {
+            load(new FileInputStream(file));
+        } else {
+            final InputStream input = Thread.currentThread().getContextClassLoader()
+                    .getResourceAsStream(file.getName());
+            if (input == null) {
+                log.warn("cannot find xml file: " + file.getAbsolutePath() + ", and it's also not exist in classpath!");
+            }
+            load(input);
         }
-        
-	public XMLMap(String xmlFilePath) {
-		this(new String[] { xmlFilePath });
-	}
 
-	public XMLMap(String... xmlFilePaths) {
-		this.xmlFilePaths = xmlFilePaths;
-		this.load();
-	}
+    }
 
-	private String[] xmlFilePaths;
+    /**
+     * Load XML file, parse it and store the properties
+     *
+     * @param path - xml file path
+     * @throws IOException
+     * @throws SAXException
+     * @see #load(InputStream)
+     */
+    public void load(String path) throws SAXException, IOException {
+        load(new File(path));
+    }
 
-	/**
-	 * Load XML file, parse it and store the properties
-	 * 
-	 * @throws SAXException
-	 *             - parse error
-	 * @throws IOException
-	 *             - if IO error occurs.
-	 */
-	public synchronized void load(InputStream in) throws SAXException,
-			IOException {
-		new XMLParser(in, this);
-	}
+    @Override
+    public void load() {
+        try {
+            for (int i = 0; i < xmlFilePaths.length; i++) {
+                load(xmlFilePaths[i]);
+            }
+        } catch (Exception e) {
+            log.warn("load xml map failed!", e);
+        }
 
-	/**
-	 * Load XML file, parse it and store the properties
-	 * 
-	 * @param file
-	 *            - xml file
-	 * @throws IOException
-	 * @throws SAXException
-	 * @see #load(InputStream)
-	 */
-	public void load(File file) throws SAXException, IOException {
-		if (file.exists()) {
-			load(new FileInputStream(file));
-		} else {
-			log.info("File " + file.getAbsolutePath()
-					+ " doesn't exist, try to find " + file.getName()
-					+ " in the classpath.");
-			load(Thread.currentThread().getContextClassLoader()
-					.getResourceAsStream(file.getName()));
-		}
-
-	}
-
-	/**
-	 * Load XML file, parse it and store the properties
-	 * 
-	 * @param path
-	 *            - xml file path
-	 * @throws IOException
-	 * @throws SAXException
-	 * @see #load(InputStream)
-	 */
-	public void load(String path) throws SAXException, IOException {
-		load(new File(path));
-	}
-
-	@Override
-	public void load() {
-		try {
-			for (int i = 0; i < xmlFilePaths.length; i++) {
-				load(xmlFilePaths[i]);
-			}
-		} catch (Exception e) {
-			log.warn("Load xml properties failed", e);
-		}
-
-	}
+    }
 }
