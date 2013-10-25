@@ -105,7 +105,7 @@ public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
         if (NumberUtils.isNumber(refreshInterval)) {
             interval = Integer.parseInt(refreshInterval);
         }
-        Timer timer = new Timer("Map Refresh", true);
+        Timer timer = new Timer("Map(" + getName() + ") Refresh", true);
         timer.schedule(new TimerTask() {
 
             @Override
