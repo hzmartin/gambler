@@ -85,7 +85,7 @@
                 <directory>${project.basedir}/src/main/resources</directory>
                 <filtering>false</filtering>
                 <excludes>
-                    <exclude>log4j.properties</exclude>
+                    <exclude>log4j.xml</exclude>
                     <exclude>datasource.properties</exclude>
                 </excludes>
             </resource>
@@ -103,7 +103,7 @@
                 <directory>${project.basedir}/src/test/resources</directory>
                 <filtering>false</filtering>
                 <excludes>
-                    <exclude>log4j.properties</exclude>
+                    <exclude>log4j.xml</exclude>
                     <exclude>datasource.properties</exclude>
                 </excludes>
             </testResource>
