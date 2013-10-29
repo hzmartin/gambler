@@ -37,6 +37,7 @@ public final class CLISystem implements IConfigrableConstants {
 
 	private static final Logger logger = Logger.getLogger(CLISystem.class);
 
+	@SuppressWarnings("rawtypes")
 	private static final Map<String, Class> commandMap = new HashMap<String, Class>();
 
 	private static final List<ICommand> commandList = new ArrayList<ICommand>();
@@ -54,6 +55,8 @@ public final class CLISystem implements IConfigrableConstants {
 
 	final void init() throws CommandNameConflictException {
 
+		SYSCONFIG.enableMapRefreshAtIntervals();
+		
 		loadBuiltinCommands();
 
 		loadExtCommands();

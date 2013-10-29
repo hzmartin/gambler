@@ -60,7 +60,6 @@
                     <excludes>
                         <exclude>log4j.dtd</exclude>
                         <exclude>log4j.xml</exclude>
-                        <exclude>cli.conf.xml</exclude>    
                     </excludes>  
                 </configuration>
             </plugin>
