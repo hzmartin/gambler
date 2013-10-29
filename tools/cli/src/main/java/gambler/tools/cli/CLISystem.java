@@ -64,7 +64,7 @@ public final class CLISystem implements IConfigrableConstants {
 		loadHistoryCommands();
 	}
 
-    public void initConfig() {
+    private void initConfig() {
         SYSCONFIG.setName("Gambler CLI");
 		SYSCONFIG.enableMapRefreshAtIntervals();
     }
