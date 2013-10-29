@@ -14,7 +14,7 @@ import java.util.Date;
  * @author hzwangqh
  * @version 2013-9-16
  */
-public class TimeTagService implements IService {
+public class TimeTagService {
 
 	public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd";
 

@@ -13,7 +13,7 @@ import gambler.tools.cli.cmd.ICommand;
  * @author hzwangqh
  * @version 2013-9-16
  */
-public class HelpService implements IService {
+public class HelpService {
 
 	/**
      * 

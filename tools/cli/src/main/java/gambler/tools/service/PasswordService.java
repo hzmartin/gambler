@@ -7,7 +7,7 @@ import gambler.commons.util.jasypt.GBEnvironmentStringPBEConfig;
 import org.apache.commons.lang.StringUtils;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
-public class PasswordService implements IService {
+public class PasswordService {
 
 	private static final XMLMap sysConfig = CLISystem.SYSCONFIG;
 
