@@ -55,7 +55,7 @@ public final class CLISystem implements IConfigrableConstants {
 
 	final void init() throws CommandNameConflictException {
 
-		SYSCONFIG.enableMapRefreshAtIntervals();
+	    initConfig();
 		
 		loadBuiltinCommands();
 
@@ -63,6 +63,11 @@ public final class CLISystem implements IConfigrableConstants {
 
 		loadHistoryCommands();
 	}
+
+    public void initConfig() {
+        SYSCONFIG.setName("Gambler CLI");
+		SYSCONFIG.enableMapRefreshAtIntervals();
+    }
 
 	private void initCommandMaps() throws CommandNameConflictException {
 		for (ICommand cmd : commandList) {
