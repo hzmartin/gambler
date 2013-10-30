@@ -8,7 +8,7 @@ package gambler.commons.util.io;
  */
 public interface ILineProcessor {
 
-	void process(int lineNumber, String line);
+	void process(int lineNumber, String line) throws Exception;
 	
 	void cleanUp();
 

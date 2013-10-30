@@ -1,7 +1,6 @@
 package gambler.commons.util.io;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 
 import org.junit.After;
@@ -19,7 +18,7 @@ public class SimpleFileReaderTest {
 	}
 
 	@Test
-	public void testProcessLines() throws IOException {
+	public void testProcessLines() throws Exception {
 		URL systemResource = ClassLoader.getSystemResource("sample.txt");
 		FileProcessor simpleFileReader = new FileProcessor(new File(systemResource.getFile()));
 		simpleFileReader.setProcessor(new PrintLineProcessor());
