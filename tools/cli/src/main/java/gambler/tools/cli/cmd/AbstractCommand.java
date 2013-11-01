@@ -131,6 +131,6 @@ public abstract class AbstractCommand implements ICommand {
         if (params.length == paramPos + 1) {
             return params[paramPos].equalsIgnoreCase("go") ? false : true;
         }
-        return false;
+        return true;
     }
 }
