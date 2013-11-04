@@ -17,6 +17,10 @@ public class FileProcessor {
 
     private ILineProcessor processor;
 
+    public FileProcessor(){
+        
+    }
+    
     public FileProcessor(File file) {
         super();
         this.file = file;
