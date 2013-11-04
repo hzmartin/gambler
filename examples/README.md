@@ -1,9 +1,9 @@
 Notes:
-1. Í¨¹ýhibernate×Ô¶¯Éú³Éddl
-2. Í¨¹ýderby dblookµ¼³öÒÑÓÐÊý¾Ý¿âµÄddl
+1. é€šè¿‡hibernateè‡ªåŠ¨ç”Ÿæˆddl
+2. é€šè¿‡derby dblookå¯¼å‡ºå·²æœ‰æ•°æ®åº“çš„ddl
 
-derby¹¤¾ß£º
-1. ÉèÖÃDERBY_HOME, °ÑbinÄ¿Â¼¼Óµ½PATHÖÐ¼´¿É
+derbyå·¥å…·ï¼š
+1. è®¾ç½®DERBY_HOME, æŠŠbinç›®å½•åŠ åˆ°PATHä¸­å³å¯
 2. ij> connect 'jdbc:derby:example-derby'; run 'example-derby.sql';
 3. dblook -d 'jdbc:derby:example-derby' -o out.sql
 4. startNetworkServer/stopNetworkServer
