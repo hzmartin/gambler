@@ -1,32 +1,29 @@
 package gambler.commons.util.security;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.Key;
-import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
+import org.bouncycastle.openssl.PEMReader;
 import org.bouncycastle.openssl.PEMWriter;
 
 /**
  * @author Martin
  */
 public class SecurityUtil {
-
-    private static final String NEW_LINE = System.getProperty("line.separator");
 
     private static Logger logger = Logger.getLogger(SecurityUtil.class);
 
@@ -47,9 +44,6 @@ public class SecurityUtil {
     // qKlqyFMosFUaJFCgxeOVAkBcCaPyOT9oa/72N0DMwWGSTylS70hSmwz2OTqLVZde
     // PL8zfVQ3Sc/s3YQG/fjSViQKNwu16qxqIyUNjr+4/0tW
     // -----END RSA PRIVATE KEY-----
-    // public static String readPriKeyFromPem(String path) throws IOException {
-    // return readKeyPem(path, false);
-    // }
 
     // PEM格式公钥的一般样式 注意并不是唯一样式
     //
@@ -60,138 +54,57 @@ public class SecurityUtil {
     // VPrVczMw6OZao+IzhwIDAQAB
     // -----END PUBLIC KEY-----
     // NOTE:结尾处有一个换行符
-    /**
-     * <p>
-     * 读取的是十六进制字符串形式存储的私钥<br/>
-     * NOTE:<br/>
-     * 最后的换行符不能剔除</br>
-     * </p>
-     * 
-     * @param privKeyPath
-     * @return
-     * @throws IOException
-     */
-    public static String loadPrivateKeyAsHex(String privKeyPath)
-        throws IOException {
-        StringBuilder buffer = new StringBuilder();
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(privKeyPath));
-            String line;
-            while (null != (line = reader.readLine())) {
-                buffer.append(line).append(NEW_LINE);
-            }
-            return buffer.toString();
-        } finally {
-            reader.close();
-        }
-
-    }
-
-    /**
-     * 1. 读取PEM格式的公钥<br/>
-     * 2. BASE64解码<br/>
-     * 3. 字节转十六字符串<br/>
-     * 
-     * @param pemFile
-     * @return 十六进制字符串
-     * @throws IOException
-     */
-    public static String loadPemPublicKeyAsHex(String pemFile)
-        throws IOException {
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(pemFile));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while (null != (line = reader.readLine())) {
-                if ((line.contains("BEGIN PUBLIC KEY") || line
-                    .contains("END PUBLIC KEY")))
-                    continue;
-                sb.append(line);
-            }
-            return byte2hex(Base64Util.decode2byte(sb.toString()));
-        } finally {
-            if (reader != null)
-                reader.close();
-        }
-    }
 
     /**
      * 生成RSA公私钥
      * 
-     * @return 一个对象数组，依次是[公钥，私钥]
+     * @return 一对公私钥
      * @throws NoSuchAlgorithmException
      */
-    public static Key[] generateRSAKeyPair() throws NoSuchAlgorithmException {
-        Key[] keys = new Key[2];
+    public static KeyPair generateRSAKeyPair() throws NoSuchAlgorithmException {
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
         generator.initialize(1024);
-        KeyPair keyPair = generator.generateKeyPair();
-
-        keys[0] = keyPair.getPublic();
-        keys[1] = keyPair.getPrivate();
-        return keys;
+        return generator.generateKeyPair();
     }
 
     /**
-     * 保存成十六进制私钥文件
+     * 把秘钥保存成pem格式的文件<br/>
+     * 底层步骤：key's encoded bytes - > base 64 encode -> pem format<br/>
      * 
-     * @param pubicKey
-     * @param outputPath
+     * @param key
+     * @param pem
      * @throws IOException
      */
-    public static void savePrivateKeyAsHexFormat(PrivateKey privateKey,
-        String outputPath) throws IOException {
-        BufferedWriter out = new BufferedWriter(new FileWriter(outputPath));
-        out.write(byte2hex(privateKey.getEncoded()));
-        out.close();
-        logger.info("私钥以十六进制字符串形式成功写入文件" + outputPath);
-        logger.info("十六进制:" + byte2hex(privateKey.getEncoded()));
+    public static void saveKeyAsPemFormat(Key key, File pem) throws IOException {
+        logger.info("开始保存秘钥到文件：" + pem.getAbsolutePath() + " 。。。 ");
+        PEMWriter pemWriter = new PEMWriter(new FileWriter(pem));
+        pemWriter.writeObject(key);
+        pemWriter.flush();
+        pemWriter.close();
+        logger
+            .debug("秘钥十六进制:" + String.valueOf(Hex.encodeHex(key.getEncoded())));
+        logger.debug("秘钥Base64:" + Base64.encodeBase64String(key.getEncoded()));
+        logger.debug("秘钥以PEM格式成功写入到文件 : " + pem.getAbsolutePath());
     }
 
     /**
-     * 保存成pem格式的公钥文件
+     * 读取PEM格式的公钥
      * 
-     * @param pubicKey
-     * @param outputPath
+     * @param pem
+     * @return pem object - PrivateKey, PublicKey etc.,
      * @throws IOException
      */
-    public static void savePublicKeyAsPemFormat(PublicKey publicKey,
-        String outputPath) throws IOException {
-        PEMWriter pubWriter = new PEMWriter(new FileWriter(outputPath));
-        pubWriter.writeObject(publicKey);
-        pubWriter.flush();
-        pubWriter.close();
-
-        logger.info("公钥以PEM格式成功写入文件" + outputPath);
-        logger.info("十六进制:" + byte2hex(publicKey.getEncoded()));
-        logger.info("Base64:" + Base64Util.encode(publicKey.getEncoded()));
-    }
-
-    public static String byte2hex(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b: bytes)
-            sb.append(Integer.toString(b >>> 4 & 0xF, 16)).append(
-                Integer.toString(b & 0xF, 16));
-        return sb.toString();
-    }
-
-    public static final byte[] hex2byte(String s) {
-        byte[] bytes = new byte[s.length() >> 1];
-        for (int i = 0; i < bytes.length; i++) {
-            bytes[i] = (byte) Integer.parseInt(
-                s.substring(i << 1, (i + 1) << 1), 16);
-        }
-        return bytes;
+    public static Object loadPemFormatKey(File pem) throws IOException {
+        PEMReader pemReader = new PEMReader(new FileReader(pem));
+        return pemReader.readObject();
     }
 
     /**
      * 用SHA1withRSA生成签名
      * 
-     * @see #sign(String, String, String)
+     * @see #sign(String, String, PrivateKey)
      */
-    public static String sign(String src, String privateKey)
+    public static String sign(String src, PrivateKey privateKey)
         throws GeneralSecurityException {
         return sign(src, "SHA1withRSA", privateKey);
     }
@@ -209,25 +122,21 @@ public class SecurityUtil {
      * @return 十六进制格式签名字符串
      * @throws GeneralSecurityException
      */
-    public static String sign(String src, String algorithm, String privateKey)
-        throws GeneralSecurityException {
+    public static String sign(String src, String algorithm,
+        PrivateKey privateKey) throws GeneralSecurityException {
         Signature signature = Signature.getInstance(algorithm);
-        byte[] pribyte = hex2byte(privateKey.trim());
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(pribyte);
-        KeyFactory fac = KeyFactory.getInstance("RSA");
-        PrivateKey privKeyObj = fac.generatePrivate(keySpec);
-        signature.initSign(privKeyObj);
+        signature.initSign(privateKey);
         signature.update(src.getBytes());
-        return byte2hex(signature.sign());
+        return String.valueOf(Hex.encodeHex(signature.sign()));
     }
 
     /**
      * 公钥验证签名，签名算法：SHA1withRSA
      * 
-     * @see #verifySign(String, String, String, String)
+     * @see #verifySign(String, String, String, PublicKey)
      */
-    public static boolean verifySign(String src, String sign, String publicKey)
-        throws GeneralSecurityException {
+    public static boolean verifySign(String src, String sign,
+        PublicKey publicKey) throws GeneralSecurityException, DecoderException {
         return verifySign(src, "SHA1withRSA", sign, publicKey);
     }
 
@@ -244,23 +153,14 @@ public class SecurityUtil {
      * @param publicKey
      *            - 十六进制格式
      * @return true表示签名验证通过, false表示签名验证不通过
-     * @throws GeneralSecurityException
      */
     public static boolean verifySign(String src, String algorithm, String sign,
-        String publicKey) throws GeneralSecurityException {
-
-        Signature sigEng = Signature.getInstance(algorithm);
-        byte[] pubbyte = hex2byte(publicKey.trim());
-
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(pubbyte);
-        KeyFactory fac = KeyFactory.getInstance("RSA");
-        RSAPublicKey pubKey = (RSAPublicKey) fac.generatePublic(keySpec);
-
-        sigEng.initVerify(pubKey);
-        sigEng.update(src.getBytes());
-
-        byte[] sign1 = hex2byte(sign);
-        return sigEng.verify(sign1);
+        PublicKey publicKey) throws GeneralSecurityException, DecoderException {
+        Signature signature = Signature.getInstance(algorithm);
+        signature.initVerify(publicKey);
+        signature.update(src.getBytes());
+        byte[] sign1 = Hex.decodeHex(sign.toCharArray());
+        return signature.verify(sign1);
     }
 
 }
