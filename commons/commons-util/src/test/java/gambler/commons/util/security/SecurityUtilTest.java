@@ -44,10 +44,12 @@ public class SecurityUtilTest {
         SecurityUtil.saveKeyAsPemFormat(keyPair.getPrivate(), pemPriv);
 
         // 读取PEM格式公钥
-        PublicKey pubPemObject = (PublicKey) SecurityUtil
+        Object pemObject1 = SecurityUtil
             .loadPemFormatKey(pubPem);
-        KeyPair privPemObject = (KeyPair) SecurityUtil
+        PublicKey pubPemObject = (PublicKey) pemObject1;
+        Object pemObject2 = SecurityUtil
             .loadPemFormatKey(pemPriv);
+        KeyPair privPemObject = (KeyPair) pemObject2;
 
         String sign = SecurityUtil.sign("你好", privPemObject.getPrivate());
         boolean b = SecurityUtil.verifySign("你好", sign, pubPemObject);
