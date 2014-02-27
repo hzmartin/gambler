@@ -76,13 +76,13 @@ public class SecurityUtil {
      * @throws IOException
      */
     public static void saveKeyAsPemFormat(Key key, File pem) throws IOException {
-        logger.info("开始保存秘钥到文件：" + pem.getAbsolutePath() + " 。。。 ");
+        logger.debug("开始保存秘钥到文件：" + pem.getAbsolutePath() + " 。。。 ");
         PEMWriter pemWriter = new PEMWriter(new FileWriter(pem));
         pemWriter.writeObject(key);
         pemWriter.flush();
         pemWriter.close();
         logger
-            .debug("秘钥十六进制:" + String.valueOf(Hex.encodeHex(key.getEncoded())));
+            .debug("秘钥Hex:" + String.valueOf(Hex.encodeHex(key.getEncoded())));
         logger.debug("秘钥Base64:" + Base64.encodeBase64String(key.getEncoded()));
         logger.debug("秘钥以PEM格式成功写入到文件 : " + pem.getAbsolutePath());
     }
