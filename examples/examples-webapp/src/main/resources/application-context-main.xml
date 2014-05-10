@@ -12,6 +12,11 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd
 http://www.springframework.org/schema/aop
 http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
+	<bean id="jasyptStringDigester" class="org.jasypt.digest.StandardStringDigester">
+        <property name="algorithm" value="SHA-1" />
+        <property name="iterations" value="100000" />
+    </bean>
+    
 	<!-- -->
 	<!-- Configuration for encryptor, based on environment variables. -->
 	<!-- -->
