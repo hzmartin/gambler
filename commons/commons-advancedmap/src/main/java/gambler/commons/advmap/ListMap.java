@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * merge maps from different types of source, like xml, database etc.,<br/>
+ * merge maps from different types of source<br/>
  *
  * it provides the base maps settings by constructor parameter,<br/>
  * and the value will be overridden by the given map's order<br/>
@@ -23,10 +23,12 @@ public final class ListMap extends AdvancedMap {
      */
     private List<AdvancedMap> baseMaps;
 
-    public ListMap() {
+    public ListMap(String name, int refreshIntervalInSeconds) {
+    	super(name, refreshIntervalInSeconds);
     }
 
-    public ListMap(List<AdvancedMap> maps) {
+    public ListMap(String name, int refreshIntervalInSeconds, List<AdvancedMap> maps) {
+    	super(name, refreshIntervalInSeconds);
         this.baseMaps = maps;
         this.load();
     }

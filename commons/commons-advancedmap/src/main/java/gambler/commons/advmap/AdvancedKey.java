@@ -238,12 +238,12 @@ public class AdvancedKey implements java.io.Serializable,
 	public static final String buildFullPathKey(String namespace, String key,
 			Integer order, Locale locale) {
 
-		if (StringUtils.isEmpty(key)) {
+		if (StringUtils.isBlank(key)) {
 			throw new IllegalArgumentException(
 					"key required in advanced key definition!");
 		}
 
-		if (StringUtils.isEmpty(namespace)) {
+		if (StringUtils.isBlank(namespace)) {
 			namespace = AdvancedKey.DEFAULT_NAMESPACE;
 		}
 

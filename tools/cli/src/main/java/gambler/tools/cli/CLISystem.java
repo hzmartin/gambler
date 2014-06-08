@@ -46,8 +46,8 @@ public final class CLISystem implements IConfigrableConstants {
 
 	private ICommand prevCommand = null;
 
-	public static final XMLMap SYSCONFIG = new XMLMap("cli.conf.xml",
-			"cli.conf.ext.xml");
+	public static final XMLMap SYSCONFIG = new XMLMap("Gambler CLI Config", 0,
+			"cli.conf.xml", "cli.conf.ext.xml");
 
 	public CLISystem() {
 		super();
@@ -55,19 +55,12 @@ public final class CLISystem implements IConfigrableConstants {
 
 	final void init() throws CommandNameConflictException {
 
-	    initConfig();
-		
 		loadBuiltinCommands();
 
 		loadExtCommands();
 
 		loadHistoryCommands();
 	}
-
-    private void initConfig() {
-        SYSCONFIG.setName("Gambler CLI");
-		SYSCONFIG.enableMapRefreshAtIntervals();
-    }
 
 	private void initCommandMaps() throws CommandNameConflictException {
 		for (ICommand cmd : commandList) {

@@ -216,7 +216,7 @@ public class SimpleHibernatePersistence extends HibernateDaoSupport implements
 	@Override
 	public Session getHibernateSession() throws PersistenceException {
 		try {
-			return getSession(true);
+			return getSession();
 		} catch (Exception e) {
 			throw new PersistenceException(
 					"Unable to create hibernate session", e);

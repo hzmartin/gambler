@@ -1,8 +1,7 @@
 package gambler.examples.webapp2.controller;
 
-import gambler.commons.auth.User;
-import gambler.examples.webapp2.dao.UserDao;
-import gambler.examples.webapp2.dwr.DemoMessage;
+import gambler.examples.webapp2.domain.User;
+import gambler.examples.webapp2.service.UserService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class HelloController {
 
 	@Resource
-	private UserDao userDao;
+	private UserService userService;
 
 	@RequestMapping("/hello")
 	public ModelAndView helloWorld() {
@@ -43,19 +42,27 @@ public class HelloController {
 
 	/**
 	 * sample request: /demo/find.do?userId=xxx
+	 * 
 	 */
 	@RequestMapping("/find")
-	public String find(Model model, User user) {
-		User foundUser = userDao.findUserById(user.getUserId());
-		model.addAttribute("message",
-				foundUser.getUserId() + ":" + foundUser.getFirstName());
+	public String find(Model model, User user)  {
+		userService.findUserById(user.getUserId());
 		return "welcome";
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	@ResponseBody
 	public Object search(final HttpServletRequest request,
-			final HttpServletResponse response) {
-		return new DemoMessage("demo json response");
+			final HttpServletResponse response, User user)
+			 {
+		return userService.findUserById(user.getUserId());
+	}
+
+	@RequestMapping(value = "/save", method = RequestMethod.GET)
+	@ResponseBody
+	public Object save(final HttpServletRequest request,
+			final HttpServletResponse response, User user)  {
+		userService.save(user);
+		return "OK";
 	}
 }

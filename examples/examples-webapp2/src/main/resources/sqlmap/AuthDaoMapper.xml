@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gambler.examples.webapp2.dao.UserDao">
+
+	<resultMap id="userMap" type="User">
+		<result property="userId" column="USER_ID" />
+		<result property="firstName" column="FIRST_NAME" />
+		<result property="lastName" column="LAST_NAME" />
+	</resultMap>
+    
+    <select id="findByUserId" parameterType="string" resultType="User">
+    	select * from AUTH_USERS where USER_ID = #{userId}
+    </select>
+    
+    <insert id="saveUser" parameterType="User">
+    	insert into AUTH_USERS (USER_ID, FIRST_NAME, LAST_NAME) VALUES (#{userId}, #{firstName}, #{lastName})
+    </insert>
+
+</mapper>

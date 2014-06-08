@@ -45,10 +45,7 @@ import org.apache.log4j.Logger;
  * </code>
  * </p>
  * <p>
- * 3. refresh map at interval <br/>
- * i. config <tt>mapRefreshInterval</tt>(default:10min) in second(s) under
- * default namespace<br/>
- * ii. invoke <code>AdvancedMap#enableMapRefreshAtIntervals</code><br/>
+ * 3. refresh map enable if interval greater than 0<br/>
  * </p>
  * 
  * @auther Martin
@@ -61,13 +58,6 @@ public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
 	private static final long serialVersionUID = -5248960418733175757L;
 
 	private static final Logger log = Logger.getLogger(AdvancedMap.class);
-
-	/**
-	 * refresh map at intervals <br/>
-	 * unit: second <br/>
-	 * configuration key under default namespace
-	 */
-	private static String MAP_REFRESH_INTERVAL = "mapRefreshInterval";
 
 	/**
 	 * Start symbol of variables in property's value
@@ -98,24 +88,37 @@ public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
 	private String name;
 
 	/**
-	 * refresh map at interval <br/>
-	 * i. config <tt>mapRefreshInterval</tt>(default:10min) in second(s) under
-	 * default namespace<br/>
-	 * ii. invoke <code>AdvancedMap#enableMapRefreshAtIntervals</code><br/>
+	 * @param name
+	 *            - map name
+	 * @param refreshIntervalInSeconds
+	 *            - enable if greater than 0
 	 */
-	public void enableMapRefreshAtIntervals() {
-		String refreshInterval = getProperty(MAP_REFRESH_INTERVAL, "600");
-		int interval = Integer.parseInt(refreshInterval);
-		Timer timer = new Timer("Map(" + getName() + ") Refresh", true);
-		timer.schedule(new TimerTask() {
+	public AdvancedMap(String name, int refreshIntervalInSeconds) {
+		super();
+		this.name = name;
+		if (refreshIntervalInSeconds > 0) {
+			enableMapRefreshAtIntervals(refreshIntervalInSeconds);
+		}
+	}
 
-			@Override
-			public void run() {
-				log.info("map(" + AdvancedMap.this.getName()
-						+ ") will be refreshed by scheduled task!");
-				AdvancedMap.this.load();
-			}
-		}, interval * 1000L, interval * 1000L);
+	/**
+	 * refresh map at interval
+	 */
+	private void enableMapRefreshAtIntervals(int interval) {
+		try {
+			Timer timer = new Timer("Map(" + getName() + ") Refresh", true);
+			timer.schedule(new TimerTask() {
+
+				@Override
+				public void run() {
+					log.info("map(" + AdvancedMap.this.getName()
+							+ ") will be refreshed by scheduled task!");
+					AdvancedMap.this.load();
+				}
+			}, interval * 1000L, interval * 1000L);
+		} catch (Exception e) {
+			log.error("schedule map refresh failed!", e);
+		}
 
 	}
 
@@ -226,7 +229,7 @@ public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
 
 	public String getProperty(String fullPathKey, String defaultValue) {
 		String value = get(fullPathKey);
-		if (value == null || value.trim().equals("")) {
+		if (value == null) {
 			return defaultValue;
 		} else {
 			return value;

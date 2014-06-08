@@ -74,15 +74,16 @@ public final class XMLMap extends AdvancedMap {
      */
     private static final long serialVersionUID = 7486290035316643518L;
 
-    public XMLMap() {
-
+    public XMLMap(String name, int refreshIntervalInSeconds) {
+    	super(name, refreshIntervalInSeconds);
     }
 
-    public XMLMap(String xmlFilePath) {
-        this(new String[]{xmlFilePath});
+    public XMLMap(String name, int refreshIntervalInSeconds, String xmlFilePath) {
+        this(name, refreshIntervalInSeconds, new String[]{xmlFilePath});
     }
 
-    public XMLMap(String... xmlFilePaths) {
+    public XMLMap(String name, int refreshIntervalInSeconds, String... xmlFilePaths) {
+    	super(name, refreshIntervalInSeconds);
         this.xmlFilePaths = xmlFilePaths;
         this.load();
     }

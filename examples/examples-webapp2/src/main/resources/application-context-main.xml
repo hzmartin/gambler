@@ -77,7 +77,7 @@ http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
         <property name="preferredTestQuery" value="select 1 from ignore_this_table" />
     </bean>
     
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="processPropertyPlaceHolders" value="true"/>
         <property name="annotationClass"
             value="org.springframework.stereotype.Repository"/>
@@ -85,14 +85,19 @@ http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
     </bean>
     
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="mapperLocations" value="classpath*:sqlmap/*.xml" />
         <property name="configLocation" value="classpath:gb-mybatis-config.xml"/>
         <property name="dataSource" ref="dataSource"/>
     </bean>
     
-    <tx:annotation-driven transaction-manager="txManager" />
+	<tx:annotation-driven />
+	
+    <tx:annotation-driven transaction-manager="transactionManager" />
     
-    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> 
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> 
         <property name="dataSource" ref="dataSource"/>
     </bean>
+
+    <context:component-scan base-package="gambler.examples.webapp2.service">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+	</context:component-scan>
 </beans>

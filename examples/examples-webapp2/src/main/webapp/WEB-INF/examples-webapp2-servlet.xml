@@ -13,11 +13,13 @@ http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
 http://www.springframework.org/schema/aop
 http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
            
-    <context:component-scan base-package="gambler.examples.webapp2">
-		<context:include-filter type="regex"
-			expression="gambler.examples.webapp2.service.*Service"/>
+           
+    <context:component-scan base-package="gambler.examples.webapp2.controller">
+    	<!-- 
 		<context:include-filter type="regex"
 			expression="gambler.examples.webapp2.controller.*Controller"/>
+		-->
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/> 
 	</context:component-scan>
     
     <bean

@@ -6,7 +6,7 @@
 	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
-				value="%d{ISO8601} [%-t] %-5p %c{3} - %m%n" />
+				value="%d{ISO8601} %c{3} [%-t] %-5p %C{3}(%L) %x - %m%n" />
 		</layout>
 	</appender>
 
@@ -14,7 +14,7 @@
 		<param name="File" value="${gb.log4j.path}/${project.artifactId}.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
-				value="%d{ISO8601} [%-t] %-5p %c{3} - %m%n" />
+				value="%d{ISO8601} %c{3} [%-t] %-5p %C{3}(%L) %x - %m%n" />
 		</layout>
 	</appender>
 
@@ -26,7 +26,7 @@
 		<param name="MaxBackupIndex" value="6" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
-				value="%d{ISO8601} [%-t] %-5p %c{3} - %m%n" />
+				value="%d{ISO8601} %c{3} [%-t] %-5p %C{3}(%L) %x - %m%n" />
 		</layout>
 	</appender>
 
@@ -36,7 +36,7 @@
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
-				value="%d{ISO8601} [%-t] %-5p %c{3} - %m%n" />
+				value="%d{ISO8601} %c{3} [%-t] %-5p %C{3}(%L) %x - %m%n" />
 		</layout>
 	</appender>
         

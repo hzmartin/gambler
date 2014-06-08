@@ -4,7 +4,7 @@
     <parent>
         <artifactId>commons</artifactId>
         <groupId>gambler.commons</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0</version>
         <relativePath>..</relativePath>
     </parent>
     <artifactId>commons-auth</artifactId>
@@ -13,7 +13,7 @@
         <dependency>
             <groupId>gambler.commons</groupId>
             <artifactId>commons-persistence</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>commons-dbcp</groupId>

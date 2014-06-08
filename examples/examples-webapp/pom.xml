@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gambler.examples</groupId>
 		<artifactId>examples</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0</version>
 	</parent>
 	<artifactId>examples-webapp</artifactId>
 	<packaging>war</packaging>
@@ -260,12 +260,12 @@
 		<dependency>
 			<groupId>gambler.commons</groupId>
 			<artifactId>commons-util</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>gambler.commons</groupId>
 			<artifactId>commons-persistence</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0</version>
 		</dependency>
 
 		<dependency>
@@ -286,7 +286,7 @@
 		<dependency>
 			<groupId>gambler.commons</groupId>
 			<artifactId>commons-auth</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0</version>
 		</dependency>
 	</dependencies>
 
