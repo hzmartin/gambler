@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gambler.examples.webapp2.dao.AuthUserDao">
+
+	<resultMap id="authUserMap" type="AuthUser">
+		<result property="userId" column="user_id" />
+		<result property="firstName" column="first_name" />
+		<result property="lastName" column="last_name" />
+		<result property="organization" column="organization" />
+		<result property="telephone" column="telephone" />
+		<result property="mobile" column="mobile" />
+		<result property="email" column="email" />
+		<result property="note" column="note" />
+		<result property="fax" column="fax" />
+		<result property="cell" column="cell" />
+		<result property="gender" column="gender" />
+		<result property="dateJoined" column="date_joined" />
+		<result property="lastLogin" column="last_login" />
+		<result property="updateTime" column="update_time" />
+		<result property="active" column="is_active" />
+		<result property="superUser" column="is_super" />
+	</resultMap>
+    
+    <select id="findByUserId" parameterType="string" resultMap="authUserMap">
+    	select * from auth_users where user_id = #{userId}
+    </select>
+    
+    <insert id="saveUser" parameterType="AuthUser">
+    	insert into auth_users 
+    	(user_id, first_name, last_name, organization, telephone, mobile, email, note, fax, cell, gender, is_active, is_super) 
+    	values 
+    	(#{userId,jdbcType=VARCHAR},
+    	#{firstName,jdbcType=VARCHAR},
+    	#{lastName,jdbcType=VARCHAR},
+    	#{organization,jdbcType=VARCHAR},
+    	#{telephone,jdbcType=VARCHAR},
+    	#{mobile,jdbcType=VARCHAR},
+    	#{email,jdbcType=VARCHAR},
+    	#{note,jdbcType=VARCHAR},
+    	#{fax,jdbcType=VARCHAR},
+    	#{cell,jdbcType=VARCHAR},
+    	#{gender},
+    	#{active},
+    	#{superUser})
+    	
+    </insert>
+
+</mapper>

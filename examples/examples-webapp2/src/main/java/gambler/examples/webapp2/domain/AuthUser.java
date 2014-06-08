@@ -9,9 +9,15 @@ import java.sql.Timestamp;
  * @author Martin
  * @version Jul 24, 2013
  */
-public class User implements Serializable {
+public class AuthUser implements Serializable {
 
 	private static final long serialVersionUID = 2004187270602400843L;
+	
+	public static final int GENDER_MALE = 0;
+	
+	public static final int GENDER_FEMALE = 1;
+	
+	public static final int GENDER_OTHER = 2;
 
 	// logic id
 	private Long id;
@@ -31,6 +37,8 @@ public class User implements Serializable {
 
 	private String telephone;
 
+	private String mobile;
+	
 	private String email;
 
 	private String note;
@@ -39,7 +47,7 @@ public class User implements Serializable {
 
 	private String cell;
 
-	private int gender;
+	private int gender = GENDER_MALE;
 
 	private Timestamp dateJoined;//create time
 
@@ -47,14 +55,14 @@ public class User implements Serializable {
 	
 	private Timestamp updateTime;
 
-	private int active;
+	private boolean active;
 	
-	private int superUser;
+	private boolean superUser;
 
-	public User() {
+	public AuthUser() {
 	}
 
-	public User(String userId) {
+	public AuthUser(String userId) {
 		this.userId = userId;
 	}
 
@@ -122,6 +130,14 @@ public class User implements Serializable {
 		this.telephone = telephone;
 	}
 
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -177,20 +193,29 @@ public class User implements Serializable {
 	public void setLastLogin(Timestamp lastLogin) {
 		this.lastLogin = lastLogin;
 	}
+	
 
-	public int isActive() {
+	public Timestamp getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public boolean isActive() {
 		return active;
 	}
 
-	public void setActive(int active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 
-	public int isSuperUser() {
+	public boolean isSuperUser() {
 		return superUser;
 	}
 
-	public void setSuperUser(int superUser) {
+	public void setSuperUser(boolean superUser) {
 		this.superUser = superUser;
 	}
 
@@ -210,7 +235,7 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final User other = (User) obj;
+		final AuthUser other = (AuthUser) obj;
 		if (userId == null) {
 			if (other.userId != null)
 				return false;
@@ -222,14 +247,6 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 		return "User(" + userId + "): " + firstName + ", " + lastName;
-	}
-
-	public Timestamp getUpdateTime() {
-		return updateTime;
-	}
-
-	public void setUpdateTime(Timestamp updateTime) {
-		this.updateTime = updateTime;
 	}
 
 }

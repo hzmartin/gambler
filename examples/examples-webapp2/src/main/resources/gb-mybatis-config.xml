@@ -8,9 +8,9 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<setting name="cacheEnabled" value="false"/>
 	</settings>
 	<typeAliases>
-    	<typeAlias alias="User" type="gambler.examples.webapp2.domain.User" />
+    	<typeAlias alias="AuthUser" type="gambler.examples.webapp2.domain.AuthUser" />
     </typeAliases>
 	<mappers>
-		<mapper resource="sqlmap/AuthDaoMapper.xml"/>
+		<mapper resource="sqlmap/AuthUserDaoMapper.xml"/>
 	</mappers>
 </configuration>

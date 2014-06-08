@@ -1,7 +1,7 @@
 package gambler.examples.webapp2.controller;
 
-import gambler.examples.webapp2.domain.User;
-import gambler.examples.webapp2.service.UserService;
+import gambler.examples.webapp2.domain.AuthUser;
+import gambler.examples.webapp2.service.AuthUserService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class HelloController {
 
 	@Resource
-	private UserService userService;
+	private AuthUserService userService;
 
 	@RequestMapping("/hello")
 	public ModelAndView helloWorld() {
@@ -45,7 +45,7 @@ public class HelloController {
 	 * 
 	 */
 	@RequestMapping("/find")
-	public String find(Model model, User user)  {
+	public String find(Model model, AuthUser user)  {
 		userService.findUserById(user.getUserId());
 		return "welcome";
 	}
@@ -53,7 +53,7 @@ public class HelloController {
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	@ResponseBody
 	public Object search(final HttpServletRequest request,
-			final HttpServletResponse response, User user)
+			final HttpServletResponse response, AuthUser user)
 			 {
 		return userService.findUserById(user.getUserId());
 	}
@@ -61,7 +61,7 @@ public class HelloController {
 	@RequestMapping(value = "/save", method = RequestMethod.GET)
 	@ResponseBody
 	public Object save(final HttpServletRequest request,
-			final HttpServletResponse response, User user)  {
+			final HttpServletResponse response, AuthUser user)  {
 		userService.save(user);
 		return "OK";
 	}
