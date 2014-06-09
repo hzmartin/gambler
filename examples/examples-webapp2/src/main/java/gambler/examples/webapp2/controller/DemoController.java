@@ -2,6 +2,7 @@ package gambler.examples.webapp2.controller;
 
 import gambler.examples.webapp2.domain.AuthUser;
 import gambler.examples.webapp2.service.AuthUserService;
+import gambler.examples.webapp2.util.SpringContextHolder;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/demo")
-public class HelloController {
+public class DemoController {
 
 	@Resource
 	private AuthUserService userService;
@@ -45,7 +46,7 @@ public class HelloController {
 	 * 
 	 */
 	@RequestMapping("/find")
-	public String find(Model model, AuthUser user)  {
+	public String find(Model model, AuthUser user) {
 		userService.findUserById(user.getUserId());
 		return "welcome";
 	}
@@ -53,15 +54,16 @@ public class HelloController {
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	@ResponseBody
 	public Object search(final HttpServletRequest request,
-			final HttpServletResponse response, AuthUser user)
-			 {
+			final HttpServletResponse response, AuthUser user) {
+		AuthUserService userService = SpringContextHolder
+				.getBean("authUserService");
 		return userService.findUserById(user.getUserId());
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.GET)
 	@ResponseBody
 	public Object save(final HttpServletRequest request,
-			final HttpServletResponse response, AuthUser user)  {
+			final HttpServletResponse response, AuthUser user) {
 		userService.save(user);
 		return "OK";
 	}

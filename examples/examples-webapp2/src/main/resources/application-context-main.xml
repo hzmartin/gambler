@@ -98,4 +98,7 @@ http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
     <context:component-scan base-package="gambler.examples.webapp2.service">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
 	</context:component-scan>
+	
+	<!-- SpringContextHolder定义 -->
+    <bean class="gambler.examples.webapp2.util.SpringContextHolder" lazy-init="false" />
 </beans>
