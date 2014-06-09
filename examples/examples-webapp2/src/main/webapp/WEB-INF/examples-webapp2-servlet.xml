@@ -99,7 +99,7 @@ http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
         class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <property name="viewClass"
             value="org.springframework.web.servlet.view.JstlView" />
-        <property name="prefix" value="/jsp/" />
+        <property name="prefix" value="" />
         <property name="suffix" value=".jsp" />
     </bean>
     

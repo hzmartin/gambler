@@ -14,13 +14,8 @@ public class AuthUserService {
 	private AuthUserDao userDao;
 
 	@Transactional
-	public AuthUser save(AuthUser user) {
-		userDao.saveUser(user);
-		System.out.println(user.getId());
-		if (user.getUserId().equals("hello")) {
-			throw new IllegalArgumentException("xxx");
-		}
-		return user;
+	public int save(AuthUser user) {
+		return userDao.saveUser(user);
 	}
 
 	public AuthUser findUserById(String userId) {

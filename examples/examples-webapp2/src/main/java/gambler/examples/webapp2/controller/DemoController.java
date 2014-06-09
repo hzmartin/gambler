@@ -25,10 +25,9 @@ public class DemoController {
 	@Resource
 	private AuthUserService userService;
 
-	@RequestMapping("/hello")
-	public ModelAndView helloWorld() {
-		String message = "Hello World<br/>";
-		return new ModelAndView("hello", "message", message);
+	@RequestMapping("/welcome")
+	public ModelAndView welcome(@RequestParam(required = true) String message) {
+		return new ModelAndView("welcome", "message", message);
 	}
 
 	/**
@@ -45,10 +44,11 @@ public class DemoController {
 	 * sample request: /demo/find.do?userId=xxx
 	 * 
 	 */
-	@RequestMapping("/find")
-	public String find(Model model, AuthUser user) {
-		userService.findUserById(user.getUserId());
-		return "welcome";
+	@RequestMapping("/hello")
+	public String find(Model model, @RequestParam(required = true) String userId) {
+		AuthUser user = userService.findUserById(userId);
+		model.addAttribute("firstName", user.getFirstName());
+		return "demo";
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
@@ -64,7 +64,6 @@ public class DemoController {
 	@ResponseBody
 	public Object save(final HttpServletRequest request,
 			final HttpServletResponse response, AuthUser user) {
-		userService.save(user);
-		return "OK";
+		return userService.save(user);
 	}
 }
