@@ -6,6 +6,7 @@
 		<result property="userId" column="user_id" />
 		<result property="firstName" column="first_name" />
 		<result property="lastName" column="last_name" />
+		<result property="password" column="password" />
 		<result property="organization" column="organization" />
 		<result property="telephone" column="telephone" />
 		<result property="mobile" column="mobile" />
@@ -27,11 +28,12 @@
     
     <insert id="saveUser" parameterType="AuthUser">
     	insert into auth_users 
-    	(user_id, first_name, last_name, organization, telephone, mobile, email, note, fax, cell, gender, is_active, is_super) 
+    	(user_id, first_name, last_name, password, organization, telephone, mobile, email, note, fax, cell, gender, is_active, is_super) 
     	values 
     	(#{userId,jdbcType=VARCHAR},
     	#{firstName,jdbcType=VARCHAR},
     	#{lastName,jdbcType=VARCHAR},
+    	#{password,jdbcType=VARCHAR},
     	#{organization,jdbcType=VARCHAR},
     	#{telephone,jdbcType=VARCHAR},
     	#{mobile,jdbcType=VARCHAR},

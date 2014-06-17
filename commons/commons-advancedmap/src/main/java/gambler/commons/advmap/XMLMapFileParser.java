@@ -223,10 +223,10 @@ public class XMLMapFileParser extends DefaultHandler {
                     AdvancedKey gkey = new AdvancedKey(namespace, key, order,
                             LocaleUtils.toLocale(locale));
                     if (xmlmap.keySet().contains(gkey)) {
-                        log.warn("Property[" + gkey + ", " + value.toString()
+                        log.debug("Property[" + gkey + ", " + value.toString()
                                 + "] has been updated in xml map");
                     } else {
-                        log.info("Property[" + gkey + ", " + value.toString()
+                        log.debug("Property[" + gkey + ", " + value.toString()
                                 + "] has been stored in xml map");
                     }
                     xmlmap.put(gkey, value.toString());
@@ -270,7 +270,7 @@ public class XMLMapFileParser extends DefaultHandler {
                     namespace = attributes.getValue(NAMESPACE_ATTR);
                     locale = attributes.getValue(LOCALE_ATTR);
 
-				// default namespace/locale will be used
+                    // default namespace/locale will be used
                     // while no namespace/locale assigned
                     if (namespace == null) {
                         namespace = AdvancedKey.DEFAULT_NAMESPACE;

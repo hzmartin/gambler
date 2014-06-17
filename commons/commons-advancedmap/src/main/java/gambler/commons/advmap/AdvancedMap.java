@@ -223,16 +223,96 @@ public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
 	 * @return property value
 	 * @see AdvancedKey#buildAdvancedKey(String)
 	 */
-	public String getProperty(String fullPathKey) {
-		return getProperty(fullPathKey, null);
+	public String getString(String fullPathKey) {
+		return getString(fullPathKey, null);
 	}
 
-	public String getProperty(String fullPathKey, String defaultValue) {
+	public String getString(String fullPathKey, String defaultValue) {
 		String value = get(fullPathKey);
 		if (value == null) {
 			return defaultValue;
 		} else {
 			return value;
+		}
+	}
+
+	public Integer getInteger(String fullPathKey) {
+		return getInteger(fullPathKey, null);
+	}
+
+	public Integer getInteger(String fullPathKey, Integer defaultValue) {
+		String value = getString(fullPathKey);
+		if (value == null) {
+			return defaultValue;
+		}
+		try {
+			return Integer.valueOf(value);
+		} catch (Exception e) {
+			return defaultValue;
+		}
+	}
+
+	public Boolean getBoolean(String fullPathKey) {
+		return getBoolean(fullPathKey, null);
+	}
+
+	public Boolean getBoolean(String fullPathKey, Boolean defaultValue) {
+		String value = getString(fullPathKey);
+		if (value == null) {
+			return defaultValue;
+		}
+		try {
+			return Boolean.valueOf(value);
+		} catch (Exception e) {
+			return defaultValue;
+		}
+	}
+
+	public Long getLong(String fullPathKey) {
+		return getLong(fullPathKey, null);
+	}
+
+	public Long getLong(String fullPathKey, Long defaultValue) {
+		String value = getString(fullPathKey);
+		if (value == null) {
+			return defaultValue;
+		}
+		try {
+			return Long.valueOf(value);
+		} catch (Exception e) {
+			return defaultValue;
+		}
+	}
+
+	public Double getDouble(String fullPathKey) {
+		return getDouble(fullPathKey, null);
+	}
+
+	public Double getDouble(String fullPathKey, Double defaultValue) {
+		String value = getString(fullPathKey);
+		if (value == null) {
+			return defaultValue;
+		}
+		try {
+			return Double.valueOf(value);
+		} catch (Exception e) {
+			return defaultValue;
+		}
+	}
+
+	public Float getFloat(String fullPathKey) {
+		return getFloat(fullPathKey, null);
+	}
+
+	public Float getFloat(String fullPathKey, Float defaultValue) {
+		String value = getString(fullPathKey);
+		if (value == null) {
+			return defaultValue;
+		}
+		try {
+			return Float.valueOf(value);
+		} catch (Exception e) {
+			return defaultValue;
 		}
 	}
 
@@ -247,10 +327,35 @@ public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
 	 *         for the key
 	 * @see AdvancedKey#buildAdvancedKey(String)
 	 */
-	public String setProperty(String fullPathKey, String value) {
-		log.info("set property: key=" + fullPathKey + ", value=" + value);
+	public void setString(String fullPathKey, String value) {
+		log.debug("set property: key=" + fullPathKey + ", value=" + value);
 		AdvancedKey key = AdvancedKey.buildAdvancedKey(fullPathKey);
-		return put(key, value);
+		put(key, value);
+	}
+
+	public void setInteger(String fullPathKey, Integer value) {
+		AdvancedKey key = AdvancedKey.buildAdvancedKey(fullPathKey);
+		put(key, value + "");
+	}
+
+	public void setBoolean(String fullPathKey, Boolean value) {
+		AdvancedKey key = AdvancedKey.buildAdvancedKey(fullPathKey);
+		put(key, value + "");
+	}
+
+	public void setLong(String fullPathKey, Long value) {
+		AdvancedKey key = AdvancedKey.buildAdvancedKey(fullPathKey);
+		put(key, value + "");
+	}
+
+	public void setDouble(String fullPathKey, Double value) {
+		AdvancedKey key = AdvancedKey.buildAdvancedKey(fullPathKey);
+		put(key, value + "");
+	}
+
+	public void setFloat(String fullPathKey, Float value) {
+		AdvancedKey key = AdvancedKey.buildAdvancedKey(fullPathKey);
+		put(key, value + "");
 	}
 
 	/**

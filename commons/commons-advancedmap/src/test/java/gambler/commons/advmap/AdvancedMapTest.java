@@ -35,35 +35,35 @@ public class AdvancedMapTest extends TestCase {
 
 	public void testGetProperty() {
 		assertEquals("Welcome to Beijing",
-				xml1.getProperty("base.jenny." + Locale.getDefault()));
-		assertEquals("北京欢迎您", xml1.getProperty("base.jack.zh_CN"));
+				xml1.getString("base.jenny." + Locale.getDefault()));
+		assertEquals("北京欢迎您", xml1.getString("base.jack.zh_CN"));
 		assertEquals("Welcome to Beijing 北京欢迎您",
-				xml1.getProperty("base.third.zh_CN"));
+				xml1.getString("base.third.zh_CN"));
 	}
 
 	public void testSetProperty() {
-		global.setProperty("base.welcome.zh_TW", "test info");
-		assertEquals("test info", global.getProperty("base.welcome.zh_TW"));
+		global.setString("base.welcome.zh_TW", "test info");
+		assertEquals("test info", global.getString("base.welcome.zh_TW"));
 	}
 
 	public void testMapRefresh() throws InterruptedException {
 		assertEquals("Welcome to Beijing",
-				xml1.getProperty("base.jenny." + Locale.getDefault()));
-		xml1.setProperty("base.jenny." + Locale.getDefault(), "updated");
+				xml1.getString("base.jenny." + Locale.getDefault()));
+		xml1.setString("base.jenny." + Locale.getDefault(), "updated");
 		assertEquals("updated",
-				xml1.getProperty("base.jenny." + Locale.getDefault()));
+				xml1.getString("base.jenny." + Locale.getDefault()));
 		Thread.sleep(1000 * 5L);
 		assertEquals("Welcome to Beijing",
-				xml1.getProperty("base.jenny." + Locale.getDefault()));
+				xml1.getString("base.jenny." + Locale.getDefault()));
 
 	}
 
 	public void testOverrideProperty() {
 		assertEquals("Welcome to Beijing",
-				global.getProperty("base.jenny." + Locale.getDefault()));
-		assertEquals("Nice Work", global.getProperty("base.jack.zh_CN"));
+				global.getString("base.jenny." + Locale.getDefault()));
+		assertEquals("Nice Work", global.getString("base.jack.zh_CN"));
 		assertEquals("Welcome to Beijing Nice Work",
-				global.getProperty("base.third.zh_CN"));
+				global.getString("base.third.zh_CN"));
 	}
 
 }

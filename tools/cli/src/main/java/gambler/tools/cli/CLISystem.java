@@ -137,7 +137,7 @@ public final class CLISystem implements IConfigrableConstants {
 
 	private void loadHistoryCommands() {
 		try {
-			File historyFile = new File(SYSCONFIG.getProperty(
+			File historyFile = new File(SYSCONFIG.getString(
 					CLISystem.HISTORY_COMMAND_FILE,
 					DEFAULT_HISTORY_COMMAND_FILE));
 			if (!historyFile.exists()) {
@@ -209,7 +209,7 @@ public final class CLISystem implements IConfigrableConstants {
 
 	public void addHistoryCommand(ICommand command) {
 		historyCommands.add(command);
-		Integer max = Integer.parseInt(CLISystem.SYSCONFIG.getProperty(
+		Integer max = Integer.parseInt(CLISystem.SYSCONFIG.getString(
 				MAX_HISTORY_SIZE, "100"));
 		if (historyCommands.size() > max) {
 			historyCommands.remove(0);

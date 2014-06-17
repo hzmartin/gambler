@@ -47,7 +47,7 @@ public class ExitSysCommand extends AbstractCommand {
 
 	public void saveHistory() {
 		try {
-			String historyFile = CLISystem.SYSCONFIG.getProperty(
+			String historyFile = CLISystem.SYSCONFIG.getString(
 					CLISystem.HISTORY_COMMAND_FILE,
 					CLISystem.DEFAULT_HISTORY_COMMAND_FILE);
 			FileWriter fileWriter = new FileWriter(new File(historyFile));

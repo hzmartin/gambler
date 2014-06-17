@@ -21,10 +21,10 @@ public class SysConfigCommand extends AbstractCommand implements ICommand {
 		if (isSubCommand("set")) {
 			String key = params[1];
 			String value = params[2];
-			sysConfig.setProperty(key, value);
+			sysConfig.setString(key, value);
 		} else if (isSubCommand("get")) {
 			String key = params[1];
-			System.out.println(sysConfig.getProperty(key));
+			System.out.println(sysConfig.getString(key));
 		} else if (isSubCommand("list")) {
 			Set<Entry<AdvancedKey, String>> entrySet = sysConfig.entrySet();
 			for (Entry<AdvancedKey, String> entry : entrySet) {

@@ -13,16 +13,9 @@ http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
 http://www.springframework.org/schema/aop
 http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
            
-           
-    <context:component-scan base-package="gambler.examples.webapp2.controller">
-    	<!-- 
-		<context:include-filter type="regex"
-			expression="gambler.examples.webapp2.controller.*Controller"/>
-		-->
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/> 
+	<context:component-scan base-package="gambler.examples.webapp2">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
 	</context:component-scan>
-    
-	<context:component-scan base-package="gambler.examples.webapp2.aop" />
     <!-- 打开aop 注解 -->
     <aop:aspectj-autoproxy />
     

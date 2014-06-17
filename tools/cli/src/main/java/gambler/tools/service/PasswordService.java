@@ -16,12 +16,12 @@ public class PasswordService {
 	}
 
 	private StandardPBEStringEncryptor getEncryptor() {
-		String ePassword = sysConfig.getProperty("password.password");
+		String ePassword = sysConfig.getString("password.password");
 		if (StringUtils.isEmpty(ePassword)) {
 			System.out
 					.println("WARN: password missing, default encrypt password will be used!");
 		}
-		String algorithm = sysConfig.getProperty("password.algorithm");
+		String algorithm = sysConfig.getString("password.algorithm");
 		if (StringUtils.isEmpty(algorithm)) {
 			System.out
 					.println("WARN: algorightm missing, PBEWithMD5AndDES will be used");
