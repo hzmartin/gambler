@@ -30,6 +30,10 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 			</listener-class>
 	</listener>
 	
+	<listener>
+		<listener-class>gambler.examples.webapp2.listener.SystemStaticLoadListener</listener-class>
+	</listener>
+	
 	<!-- encoding filter -->
 	<filter>
 		<filter-name>SetCharacterEncoding</filter-name>
