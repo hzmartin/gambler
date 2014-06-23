@@ -47,7 +47,7 @@ public class LoginController {
 		return login;
 	}
 
-	@RequestMapping(value = "/create")
+	@RequestMapping(value = "/createSuper")
 	@ResponseBody
 	public Object create(final HttpServletRequest request,
 			@RequestParam(required = true) String userId,
@@ -59,6 +59,7 @@ public class LoginController {
 		}
 		AuthUser user = new AuthUser();
 		user.setUserId(userId);
+		user.setSuperUser(true);
 		user.setPassword(authUserService.getSaltedPassword(password, userId));
 		return authUserService.save(user);
 	}

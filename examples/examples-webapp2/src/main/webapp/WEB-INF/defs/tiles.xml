@@ -1,19 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>  
-<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN" "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">  
-<tiles-definitions>  
-    <definition name="demobase" template="/WEB-INF/templates/demo/layout.jsp">
-    	<put-attribute name="title" value="" />
-    	<put-attribute name="css" value="" />
-    	<put-attribute name="script" value="" />
-        <put-attribute name="header" value="/WEB-INF/templates/demo/header.jsp" />  
-        <put-attribute name="footer" value="/WEB-INF/templates/demo/footer.jsp" /> 
-    </definition>  
-    
-    <definition name="demo" extends="demobase">
-        <put-attribute name="title" value="Hello"/>
-        <put-attribute name="css" value="/demo/hello.css" />
-        <put-attribute name="script" value="/demo/hello.js" />
-        <put-attribute name="content" value="/demo/hello.jsp" />
-    </definition>
-    
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN" "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<definition name="base" template="/WEB-INF/templates/layout.jsp">
+		<put-attribute name="title" value="Gambler" />
+		<put-attribute name="css" value="" />
+		<put-attribute name="script" value="" />
+		<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
+	</definition>
+	<definition name="demo" extends="base">
+		<put-attribute name="title" value="Hello"/>
+		<put-attribute name="css" value="/demo/hello.css" />
+		<put-attribute name="script" value="/demo/hello.js" />
+		<put-attribute name="content" value="/demo/hello.ftl" />
+	</definition>
+	<definition name="index" extends="base">
+		<put-attribute name="title" value="Gambler Home" />
+		<put-attribute name="content" value="/page/index.jsp" />
+	</definition>
+	<definition name="signin" template="/page/signin.jsp">
+		<put-attribute name="title" value="Gambler Login" />
+	</definition>
+	<definition name="404" template="/page/404.jsp">
+		<put-attribute name="title" value="Gambler - 404 File Not Found" />
+	</definition>
+	<definition name="500" template="/page/500.jsp">
+		<put-attribute name="title" value="Gambler - Server Busy" />
+	</definition>
+	<definition name="403" template="/page/403.jsp">
+		<put-attribute name="title" value="Gambler - Forbidden" />
+	</definition>
 </tiles-definitions> 

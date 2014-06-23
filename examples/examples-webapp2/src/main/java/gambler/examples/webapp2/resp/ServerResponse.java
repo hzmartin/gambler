@@ -10,6 +10,10 @@ public class ServerResponse {
 
 	private String debug;
 
+	public ServerResponse() {
+		setResponseStatus(ResponseStatus.OK);
+	}
+
 	public String getCode() {
 		return code;
 	}
@@ -42,7 +46,7 @@ public class ServerResponse {
 		this.debug = debug;
 	}
 
-	public void setResponseStatus(ResponseStatus status) {
+	public final void setResponseStatus(ResponseStatus status) {
 		this.code = status.getCode();
 		this.msg = status.getMessage();
 	}

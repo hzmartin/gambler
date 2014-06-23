@@ -1,19 +1,10 @@
 <map>
-
-	<prop namespace="base" locale="zh_CN">
-		<key name="jack">北京欢迎您</key>
-	</prop>
-	<prop namespace="base">
-		<key name="jenny">Welcome to Beijing</key>
-	</prop>
-	<prop namespace="base" locale="zh_CN">
-		<key name="third">Welcome to Beijing #{base.jack.zh_CN}</key>
-	</prop>
 	<prop>
-		<key name="hello" order="2">Nice</key>
-		<key name="hello" order="3">Nice Hello</key>
-                <key name="mapRefreshInterval">1</key>
+		<key name="msmode">DEV</key>
 	</prop>
-	<prop></prop>
-
+	<prop namespace="mainnav">
+		<key name="count">10</key>
+		<key name="name1">Google</key>
+		<key name="url1">http://www.google.com</key>
+	</prop>
 </map>

@@ -26,7 +26,8 @@ public class DemoController {
 	private AuthUserService userService;
 
 	@RequestMapping("/welcome")
-	public ModelAndView welcome(@RequestParam(required = true) String message) {
+	public ModelAndView welcome(final HttpServletRequest request,
+			@RequestParam(required = true) String message) {
 		return new ModelAndView("welcome", "message", message);
 	}
 
@@ -35,7 +36,7 @@ public class DemoController {
 	 */
 	@RequestMapping(value = "/echo", method = { RequestMethod.POST,
 			RequestMethod.GET })
-	public ResponseEntity<String> echo(
+	public ResponseEntity<String> echo(final HttpServletRequest request,
 			@RequestParam(required = true) String message) {
 		return new ResponseEntity<String>("[echo]" + message, HttpStatus.OK);
 	}
@@ -45,10 +46,11 @@ public class DemoController {
 	 * 
 	 */
 	@RequestMapping("/hello")
-	public String find(Model model, @RequestParam(required = true) String userId) {
+	public ModelAndView find(final HttpServletRequest request, Model model,
+			@RequestParam(required = true) String userId) {
 		AuthUser user = userService.findUserById(userId);
 		model.addAttribute("firstName", user.getFirstName());
-		return "demo";
+		return new ModelAndView("demo");
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)

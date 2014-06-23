@@ -32,7 +32,7 @@ public class AuthUserService {
 
 	private static final String COOKIE_ACCESS_TOKEN = "GAMBLER_ACCESS_TOKEN";
 
-	private static final String SESSION_USER_KEY = "G.SESSION_USER";
+	private static final String SESSION_USER_KEY = "sgambler";
 
 	@Autowired
 	private AuthUserDao userDao;
@@ -47,7 +47,7 @@ public class AuthUserService {
 	public Account login(final HttpServletRequest request,
 			final HttpServletResponse response, String userId, String password,
 			boolean remme) {
-		Account loginUser = verifyLogin(userId, password);
+		Account loginUser = verifyLogin(request, userId, password);
 		if (loginUser == null) {
 			return null;
 		}
@@ -60,10 +60,11 @@ public class AuthUserService {
 	}
 
 	public boolean hasLogined(HttpServletRequest request) {
-		return null == getLoginUser(request);
+		return null != getLoginUser(request);
 	}
 
-	private Account verifyLogin(String userId, String password) {
+	private Account verifyLogin(final HttpServletRequest request,
+			String userId, String password) {
 		AuthUser user = userDao.findByUserId(userId);
 		if (user == null) {
 			return null;
@@ -73,10 +74,14 @@ public class AuthUserService {
 		}
 		Account account = new Account();
 		account.setUserId(userId);
+
+		HttpSession session = request.getSession();
+		session.setAttribute(SESSION_USER_KEY, account);
 		return account;
 	}
 
-	private boolean isCorrentPassword(String rawPass, String dbPass, String userId) {
+	private boolean isCorrentPassword(String rawPass, String dbPass,
+			String userId) {
 		if (rawPass == null || rawPass.isEmpty())
 			return false;
 		return getSaltedPassword(rawPass, userId).equals(dbPass);
@@ -114,7 +119,7 @@ public class AuthUserService {
 			logger.error("decrypt error!", e);
 			return null;
 		}
-		return verifyLogin(userId, password);
+		return verifyLogin(request, userId, password);
 	}
 
 	private void remmCookie(HttpServletResponse response, String userId,
@@ -163,9 +168,9 @@ public class AuthUserService {
 	}
 
 	private StandardPBEStringEncryptor getStringEncryptor() {
-		String ePassword = sysconf.getString("yx.encrypt.password",
+		String ePassword = sysconf.getString("encryptPassword",
 				"hzwangqh.*&^JLIjkd<w+lnLjGH!");
-		String algorithm = sysconf.getString("yx.password.algorithm",
+		String algorithm = sysconf.getString("passwordAlgorithm",
 				"PBEWithMD5AndDES");
 		StandardPBEStringEncryptor encryptor = new org.jasypt.encryption.pbe.StandardPBEStringEncryptor();
 		EnvironmentStringPBEConfig config = new EnvironmentStringPBEConfig();

@@ -1,14 +1,19 @@
 package gambler.examples.webapp2.aop;
 
+import gambler.commons.advmap.XMLMap;
 import gambler.examples.webapp2.annotation.AuthRequired;
 import gambler.examples.webapp2.annotation.LogRequestParam;
 import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
 import gambler.examples.webapp2.resp.ServerResponse;
 import gambler.examples.webapp2.service.AuthUserService;
+import gambler.examples.webapp2.vo.Account;
+import gambler.examples.webapp2.vo.NaviItem;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +26,10 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 定义切面
@@ -42,14 +49,18 @@ public class RequestAspectAdvice {
 	@Resource
 	protected AuthUserService authUserService;
 
+	@Autowired
+	private XMLMap sysconf;
+
 	@Around("within(@org.springframework.stereotype.Controller *)")
 	public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
 		MethodSignature joinPointObject = (MethodSignature) pjp.getSignature();
 		Method method = joinPointObject.getMethod();
 		// =============start input param log build=====================
 		StringBuilder execLogStr = new StringBuilder();
-		execLogStr.append("处理请求：  " + pjp.getTarget().getClass().getName()
-				+ "#" + pjp.getSignature().getName() + "(");
+		execLogStr.append("Process request：  "
+				+ pjp.getTarget().getClass().getName() + "#"
+				+ pjp.getSignature().getName() + "(");
 		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
 		int argsLen = pjp.getArgs().length;
 		if (parameterAnnotations.length == argsLen) {
@@ -73,7 +84,7 @@ public class RequestAspectAdvice {
 			}
 		} else {
 			logger.error(String.format(
-					"inconsistent argument length while invoke %s#%s!", pjp
+					"Inconsistent argument length while invoke %s#%s!", pjp
 							.getTarget().getClass().getName(), pjp
 							.getSignature().getName()));
 		}
@@ -81,11 +92,13 @@ public class RequestAspectAdvice {
 		// =============end input param log build=====================
 
 		if (!(pjp.getArgs()[0] instanceof HttpServletRequest)) {
-			throw new IllegalArgumentException("非法参数, 方法"
-					+ pjp.getSignature().getName()
-					+ "的第一个参数必须是HttpServletRequest request");
+			throw new IllegalArgumentException(
+					"Illegal Argument, the 1st paramter of Method("
+							+ pjp.getSignature().getName()
+							+ ") must be HttpServletRequest");
 		}
 		HttpServletRequest request = (HttpServletRequest) pjp.getArgs()[0];
+		String target = request.getRequestURI();
 		ServerResponse serverResponse = new ServerResponse();
 		AuthRequired authRequiredAnno = method
 				.getAnnotation(AuthRequired.class);
@@ -110,8 +123,8 @@ public class RequestAspectAdvice {
 								.setResponseStatus(ResponseStatus.NO_PERMISSION);
 					}
 				}
-				if (ResponseStatus.OK.getCode()
-						.equals(serverResponse.getCode())) {
+				if (!ResponseStatus.OK.getCode().equals(
+						serverResponse.getCode())) {
 					if (method.isAnnotationPresent(ResponseBody.class)) {
 						JSONObject object = JSONObject
 								.fromObject(serverResponse);
@@ -119,7 +132,15 @@ public class RequestAspectAdvice {
 						logger.info(execLogStr.toString());
 						return serverResponse;
 					} else {
-						throw new UnsupportedOperationException("unsupported!");
+						if (serverResponse.getCode().equals(
+								ResponseStatus.USER_NOT_LOGGED.getCode())) {
+							return new ModelAndView("signin", "nextUrl", target);
+						} else if (serverResponse.getCode().equals(
+								ResponseStatus.NO_PERMISSION.getCode())) {
+							return new ModelAndView("view", "name", "403");
+						} else {
+							return new ModelAndView("view", "name", "500");
+						}
 					}
 				}
 			}
@@ -143,6 +164,43 @@ public class RequestAspectAdvice {
 			return serverResponse;
 		} else {
 			Object result = pjp.proceed();
+			if (result instanceof ModelAndView) {
+				ModelAndView result1 = (ModelAndView) result;
+				result1.getModel().put("msmode", sysconf.getString("msmode"));
+				Account loginUser = authUserService.getLoginUser(request);
+				if (loginUser != null) {
+					List<NaviItem> menus = new ArrayList<NaviItem>();
+					int count = sysconf.getInteger("mainnav.count", 0);
+					for (int i = 0; i < count; i++) {
+						String name = sysconf.getString("mainnav.name"
+								+ (i + 1));
+						String url = sysconf.getString("mainnav.url" + (i + 1));
+						if (StringUtils.isBlank(name)
+								|| StringUtils.isBlank(url)) {
+							continue;
+						}
+						// String perm = sysconf.getString("mainnav." + (i + 1)
+						// + ".perm");
+						// if (!StringUtils.isBlank(perm))
+						// {
+						// long pid = Long.parseLong(perm);
+						// boolean hasThisPerm =
+						// authUserService.checkUserPermission(loginUser.getMobile(),
+						// pid);
+						// if (hasThisPerm)
+						// {
+						// menus.add(new NaviItem(name, url));
+						// }
+						// }
+						// else
+						// {
+						menus.add(new NaviItem(name, url));
+						// }
+					}
+
+					result1.getModel().put("mainnav", menus);
+				}
+			}
 			return result;
 		}
 
