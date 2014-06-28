@@ -12,9 +12,9 @@ public class Account {
 
 	private Timestamp lastLogin;
 
-	private boolean issuper;
+	private Integer issuper;
 
-	private boolean isactive;
+	private Integer isactive;
 
 	private Timestamp dateJoined;
 
@@ -22,8 +22,8 @@ public class Account {
 		this.userId = user.getUserId();
 		this.nick = user.getNick();
 		this.lastLogin = user.getLastLogin();
-		this.isactive = user.isIsactive();
-		this.issuper = user.isIssuper();
+		this.isactive = user.getIsactive();
+		this.issuper = user.getIssuper();
 		this.dateJoined = user.getDateJoined();
 	}
 
@@ -56,19 +56,19 @@ public class Account {
 		this.lastLogin = lastLogin;
 	}
 
-	public boolean isIssuper() {
+	public Integer getIssuper() {
 		return issuper;
 	}
 
-	public void setIssuper(boolean issuper) {
+	public void setIssuper(Integer issuper) {
 		this.issuper = issuper;
 	}
 
-	public boolean isIsactive() {
+	public int getIsactive() {
 		return isactive;
 	}
 
-	public void setIsactive(boolean isactive) {
+	public void setIsactive(int isactive) {
 		this.isactive = isactive;
 	}
 

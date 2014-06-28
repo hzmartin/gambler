@@ -17,6 +17,12 @@ public interface AuthDao {
 
 	int save(User user);
 
+	int updatePassword(User user);
+	
+	int updateUserActiveFlag(User user);
+	
+	int updateUserSuperFlag(User user);
+	
 	int update(User user);
 
 	int delete(String userId);

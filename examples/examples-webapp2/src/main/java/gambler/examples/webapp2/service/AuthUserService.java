@@ -9,6 +9,7 @@ import gambler.examples.webapp2.domain.auth.UserPermission;
 import gambler.examples.webapp2.domain.auth.UserRole;
 import gambler.examples.webapp2.vo.Account;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -76,6 +77,9 @@ public class AuthUserService extends AbstractService {
 		if (!isCorrentPassword(password, user.getPassword(), userId)) {
 			return null;
 		}
+		user.setLastLogin(new Timestamp(System.currentTimeMillis()));
+		userDao.update(user);
+		
 		Account account = new Account(user);
 		HttpSession session = request.getSession();
 		session.setAttribute(SESSION_USER_KEY, account);
@@ -237,10 +241,10 @@ public class AuthUserService extends AbstractService {
 
 	public boolean checkUserPermission(String userId, long... pids) {
 		User user = findUserById(userId);
-		if (!user.isIsactive()) {
+		if (user.getIsactive() == 0) {
 			return false;
 		}
-		if (user.isIssuper()) {
+		if (user.getIssuper() == 1) {
 			return true;
 		}
 

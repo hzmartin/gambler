@@ -13,7 +13,7 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = 2004187270602400843L;
 	
-	private long uid;
+	private Long uid;
 
 	// unique
 	private String userId;
@@ -28,15 +28,15 @@ public class User implements Serializable {
 	
 	private Timestamp updateTime;
 
-	private boolean isactive;
+	private Integer isactive;
 	
-	private boolean issuper;
+	private Integer issuper;
 
-	public long getUid() {
+	public Long getUid() {
 		return uid;
 	}
 
-	public void setUid(long uid) {
+	public void setUid(Long uid) {
 		this.uid = uid;
 	}
 
@@ -88,19 +88,19 @@ public class User implements Serializable {
 		this.updateTime = updateTime;
 	}
 
-	public boolean isIsactive() {
+	public Integer getIsactive() {
 		return isactive;
 	}
 
-	public void setIsactive(boolean isactive) {
+	public void setIsactive(Integer isactive) {
 		this.isactive = isactive;
 	}
 
-	public boolean isIssuper() {
+	public Integer getIssuper() {
 		return issuper;
 	}
 
-	public void setIssuper(boolean issuper) {
+	public void setIssuper(Integer issuper) {
 		this.issuper = issuper;
 	}
 

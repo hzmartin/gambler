@@ -51,7 +51,7 @@ public class SysMgmtController extends AbstractController {
 		if (sysconf.getBoolean("switch.accessCreateSuper", false)) {
 			throw new AccessForbiddenException("switch.accessCreateSuper off");
 		}
-		if (RegexUtil.isValidUserId(userId)) {
+		if (!RegexUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"userId illegal");
 		}
@@ -61,8 +61,8 @@ public class SysMgmtController extends AbstractController {
 		}
 		User user = new User();
 		user.setUserId(userId);
-		user.setIssuper(true);
-		user.setIsactive(true);
+		user.setIssuper(1);
+		user.setIsactive(1);
 		user.setPassword(authUserService.getSaltedPassword(password, userId));
 		return authUserService.saveAsSystemUser(user);
 	}
@@ -75,7 +75,7 @@ public class SysMgmtController extends AbstractController {
 			@RequestParam String newPass) throws ActionException {
 		Account loginUser = authUserService.getLoginUser(request);
 
-		if (!loginUser.isIssuper()) {
+		if (loginUser.getIssuper() == 0) {
 			if (loginUser.getUserId().equals(userId)) {
 				throw new ActionException(ResponseStatus.NO_PERMISSION,
 						loginUser + "不允许修改别人的密码！");
@@ -96,14 +96,14 @@ public class SysMgmtController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/createOrUpdateUser")
-	@AuthRequired(requiredPerms = { AuthConstants.PERM_SYSTEM.PERM_CREATE_UPDATE_SYSUSER })
+	@AuthRequired(requiredPerms = { AuthConstants.PERM_SYSTEM.PERM_CREATE_UPDATE_USER })
 	@ResponseBody
-	public Object createOrUpdateSysUser(
+	public Object createOrUpdateUser(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId,
 			@LogRequestParam(name = "nick") @RequestParam(required = false) String nick)
 			throws UnexpectedException, ActionException {
-		if (RegexUtil.isValidUserId(userId)) {
+		if (!RegexUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"userId illegal");
 		}
@@ -111,7 +111,7 @@ public class SysMgmtController extends AbstractController {
 		User user = authUserService.findUserById(userId);
 		User newUser = new User();
 		newUser.setUserId(userId);
-		newUser.setIsactive(true);
+		newUser.setIsactive(1);
 		if (user != null) {
 			int updateCount = authUserService.updateUser(newUser);
 			if (updateCount == 1) {
@@ -131,16 +131,20 @@ public class SysMgmtController extends AbstractController {
 
 	@RequestMapping(value = "/delUser")
 	@ResponseBody
-	@AuthRequired(requiredPerms = { AuthConstants.PERM_SYSTEM.PERM_DEL_SYSUSER })
+	@AuthRequired(requiredPerms = { AuthConstants.PERM_SYSTEM.PERM_DEL_USER })
 	public Object delSysUsers(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId)
 			throws UnexpectedException, ActionException {
-		if (RegexUtil.isValidUserId(userId)) {
+		if (!RegexUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"userId illegal");
 		}
 		Account loginUser = authUserService.getLoginUser(request);
+		if (loginUser.getUserId().equals(userId)) {
+			throw new ActionException(ResponseStatus.NO_PERMISSION, loginUser
+					+ "无法删除自己的账号！");
+		}
 		int delUserCount = authUserService.deleteUser(userId);
 		if (delUserCount == 1) {
 			logger.info(loginUser + " delete user " + userId);
@@ -154,12 +158,12 @@ public class SysMgmtController extends AbstractController {
 
 	@RequestMapping(value = "/getUser")
 	@ResponseBody
-	@AuthRequired(requiredPerms = { AuthConstants.PERM_SYSTEM.PERM_LIST_SYSUSER })
-	public Object getSysUsers(
+	@AuthRequired(requiredPerms = { AuthConstants.PERM_SYSTEM.PERM_LIST_USER })
+	public Object getUser(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId)
 			throws ActionException {
-		if (RegexUtil.isValidUserId(userId)) {
+		if (!RegexUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"userId illegal");
 		}
@@ -167,19 +171,19 @@ public class SysMgmtController extends AbstractController {
 		if (user == null) {
 			throw new ActionException(ResponseStatus.USER_NOT_EXSIST);
 		} else {
-			return user;
+			return new Account(user);
 		}
 
 	}
 
 	@RequestMapping(value = "/getUserPermission")
 	@ResponseBody
-	@AuthRequired(requiredPerms = { AuthConstants.PERM_SYSTEM.PERM_LIST_SYSPERM })
-	public Object getSysUserPermission(
+	@AuthRequired(requiredPerms = { AuthConstants.PERM_SYSTEM.PERM_LIST_USERPERM })
+	public Object getUserPermission(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId)
 			throws ActionException {
-		if (RegexUtil.isValidUserId(userId)) {
+		if (!RegexUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"userId illegal");
 		}
@@ -219,7 +223,7 @@ public class SysMgmtController extends AbstractController {
 			}
 			result.add(pvo);
 		}
-		return new Object[] { user, result };
+		return new Object[] { new Account(user), result };
 
 	}
 
@@ -235,13 +239,13 @@ public class SysMgmtController extends AbstractController {
 	 */
 	@RequestMapping(value = "/updateUserPermission")
 	@ResponseBody
-	@AuthRequired(requiredPerms = { AuthConstants.PERM_SYSTEM.PERM_UPDATE_SYSPERM })
-	public Object updateSysUserPermission(
+	@AuthRequired(requiredPerms = { AuthConstants.PERM_SYSTEM.PERM_UPDATE_USERPERM })
+	public Object updateUserPermission(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId,
 			@LogRequestParam(name = "config") @RequestParam(required = true) String config)
 			throws ActionException {
-		if (RegexUtil.isValidUserId(userId)) {
+		if (!RegexUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"userId illegal");
 		}

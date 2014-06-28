@@ -28,14 +28,27 @@
     	#{isactive},
     	#{issuper})
     </insert>
+    <update id="updatePassword" parameterType="User">
+    		update gb_user 
+    		set password=#{password}, update_time=CURRENT_TIMESTAMP
+    		where user_id = #{userId}
+    </update>
+    <update id="updateUserActiveFlag" parameterType="User">
+    		update gb_user 
+    		set isactive=#{isactive}, update_time=CURRENT_TIMESTAMP
+    		where user_id = #{userId}
+    </update>
+    <update id="updateUserSuperFlag" parameterType="User">
+    		update gb_user 
+    		set issuper=#{issuper}, update_time=CURRENT_TIMESTAMP
+    		where user_id = #{userId}
+    </update>
     
     <update id="update" parameterType="User">
     		update gb_user 
     		<trim prefix="SET" suffixOverrides=",">
     		<if test="nick != null">nick=#{nick},</if>
-    		<if test="password != null">password=#{password},</if>
-    		<if test="isactive != null">isactive=#{isactive},</if>
-    		<if test="issuper != null">issuper=#{issuper},</if>
+    		<if test="lastLogin != null">last_login=#{lastLogin},</if>
     		update_time=CURRENT_TIMESTAMP
     		</trim>
     		where user_id = #{userId}

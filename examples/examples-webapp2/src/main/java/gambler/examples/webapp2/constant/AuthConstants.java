@@ -21,17 +21,17 @@ public class AuthConstants {
 
 		long PERM_ENTER_SYSUSER_MGMT = 1L; // 进入系统用户管理系统
 
-		long PERM_CREATE_UPDATE_SYSUSER = 2L; // 创建和更新系统用户
+		long PERM_CREATE_UPDATE_USER = 2L; // 创建和更新系统用户
 
-		long PERM_LIST_SYSUSER = 3L; // 查看系统用户
+		long PERM_LIST_USER = 3L; // 查看系统用户
 
-		long PERM_DEL_SYSUSER = 4L; // 删除系统用户
+		long PERM_DEL_USER = 4L; // 删除系统用户
 
 		long PERM_ENTER_SYSPERM_MGMT = 5L; // 进入权限管理系统
 
-		long PERM_LIST_SYSPERM = 6L; // 查看用户权限信息
+		long PERM_LIST_USERPERM = 6L; // 查看用户权限信息
 
-		long PERM_UPDATE_SYSPERM = 7L;// 更新用户权限信息
+		long PERM_UPDATE_USERPERM = 7L;// 更新用户权限信息
 
 	}
 
