@@ -1,8 +1,3 @@
-/*
- * @(#) FileWriter.java 2013-11-6
- * 
- * Copyright 2010 NetEase.com, Inc. All rights reserved.
- */
 package gambler.commons.util.io;
 
 import java.io.BufferedWriter;

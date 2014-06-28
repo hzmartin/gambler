@@ -55,33 +55,18 @@ public class TimeTagCommand extends AbstractCommand {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.chinatelecom.yixin.support.cli.ICommand#getDescription()
-     */
     @Override
     public String[] getDescription() {
         return new String[]{"get current time", "get current time",
             "get time, default date format: yyyy-MM-dd", "get date"};
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.chinatelecom.yixin.support.cli.ICommand#getSyntax()
-     */
     @Override
     public String[] getSyntax() {
         return new String[]{"time", "timetag now (time|date)",
             "timetag date (time in second)", "timetag time (date string)"};
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.chinatelecom.yixin.support.cli.cmd.AbstractCommand#getAlias()
-     */
     @Override
     public String[] getAlias() {
         return new String[]{"t"};

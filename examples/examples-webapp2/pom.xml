@@ -42,6 +42,7 @@
                 <gb.datasource.maxConnectionAge>1800</gb.datasource.maxConnectionAge>
                 <gb.datasource.maxIdleTime>1000</gb.datasource.maxIdleTime>
                 <gb.datasource.maxStatements>0</gb.datasource.maxStatements>
+                <gb.swtich.accessCreateSuper>true</gb.swtich.accessCreateSuper>
             </properties>
         </profile>
     </profiles>
@@ -290,14 +291,16 @@
                 <includes>
                     <include>log4j.xml</include>
                     <include>datasource.properties</include>
+                    <include>sysconf.properties</include>
                 </includes>
             </resource>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
                 <filtering>false</filtering>
                 <excludes>
-                    <exclude>log4j.properties</exclude>
+                    <exclude>log4j.xml</exclude>
                     <exclude>datasource.properties</exclude>
+                    <exclude>sysconf.properties</exclude>
                 </excludes>
             </resource>
         </resources>

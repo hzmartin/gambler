@@ -6,7 +6,7 @@
 	<div class="jumbotron">
 		<div class="container">
 			<h1>
-				Gambler Demo
+				Gambler
 				<c:if test="${msmode ne ''}">
 					<span class="badge"><c:out value="${msmode}" /></span>
 				</c:if>

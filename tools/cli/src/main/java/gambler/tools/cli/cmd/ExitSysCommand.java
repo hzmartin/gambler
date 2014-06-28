@@ -26,11 +26,6 @@ public class ExitSysCommand extends AbstractCommand {
 		super("exit");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.chinatelecom.yixin.support.cli.cmd.AbstractCommand#getAlias()
-	 */
 	@Override
 	public String[] getAlias() {
 		return new String[] { "bye", "quit" };
@@ -64,21 +59,11 @@ public class ExitSysCommand extends AbstractCommand {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.chinatelecom.yixin.support.cli.ICommand#getDescription()
-	 */
 	@Override
 	public String[] getDescription() {
 		return new String[] { "exit the system" };
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.chinatelecom.yixin.support.cli.ICommand#getSyntax()
-	 */
 	@Override
 	public String[] getSyntax() {
 		return new String[] { "exit | bye | quit" };

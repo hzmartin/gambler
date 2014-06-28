@@ -1,6 +1,6 @@
 package gambler.examples.webapp2.controller;
 
-import gambler.examples.webapp2.domain.AuthUser;
+import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
 import gambler.examples.webapp2.service.AuthUserService;
@@ -35,7 +35,7 @@ public class LoginController {
 			@RequestParam(required = false) boolean remme)
 			throws ActionException {
 
-		AuthUser dbUser = authUserService.findUserById(userId);
+		User dbUser = authUserService.findUserById(userId);
 		if (dbUser == null) {
 			throw new ActionException(ResponseStatus.USER_NOT_EXSIST);
 		}
@@ -45,23 +45,6 @@ public class LoginController {
 			throw new ActionException(ResponseStatus.LOGIN_FAILED);
 		}
 		return login;
-	}
-
-	@RequestMapping(value = "/createSuper")
-	@ResponseBody
-	public Object create(final HttpServletRequest request,
-			@RequestParam(required = true) String userId,
-			@RequestParam(required = true) String password)
-			throws ActionException {
-		AuthUser dbUser = authUserService.findUserById(userId);
-		if (dbUser != null) {
-			throw new ActionException(ResponseStatus.USER_ALREADY_EXSIST);
-		}
-		AuthUser user = new AuthUser();
-		user.setUserId(userId);
-		user.setSuperUser(true);
-		user.setPassword(authUserService.getSaltedPassword(password, userId));
-		return authUserService.save(user);
 	}
 
 	@RequestMapping(value = "/logout")

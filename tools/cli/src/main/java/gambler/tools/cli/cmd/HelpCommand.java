@@ -36,21 +36,11 @@ public class HelpCommand extends AbstractCommand implements ICommand {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.chinatelecom.yixin.support.cli.ICommand#getDescription()
-	 */
 	@Override
 	public String[] getDescription() {
 		return new String[] { "show all commands' help", "show help of the command" };
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.chinatelecom.yixin.support.cli.ICommand#getSyntax()
-	 */
 	@Override
 	public String[] getSyntax() {
 		return new String[] { "help", "help /command/" };

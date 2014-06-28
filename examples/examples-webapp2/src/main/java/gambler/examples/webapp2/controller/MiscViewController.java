@@ -1,6 +1,7 @@
 package gambler.examples.webapp2.controller;
 
 import gambler.examples.webapp2.annotation.AuthRequired;
+import gambler.examples.webapp2.constant.AuthConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +27,7 @@ public class MiscViewController {
 	}
 
 	@RequestMapping(value = "/index")
-	@AuthRequired()
+	@AuthRequired(requiredPerms={AuthConstants.PERM_MISC.PERM_ENTER_HOME_PAGE})
 	public Object index(final HttpServletRequest request,
 			final HttpServletResponse response) {
 		return new ModelAndView("index");
@@ -48,12 +49,6 @@ public class MiscViewController {
 	public ModelAndView serverbusy(final HttpServletRequest request,
 			final String name) {
 		return new ModelAndView("500");
-	}
-
-	@RequestMapping(value = "/view")
-	@AuthRequired()
-	public ModelAndView view(final HttpServletRequest request, final String name) {
-		return new ModelAndView(name);
 	}
 
 }

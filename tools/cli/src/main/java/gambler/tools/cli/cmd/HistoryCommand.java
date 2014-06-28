@@ -1,8 +1,3 @@
-/*
- * @(#) HistoryCommand.java 2013-9-27
- * 
- * Copyright 2010 NetEase.com, Inc. All rights reserved.
- */
 package gambler.tools.cli.cmd;
 
 import gambler.tools.cli.CLISystem;
@@ -39,22 +34,12 @@ public class HistoryCommand extends AbstractCommand implements ICommand {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.chinatelecom.yixin.yipay.cli.ICommand#getDescription()
-     */
     @Override
     public String[] getDescription() {
         return new String[]{"show history command log，configurable key for max history size:" + CLISystem.MAX_HISTORY_SIZE,
             "show the last # history commands"};
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.chinatelecom.yixin.yipay.cli.ICommand#getSyntax()
-     */
     @Override
     public String[] getSyntax() {
         return new String[]{"history", "history /num/"};

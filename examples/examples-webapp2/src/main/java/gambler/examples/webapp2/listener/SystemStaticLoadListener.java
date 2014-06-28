@@ -1,5 +1,7 @@
 package gambler.examples.webapp2.listener;
 
+import gambler.examples.webapp2.constant.AuthConstants;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -17,6 +19,10 @@ public class SystemStaticLoadListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent event) {
 		log.info("server start!!! " + SystemStaticLoadListener.class.getName()
 				+ " contextInitialized");
+		log.info("Start loading configuration.");
+		AuthConstants.reloadAllPermissions();
+		AuthConstants.reloadAllRolePermissions();
+		log.info("Loading configuration complete.");
 	}
 
 	public void contextDestroyed(ServletContextEvent event) {

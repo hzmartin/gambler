@@ -37,43 +37,21 @@ public class PrevCmdCommand extends AbstractCommand {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.chinatelecom.yixin.support.cli.ICommand#getDescription()
-	 */
 	@Override
 	public String[] getDescription() {
 		return new String[] { "previous command" };
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.chinatelecom.yixin.support.cli.ICommand#getSyntax()
-	 */
 	@Override
 	public String[] getSyntax() {
 		return new String[] { "prev" };
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.chinatelecom.yixin.support.cli.cmd.AbstractCommand#getAlias()
-	 */
 	@Override
 	public String[] getAlias() {
 		return new String[] { "p" };
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.chinatelecom.yixin.support.cli.cmd.AbstractCommand#isIgnorablePrevCommand
-	 * ()
-	 */
 	@Override
 	public boolean isIgnorableCommand() {
 		return true;

@@ -1,16 +1,5 @@
-/*
- * @(#) MenuVO.java 2013-11-29
- * 
- * Copyright 2010 NetEase.com, Inc. All rights reserved.
- */
 package gambler.examples.webapp2.vo;
 
-/**
- * Class MenuVO
- *
- * @author Administrator
- * @version 2013-11-29
- */
 public class NaviItem {
 
     private String name;

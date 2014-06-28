@@ -115,9 +115,11 @@ public class RequestAspectAdvice {
 					serverResponse
 							.setResponseStatus(ResponseStatus.USER_NOT_LOGGED);
 				} else if (permRequired) {
+					Account loginUser = authUserService.getLoginUser(request);
 					// check userperm
 					boolean hasPermission = authUserService
-							.checkUserPermission(request, requiredPerms);
+							.checkUserPermission(loginUser.getUserId(),
+									requiredPerms);
 					if (!hasPermission) {
 						serverResponse
 								.setResponseStatus(ResponseStatus.NO_PERMISSION);
@@ -137,9 +139,9 @@ public class RequestAspectAdvice {
 							return new ModelAndView("signin", "nextUrl", target);
 						} else if (serverResponse.getCode().equals(
 								ResponseStatus.NO_PERMISSION.getCode())) {
-							return new ModelAndView("view", "name", "403");
+							return new ModelAndView("403");
 						} else {
-							return new ModelAndView("view", "name", "500");
+							return new ModelAndView("500");
 						}
 					}
 				}
@@ -179,27 +181,26 @@ public class RequestAspectAdvice {
 								|| StringUtils.isBlank(url)) {
 							continue;
 						}
-						// String perm = sysconf.getString("mainnav." + (i + 1)
-						// + ".perm");
-						// if (!StringUtils.isBlank(perm))
-						// {
-						// long pid = Long.parseLong(perm);
-						// boolean hasThisPerm =
-						// authUserService.checkUserPermission(loginUser.getMobile(),
-						// pid);
-						// if (hasThisPerm)
-						// {
-						// menus.add(new NaviItem(name, url));
-						// }
-						// }
-						// else
-						// {
-						menus.add(new NaviItem(name, url));
-						// }
+						Long pid = sysconf.getLong("mainnav.perm" + (i + 1));
+						if (pid != null) {
+							//check nav item perm
+							boolean hasThisPerm = authUserService
+									.checkUserPermission(loginUser.getUserId(),
+											pid);
+							if (hasThisPerm) {
+								//passed
+								menus.add(new NaviItem(name, url));
+							}
+						} else {
+							//no perm required
+							menus.add(new NaviItem(name, url));
+						}
 					}
 
 					result1.getModel().put("mainnav", menus);
 				}
+			} else {
+				logger.warn("目前Controller返回只支持ModelAndView与@ResponseBody");
 			}
 			return result;
 		}

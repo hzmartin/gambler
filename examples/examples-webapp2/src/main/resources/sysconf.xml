@@ -4,7 +4,11 @@
 	</prop>
 	<prop namespace="mainnav">
 		<key name="count">10</key>
-		<key name="name1">Google</key>
-		<key name="url1">http://www.google.com</key>
+		<key name="name1">Baidu</key>
+		<key name="url1">http://www.baidu.com</key>
+		<key name="perm1">1</key>
+	</prop>
+	<prop namespace="swtich">
+		<key name="accessCreateSuper">${gb.swtich.accessCreateSuper}</key>
 	</prop>
 </map>

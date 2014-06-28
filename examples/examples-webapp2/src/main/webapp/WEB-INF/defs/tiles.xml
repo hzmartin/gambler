@@ -3,16 +3,8 @@
 <tiles-definitions>
 	<definition name="base" template="/WEB-INF/templates/layout.jsp">
 		<put-attribute name="title" value="Gambler" />
-		<put-attribute name="css" value="" />
-		<put-attribute name="script" value="" />
 		<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
-	</definition>
-	<definition name="demo" extends="base">
-		<put-attribute name="title" value="Hello"/>
-		<put-attribute name="css" value="/demo/hello.css" />
-		<put-attribute name="script" value="/demo/hello.js" />
-		<put-attribute name="content" value="/demo/hello.ftl" />
 	</definition>
 	<definition name="index" extends="base">
 		<put-attribute name="title" value="Gambler Home" />
@@ -30,4 +22,5 @@
 	<definition name="403" template="/page/403.jsp">
 		<put-attribute name="title" value="Gambler - Forbidden" />
 	</definition>
+	
 </tiles-definitions> 

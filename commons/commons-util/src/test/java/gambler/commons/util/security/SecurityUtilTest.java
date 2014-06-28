@@ -1,9 +1,3 @@
-/**
- * @(#)SecurityUtilTest.java, 2014-2-27.
- *
- * Copyright 2014 Netease, Inc. All rights reserved.
- * NETEASE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
- */
 package gambler.commons.util.security;
 
 import java.io.File;

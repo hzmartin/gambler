@@ -106,6 +106,14 @@ public class AdvancedKey implements java.io.Serializable,
 
 	public AdvancedKey(String namespace, String key, Integer order,
 			Locale locale) {
+		if (namespace.contains(SEPARATOR)) {
+			throw new IllegalArgumentException(
+					"period sign is not allowed in namespace " + namespace);
+		}
+		if (key.contains(SEPARATOR)) {
+			throw new IllegalArgumentException(
+					"period sign is not allowed in key " + key);
+		}
 		this.namespace = namespace;
 		this.key = key;
 		this.order = order;

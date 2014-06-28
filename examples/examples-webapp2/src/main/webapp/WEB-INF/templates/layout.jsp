@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -31,10 +32,7 @@
 <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
 <script src="/assets/js/jquery.iframe-transport.js"></script>
 <!-- The basic File Upload plugin -->
-<script src="./assets/js/jquery.fileupload.js"></script>
-
-<!-- Custom styles for this template -->
-<link href="<tiles:getAsString name="css" />" rel="stylesheet">
+<script src="/assets/js/jquery.fileupload.js"></script>
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -50,11 +48,5 @@
 		<tiles:insertAttribute name="content" />
 	</div>
 	<tiles:insertAttribute name="footer" />
-	<!-- Bootstrap core JavaScript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<!--  loaded at last  -->
-	<script src="<tiles:getAsString name="script" />"></script>
-
 </body>
 </html>

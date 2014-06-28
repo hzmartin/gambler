@@ -17,6 +17,8 @@ public enum ResponseStatus {
     NO_PERMISSION("0006", "权限不足，无法进行该操作"),
     
     EXCEED_MAX_TRYTIMES("0007", "尝试次数过多，请稍后再试"), //尝试次数过多
+    
+    PASSWORD_ERROR("0008", "密码校验错误"),
 
     UNKNOWN_ERROR("4004", "未知错误"),
     

@@ -56,10 +56,6 @@ public abstract class AbstractCommand implements ICommand {
 
     public abstract void service(String[] params) throws CommandUsageException, ServiceException;
 
-    /*
-     * (non-Javadoc)
-     * @see com.chinatelecom.yixin.support.cli.ICommand#getAlias()
-     */
     @Override
     public String[] getAlias() {
         return new String[0];
@@ -82,10 +78,6 @@ public abstract class AbstractCommand implements ICommand {
         this.params = parameter;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.chinatelecom.yixin.support.cli.ICommand#skipPrevCmdRecord()
-     */
     @Override
     public boolean isIgnorableCommand() {
         return false;

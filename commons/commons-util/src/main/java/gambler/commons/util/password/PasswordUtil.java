@@ -20,4 +20,8 @@ public final class PasswordUtil {
 			String clearTextPwd) {
 		return passwordEncryptor.checkPassword(clearTextPwd, encryptedPassword);
 	}
+	
+	public static void main(String[] args) {
+		System.out.println(checkPassword("35kPoqVULITuJS8wdXBXa2HovWxSGPtPGcdAkNUM4/rMSc5fbfHCsuF82zEcsotQ", "hello"));
+	}
 }

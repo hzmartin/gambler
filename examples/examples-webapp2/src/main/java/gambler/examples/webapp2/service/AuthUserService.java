@@ -1,11 +1,17 @@
 package gambler.examples.webapp2.service;
 
-import gambler.commons.advmap.XMLMap;
-import gambler.examples.webapp2.dao.AuthUserDao;
-import gambler.examples.webapp2.domain.AuthUser;
+import gambler.examples.webapp2.constant.AuthConstants;
+import gambler.examples.webapp2.dao.AuthDao;
+import gambler.examples.webapp2.domain.auth.Permission;
+import gambler.examples.webapp2.domain.auth.RolePermission;
+import gambler.examples.webapp2.domain.auth.User;
+import gambler.examples.webapp2.domain.auth.UserPermission;
+import gambler.examples.webapp2.domain.auth.UserRole;
 import gambler.examples.webapp2.vo.Account;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
@@ -21,7 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("authUserService")
-public class AuthUserService {
+public class AuthUserService extends AbstractService {
 
 	private static final Logger logger = Logger
 			.getLogger(AuthUserService.class);
@@ -35,10 +42,7 @@ public class AuthUserService {
 	private static final String SESSION_USER_KEY = "sgambler";
 
 	@Autowired
-	private AuthUserDao userDao;
-
-	@Autowired
-	private XMLMap sysconf;
+	private AuthDao userDao;
 
 	public boolean checkLogin(HttpServletRequest request) {
 		return hasLogined(request) || cookieLogin(request) != null;
@@ -65,22 +69,20 @@ public class AuthUserService {
 
 	private Account verifyLogin(final HttpServletRequest request,
 			String userId, String password) {
-		AuthUser user = userDao.findByUserId(userId);
+		User user = userDao.find(userId);
 		if (user == null) {
 			return null;
 		}
 		if (!isCorrentPassword(password, user.getPassword(), userId)) {
 			return null;
 		}
-		Account account = new Account();
-		account.setUserId(userId);
-
+		Account account = new Account(user);
 		HttpSession session = request.getSession();
 		session.setAttribute(SESSION_USER_KEY, account);
 		return account;
 	}
 
-	private boolean isCorrentPassword(String rawPass, String dbPass,
+	public boolean isCorrentPassword(String rawPass, String dbPass,
 			String userId) {
 		if (rawPass == null || rawPass.isEmpty())
 			return false;
@@ -181,16 +183,108 @@ public class AuthUserService {
 	}
 
 	@Transactional
-	public int save(AuthUser user) {
-		return userDao.saveUser(user);
+	public int saveAsSystemUser(User user) {
+		int count = userDao.save(user);
+		if (count == 1) {
+			User dbUser = userDao.find(user.getUserId());
+			UserRole userRole = new UserRole();
+			userRole.setUid(dbUser.getUid());
+			userRole.setRid(AuthConstants.SYSTEM_USER.getRid());
+			userDao.createUserRole(userRole);
+		}
+		return count;
 	}
 
-	public AuthUser findUserById(String userId) {
-		return userDao.findByUserId(userId);
+	public User findUserById(String userId) {
+		return userDao.find(userId);
 	}
 
-	public boolean checkUserPermission(HttpServletRequest request,
-			long[] requiredPerms) {
-		throw new UnsupportedOperationException("unsupported!");
+	public int updateUser(User user) {
+		return userDao.update(user);
 	}
+
+	@Transactional
+	public int deleteUser(String userId) {
+		User user = userDao.find(userId);
+		userDao.delUserPermissions(user.getUid());
+		userDao.delUserRoles(user.getUid());
+		return userDao.delete(userId);
+	}
+
+	public List<UserPermission> getUserPermissions(String userId) {
+		User user = userDao.find(userId);
+		return userDao.getUserPermissions(user.getUid());
+	}
+
+	public List<UserRole> getUserRoles(String userId) {
+		User user = userDao.find(userId);
+		return userDao.getUserRoles(user.getUid());
+	}
+
+	public int createUserPermission(long uid, long pid) {
+		UserPermission up = new UserPermission();
+		up.setUid(uid);
+		up.setPid(pid);
+		return userDao.createUserPermission(up);
+	}
+
+	public int delUserPermission(long uid, long pid) {
+		UserPermission up = new UserPermission();
+		up.setUid(uid);
+		up.setPid(pid);
+		return userDao.delUserPermission(up);
+	}
+
+	public boolean checkUserPermission(String userId, long... pids) {
+		User user = findUserById(userId);
+		if (!user.isIsactive()) {
+			return false;
+		}
+		if (user.isIssuper()) {
+			return true;
+		}
+
+		List<Long> needCheckRolePermId = new ArrayList<Long>();
+		for (long pid : pids) {
+			UserPermission up = new UserPermission();
+			up.setUid(user.getUid());
+			up.setPid(pid);
+			UserPermission userPermission = userDao.getUserPermission(up);
+			if (userPermission == null) {
+				needCheckRolePermId.add(pid);
+			}
+		}
+
+		// userperm check fail, need to check role perm
+		if (CollectionUtils.isNotEmpty(needCheckRolePermId)) {
+			List<UserRole> userRoles = userDao.getUserRoles(user.getUid());
+			for (long pid : needCheckRolePermId) {
+				boolean authorized = false;
+				for (UserRole userRole : userRoles) {
+					List<Permission> rolePermission = AuthConstants
+							.getRolePermissions(userRole.getRid());
+					for (Permission permission : rolePermission) {
+						if (pid == permission.getPid()) {
+							authorized = true;
+						}
+					}
+				}
+				if (!authorized) {
+					// no permission
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	public List<Permission> getAllPermissions() {
+		return userDao.getAllPermissions();
+	}
+
+	public List<RolePermission> getAllRolePermissions() {
+		return userDao.getAllRolePermissions();
+	}
+
 }

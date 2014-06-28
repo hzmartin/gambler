@@ -11,8 +11,6 @@
   <groupId>gambler.commons</groupId>
   <modules>
   	<module>commons-util</module>
-  	<module>commons-persistence</module>
   	<module>commons-advancedmap</module>
-  	<module>commons-auth</module>
   </modules>
 </project>
