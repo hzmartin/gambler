@@ -79,7 +79,7 @@ public class AuthUserService extends AbstractService {
 		}
 		user.setLastLogin(new Timestamp(System.currentTimeMillis()));
 		userDao.update(user);
-		
+
 		Account account = new Account(user);
 		HttpSession session = request.getSession();
 		session.setAttribute(SESSION_USER_KEY, account);
@@ -94,7 +94,8 @@ public class AuthUserService extends AbstractService {
 	}
 
 	public String getSaltedPassword(String rawPass, String userId) {
-		return DigestUtils.md5Hex(rawPass + userId + "Gkx*&#F-j93+");
+		String md5Hex = DigestUtils.md5Hex(rawPass + userId + "Gkx*&#F-j93+");
+		return md5Hex;
 	}
 
 	public Account getLoginUser(HttpServletRequest request) {
@@ -289,6 +290,18 @@ public class AuthUserService extends AbstractService {
 
 	public List<RolePermission> getAllRolePermissions() {
 		return userDao.getAllRolePermissions();
+	}
+
+	public int updatePassword(User user) {
+		return userDao.updatePassword(user);
+	}
+
+	public int updateUserActiveFlag(User user) {
+		return userDao.updateUserActiveFlag(user);
+	}
+
+	public int updateUserSuperFlag(User user) {
+		return userDao.updateUserSuperFlag(user);
 	}
 
 }

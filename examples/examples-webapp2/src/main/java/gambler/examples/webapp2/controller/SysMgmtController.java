@@ -90,7 +90,7 @@ public class SysMgmtController extends AbstractController {
 		User newUser = new User();
 		newUser.setUserId(userId);
 		newUser.setPassword(authUserService.getSaltedPassword(newPass, userId));
-		int count = authUserService.updateUser(newUser);
+		int count = authUserService.updatePassword(newUser);
 		logger.info(loginUser + " updated password! affected count=" + count);
 		return count;
 	}
