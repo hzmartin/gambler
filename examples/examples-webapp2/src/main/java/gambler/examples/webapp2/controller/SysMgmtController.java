@@ -71,18 +71,25 @@ public class SysMgmtController extends AbstractController {
 	@AuthRequired
 	@ResponseBody
 	public Object updatePassword(final HttpServletRequest request,
-			@RequestParam String oldPass, @RequestParam String newPass)
-			throws ActionException {
+			@RequestParam String userId, @RequestParam String oldPass,
+			@RequestParam String newPass) throws ActionException {
 		Account loginUser = authUserService.getLoginUser(request);
-		User user = authUserService.findUserById(loginUser.getUserId());
-		if (!authUserService.isCorrentPassword(oldPass, user.getPassword(),
-				user.getUserId())) {
-			throw new ActionException(ResponseStatus.PASSWORD_ERROR, "密码校验失败!");
+
+		if (!loginUser.isIssuper()) {
+			if (loginUser.getUserId().equals(userId)) {
+				throw new ActionException(ResponseStatus.NO_PERMISSION,
+						loginUser + "不允许修改别人的密码！");
+			}
+			User user = authUserService.findUserById(userId);
+			if (!authUserService.isCorrentPassword(oldPass, user.getPassword(),
+					user.getUserId())) {
+				throw new ActionException(ResponseStatus.PASSWORD_ERROR,
+						"密码校验失败!");
+			}
 		}
 		User newUser = new User();
-		newUser.setUserId(user.getUserId());
-		newUser.setPassword(authUserService.getSaltedPassword(newPass,
-				user.getUserId()));
+		newUser.setUserId(userId);
+		newUser.setPassword(authUserService.getSaltedPassword(newPass, userId));
 		int count = authUserService.updateUser(newUser);
 		logger.info(loginUser + " updated password! affected count=" + count);
 		return count;
