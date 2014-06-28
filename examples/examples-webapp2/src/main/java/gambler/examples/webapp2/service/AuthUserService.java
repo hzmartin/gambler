@@ -21,7 +21,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.log4j.Logger;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service("authUserService")
 public class AuthUserService extends AbstractService {
-
-	private static final Logger logger = Logger
-			.getLogger(AuthUserService.class);
 
 	private static final int DEFAULT_LOGIN_ACCESS_EXPIRY = 24 * 60 * 60;
 

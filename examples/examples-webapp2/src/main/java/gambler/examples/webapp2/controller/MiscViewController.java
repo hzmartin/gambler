@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @version 2013-10-18
  */
 @Controller
-public class MiscViewController {
+public class MiscViewController extends AbstractController{
 
 	@RequestMapping(value = "/signin")
 	public Object signin(final HttpServletRequest request,

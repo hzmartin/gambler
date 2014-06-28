@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,8 +34,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/sysmgmt")
 public class SysMgmtController extends AbstractController {
-
-	private static Logger logger = Logger.getLogger(SysMgmtController.class);
 
 	@Resource
 	private AuthUserService authUserService;
