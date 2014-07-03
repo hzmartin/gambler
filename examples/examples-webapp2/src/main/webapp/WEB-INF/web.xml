@@ -31,7 +31,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	</listener>
 	
 	<listener>
-		<listener-class>gambler.examples.webapp2.listener.SystemStaticLoadListener</listener-class>
+		<listener-class>gambler.examples.webapp2.listener.InitialSystemListener</listener-class>
 	</listener>
 	
 	<!-- encoding filter -->

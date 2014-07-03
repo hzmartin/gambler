@@ -7,17 +7,12 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.log4j.Logger;
 
-/**
- * 
- * @author cctao
- * 
- */
-public class SystemStaticLoadListener implements ServletContextListener {
+public class InitialSystemListener implements ServletContextListener {
 
 	private final Logger log = Logger.getLogger(getClass());
 
 	public void contextInitialized(ServletContextEvent event) {
-		log.info("server start!!! " + SystemStaticLoadListener.class.getName()
+		log.info("server start!!! " + InitialSystemListener.class.getName()
 				+ " contextInitialized");
 		log.info("Start loading configuration.");
 		AuthConstants.reloadAllPermissions();
@@ -26,7 +21,7 @@ public class SystemStaticLoadListener implements ServletContextListener {
 	}
 
 	public void contextDestroyed(ServletContextEvent event) {
-		log.info("server stop!!! " + SystemStaticLoadListener.class.getName()
+		log.info("server stop!!! " + InitialSystemListener.class.getName()
 				+ " contextDestroyed");
 
 	}
