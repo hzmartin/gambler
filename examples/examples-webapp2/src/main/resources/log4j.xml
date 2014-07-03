@@ -38,7 +38,6 @@
 	</appender>
 	<root>
 		<level value="${gb.log4j.level}" />
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="DAILY_ROLLING" />
+		<appender-ref ref="${gb.log4j.appender}" />
 	</root>
 </log4j:configuration>
