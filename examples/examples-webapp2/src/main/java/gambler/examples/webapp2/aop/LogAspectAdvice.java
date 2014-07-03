@@ -41,7 +41,7 @@ public class LogAspectAdvice
 		String level = logParamAnno.level();
 		int argsLen = jp.getArgs().length;
 		StringBuilder logString = new StringBuilder();
-		logString.append("执行方法：  " + jp.getTarget().getClass().getName() + "#" + jp.getSignature().getName() + "(");
+		logString.append("Execute method: " + jp.getTarget().getClass().getName() + "#" + jp.getSignature().getName() + "(");
 		for (int paramIndex = 0; paramIndex < argsLen; paramIndex++)
 		{
 			Object theArg = jp.getArgs()[paramIndex];

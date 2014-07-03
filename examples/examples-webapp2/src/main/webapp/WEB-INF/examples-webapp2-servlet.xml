@@ -14,7 +14,6 @@ http://www.springframework.org/schema/aop
 http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
            
 	<context:component-scan base-package="gambler.examples.webapp2">
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
 	</context:component-scan>
     <!-- 打开aop 注解 -->
     <aop:aspectj-autoproxy />

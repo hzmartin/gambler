@@ -1,5 +1,6 @@
 package gambler.examples.webapp2.service;
 
+import gambler.examples.webapp2.annotation.LogMethod;
 import gambler.examples.webapp2.constant.AuthConstants;
 import gambler.examples.webapp2.dao.AuthDao;
 import gambler.examples.webapp2.domain.auth.Permission;
@@ -183,6 +184,7 @@ public class AuthUserService extends AbstractService {
 		return encryptor;
 	}
 
+	@LogMethod
 	@Transactional
 	public int saveAsSystemUser(User user) {
 		int count = userDao.save(user);
