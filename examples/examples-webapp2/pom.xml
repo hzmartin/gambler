@@ -27,10 +27,13 @@
 				<gb.log4j.path>logs</gb.log4j.path>
 				<gb.log4j.level>DEBUG</gb.log4j.level>
 				<gb.log4j.appender>CONSOLE</gb.log4j.appender>
-				<gb.datasource.url>jdbc:derby:${project.parent.basedir}/example-derby</gb.datasource.url>
-				<gb.datasource.userName></gb.datasource.userName>
-				<gb.datasource.password></gb.datasource.password>
+				<!-- gb.datasource.url>jdbc:derby:${project.parent.basedir}/example-derby</gb.datasource.url -->
+				<gb.datasource.url>jdbc:mysql://127.0.0.1:3306/example</gb.datasource.url>
+				<gb.datasource.userName>root</gb.datasource.userName>
+				<gb.datasource.password>ENC(ceKlIg2ES5Fb2cR3xTm9xQ==)</gb.datasource.password>
 				<gb.datasource.driverClassName>org.apache.derby.jdbc.EmbeddedDriver</gb.datasource.driverClassName>
+				<!-- gb.datasource.driverClassName>org.apache.derby.jdbc.EmbeddedDriver</gb.datasource.driverClassName -->
+				<gb.datasource.driverClassName>com.mysql.jdbc.Driver</gb.datasource.driverClassName>
 				<gb.datasource.initialSize>5</gb.datasource.initialSize>
 				<gb.datasource.maxActive>60</gb.datasource.maxActive>
 				<gb.datasource.maxIdle>5</gb.datasource.maxIdle>
@@ -160,12 +163,28 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!-- Quartz framework -->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.2.1</version>
+        </dependency>
 		<!-- spring end -->
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>
 			<classifier>jdk15</classifier>
 			<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.18</version>
 		</dependency>
 		<dependency>
 			<groupId>c3p0</groupId>

@@ -7,7 +7,7 @@
 		<key name="maxHistorySize">100</key>
 	</prop>
         <prop namespace="cmd">
-            <!-- make sure the unique name for each command, and must start with 'class_' -->
+            <!-- make sure the unique name for each command -->
             <key name="password">gambler.tools.cli.cmd.PasswordCommand</key>
         </prop>
 </map>
