@@ -20,70 +20,72 @@ import org.springframework.stereotype.Service;
 @Service("schedulerService")
 public class SchedulerService {
 
-	@Autowired
-	@Qualifier("quartzScheduler")
-	private Scheduler scheduler;
+    @Autowired
+    @Qualifier("quartzScheduler")
+    private Scheduler scheduler;
 
-	private String avoidNullName(String name) {
-		if (StringUtils.isBlank(name)) {
-			return UUID.randomUUID().toString();
-		} else {
-			return name;
-		}
+    private String avoidNullName(String name) {
+        if (StringUtils.isBlank(name)) {
+            return UUID.randomUUID().toString();
+        } else {
+            return name;
+        }
 
-	}
+    }
 
-	@SuppressWarnings("rawtypes")
-	public JobDetail addJob(String jobClassName, String jobName,
-			String jobGroup, String jobDataMapJson, String description,
-			boolean volatility, boolean durability, boolean shouldRecover,
-			boolean replace) throws SchedulerException {
-		try {
-			Class jobClass = Class.forName(jobClassName);
-			JobDetail jobDetail = new JobDetail(avoidNullName(jobName),
-					jobGroup, jobClass, volatility, durability, shouldRecover);
-			JSONObject fromObject = JSONObject.fromObject(jobDataMapJson);
-			Set keySet = fromObject.keySet();
-			for (Object paramname : keySet) {
-				jobDetail.getJobDataMap().put(paramname,
-						fromObject.get(paramname));
+    @SuppressWarnings("rawtypes")
+    public JobDetail addJob(String jobClassName, String jobName,
+            String jobGroup, String jobDataMapJson, String description,
+            boolean volatility, boolean durability, boolean shouldRecover,
+            boolean replace) throws SchedulerException {
+        Class jobClass = null;
+        try {
+            jobClass = Class.forName(jobClassName);
 
-			}
-			scheduler.addJob(jobDetail, replace);
-			return jobDetail;
-		} catch (Exception e) {
-			throw new SchedulerException("add job " + jobClassName + " error!",
-					e);
-		}
-	}
+        } catch (Exception e) {
+            throw new SchedulerException("add job " + jobClassName + " error!",
+                    e);
+        }
+        JobDetail jobDetail = new JobDetail(avoidNullName(jobName),
+                jobGroup, jobClass, volatility, durability, shouldRecover);
+        JSONObject fromObject = JSONObject.fromObject(jobDataMapJson);
+        Set keySet = fromObject.keySet();
+        for (Object paramname : keySet) {
+            jobDetail.getJobDataMap().put(paramname,
+                    fromObject.get(paramname));
 
-	public void scheduleJob(String jobName, String jobGroup,
-			String triggerName, String triggerGroup, Date startTime,
-			Date endTime, Integer repeatCount, Long repeatInterval)
-			throws SchedulerException {
-		if (startTime == null) {
-			startTime = new Date(System.currentTimeMillis());
-		}
-		if (repeatCount == null) {
-			repeatCount = SimpleTrigger.REPEAT_INDEFINITELY;
-		}
-		SimpleTrigger trigger = new SimpleTrigger(avoidNullName(triggerName),
-				triggerGroup, jobName, jobGroup, startTime, endTime,
-				repeatCount, repeatInterval);
-		scheduler.scheduleJob(trigger);
-	}
+        }
+        scheduler.addJob(jobDetail, replace);
+        return jobDetail;
+    }
 
-	public void unscheduleJob(String triggerName, String triggerGroup)
-			throws SchedulerException {
-		scheduler.unscheduleJob(triggerName, triggerGroup);
-	}
+    public void scheduleJob(String jobName, String jobGroup,
+            String triggerName, String triggerGroup, Date startTime,
+            Date endTime, Integer repeatCount, Long repeatInterval)
+            throws SchedulerException {
+        if (startTime == null) {
+            startTime = new Date(System.currentTimeMillis());
+        }
+        if (repeatCount == null) {
+            repeatCount = SimpleTrigger.REPEAT_INDEFINITELY;
+        }
+        SimpleTrigger trigger = new SimpleTrigger(avoidNullName(triggerName),
+                triggerGroup, jobName, jobGroup, startTime, endTime,
+                repeatCount, repeatInterval);
+        scheduler.scheduleJob(trigger);
+    }
 
-	public void scheduleCronJob(String jobName, String jobGroup,
-			String triggerName, String triggerGroup,
-			CronExpression cronExpression) throws SchedulerException {
-		CronTrigger cronTrigger = new CronTrigger(avoidNullName(triggerName),
-				triggerGroup, jobName, jobGroup);
-		cronTrigger.setCronExpression(cronExpression);
-		scheduler.scheduleJob(cronTrigger);
-	}
+    public void unscheduleJob(String triggerName, String triggerGroup)
+            throws SchedulerException {
+        scheduler.unscheduleJob(triggerName, triggerGroup);
+    }
+
+    public void scheduleCronJob(String jobName, String jobGroup,
+            String triggerName, String triggerGroup,
+            CronExpression cronExpression) throws SchedulerException {
+        CronTrigger cronTrigger = new CronTrigger(avoidNullName(triggerName),
+                triggerGroup, jobName, jobGroup);
+        cronTrigger.setCronExpression(cronExpression);
+        scheduler.scheduleJob(cronTrigger);
+    }
 }

@@ -108,7 +108,7 @@ public class SchedulerController extends AbstractController {
 	public Object unscheduleJob(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "triggerName") @RequestParam String triggerName,
-			@LogRequestParam(name = "triggerGroup") @RequestParam String triggerGroup)
+			@LogRequestParam(name = "triggerGroup") @RequestParam(required = false) String triggerGroup)
 			throws SchedulerException, ActionException {
 
 		if (StringUtils.isBlank(triggerName)) {
@@ -116,10 +116,6 @@ public class SchedulerController extends AbstractController {
 					"triggerName illegal");
 		}
 
-		if (StringUtils.isBlank(triggerGroup)) {
-			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
-					"triggerGroup illegal");
-		}
 		schedulerService.unscheduleJob(triggerName, triggerGroup);
 		return null;
 	}
