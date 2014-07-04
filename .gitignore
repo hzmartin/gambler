@@ -216,3 +216,4 @@ pip-log.txt
 log/
 logs/
 example-derby/
+/examples/examples-webapp2/nbactions.xml
