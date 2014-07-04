@@ -116,13 +116,8 @@ public class AuthUserService extends AbstractService {
 		if (userId == null || password == null) {
 			return null;
 		}
-		try {
-			userId = getStringEncryptor().decrypt(userId);
-			password = getStringEncryptor().decrypt(password);
-		} catch (Exception e) {
-			logger.error("decrypt error!", e);
-			return null;
-		}
+                userId = getStringEncryptor().decrypt(userId);
+                password = getStringEncryptor().decrypt(password);
 		return verifyLogin(request, userId, password);
 	}
 

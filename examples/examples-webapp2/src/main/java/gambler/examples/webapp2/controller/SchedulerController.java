@@ -6,6 +6,7 @@ import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
 import gambler.examples.webapp2.service.SchedulerService;
 import gambler.examples.webapp2.util.TimeTagUtil;
+import java.text.ParseException;
 
 import java.util.Date;
 
@@ -73,7 +74,7 @@ public class SchedulerController extends AbstractController {
 		if (startTime != null) {
 			try {
 				start = TimeTagUtil.parseDate(startTime);
-			} catch (Exception e) {
+			} catch (ParseException e) {
 				throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 						"start time format error");
 			}
@@ -82,7 +83,7 @@ public class SchedulerController extends AbstractController {
 		if (endTime != null) {
 			try {
 				end = TimeTagUtil.parseDate(endTime);
-			} catch (Exception e) {
+			} catch (ParseException e) {
 				throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 						"end time format error");
 			}
@@ -134,7 +135,7 @@ public class SchedulerController extends AbstractController {
 		CronExpression cronExpression = null;
 		try {
 			cronExpression = new CronExpression(cronEx);
-		} catch (Exception e) {
+		} catch (ParseException e) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"cron expression illegal");
 		}

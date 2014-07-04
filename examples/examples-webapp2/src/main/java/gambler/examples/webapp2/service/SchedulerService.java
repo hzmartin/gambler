@@ -41,13 +41,13 @@ public class SchedulerService {
         Class jobClass = null;
         try {
             jobClass = Class.forName(jobClassName);
-
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             throw new SchedulerException("add job " + jobClassName + " error!",
                     e);
         }
         JobDetail jobDetail = new JobDetail(avoidNullName(jobName),
                 jobGroup, jobClass, volatility, durability, shouldRecover);
+        jobDetail.setDescription(description);
         JSONObject fromObject = JSONObject.fromObject(jobDataMapJson);
         Set keySet = fromObject.keySet();
         for (Object paramname : keySet) {
