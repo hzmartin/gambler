@@ -45,8 +45,8 @@ public class SysMgmtController extends AbstractController {
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId,
 			@RequestParam(required = true) String password)
 			throws ActionException, AccessForbiddenException {
-		if (sysconf.getBoolean("switch.accessCreateSuper", false)) {
-			throw new AccessForbiddenException("switch.accessCreateSuper off");
+		if (!sysconf.getBoolean("switch.enableCreateSuper", false)) {
+			throw new AccessForbiddenException("switch.enableCreateSuper off");
 		}
 		if (!RegexUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,

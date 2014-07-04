@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class LogAspectAdvice
 {
-	private Logger logger = Logger.getLogger(LogAspectAdvice.class);
+	private static final Logger logger = Logger.getLogger(LogAspectAdvice.class);
 
 	@Before(value = "gambler.examples.webapp2.aop.SystemAspect.anyMethod()")
 	public void doBefore(JoinPoint jp)

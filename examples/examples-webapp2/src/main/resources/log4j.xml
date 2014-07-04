@@ -36,6 +36,15 @@
 			value="%d{ISO8601} %c{3} [%-t] %-5p %C{3}(%L) %x - %m%n" />
 		</layout>
 	</appender>
+        <logger name="org.springframework">
+		<level value="WARN" />
+	</logger>
+        <logger name="com.mchange.v2">
+            <level value="WARN"/>
+        </logger>
+        <logger name="org.apache">
+            <level value="WARN"/>
+        </logger>
 	<root>
 		<level value="${gb.log4j.level}" />
 		<appender-ref ref="${gb.log4j.appender}" />

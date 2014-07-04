@@ -44,7 +44,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Component
 @Aspect
 public class RequestAspectAdvice {
-	private Logger logger = Logger.getLogger(RequestAspectAdvice.class);
+	private static final Logger logger = Logger.getLogger(RequestAspectAdvice.class);
 
 	@Resource
 	protected AuthUserService authUserService;
@@ -102,7 +102,7 @@ public class RequestAspectAdvice {
 		ServerResponse serverResponse = new ServerResponse();
 		AuthRequired authRequiredAnno = method
 				.getAnnotation(AuthRequired.class);
-		if (authRequiredAnno != null) {
+		if (authRequiredAnno != null && sysconf.getBoolean("switch.enableAuthentication", Boolean.TRUE)) {
 			boolean loginRequired = authRequiredAnno.loginRequired();
 			long[] requiredPerms = authRequiredAnno.requiredPerms();
 			boolean permRequired = requiredPerms != null
