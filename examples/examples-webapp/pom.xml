@@ -110,7 +110,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.18</version>
+			<version>5.1.23</version>
 		</dependency>
 
 		<dependency>
@@ -262,11 +262,6 @@
 			<artifactId>commons-util</artifactId>
 			<version>1.0</version>
 		</dependency>
-		<dependency>
-			<groupId>gambler.commons</groupId>
-			<artifactId>commons-persistence</artifactId>
-			<version>1.0</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.apache.struts</groupId>
@@ -282,11 +277,6 @@
 			<groupId>org.directwebremoting</groupId>
 			<artifactId>dwr</artifactId>
 			<version>3.0.M1</version>
-		</dependency>
-		<dependency>
-			<groupId>gambler.commons</groupId>
-			<artifactId>commons-auth</artifactId>
-			<version>1.0</version>
 		</dependency>
 	</dependencies>
 
