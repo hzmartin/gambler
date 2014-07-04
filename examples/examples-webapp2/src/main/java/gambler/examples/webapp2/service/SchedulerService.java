@@ -1,0 +1,8 @@
+package gambler.examples.webapp2.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class SchedulerService {
+
+}
