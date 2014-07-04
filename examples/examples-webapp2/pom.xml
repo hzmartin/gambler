@@ -28,7 +28,7 @@
 				<gb.log4j.level>DEBUG</gb.log4j.level>
 				<gb.log4j.appender>CONSOLE</gb.log4j.appender>
 				<!-- gb.datasource.url>jdbc:derby:${project.parent.basedir}/example-derby</gb.datasource.url -->
-				<gb.datasource.url>jdbc:mysql://127.0.0.1:3306/example</gb.datasource.url>
+				<gb.datasource.url><![CDATA[jdbc:mysql://127.0.0.1:3306/example?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true]]></gb.datasource.url>
 				<gb.datasource.userName>root</gb.datasource.userName>
 				<gb.datasource.password>ENC(ceKlIg2ES5Fb2cR3xTm9xQ==)</gb.datasource.password>
 				<gb.datasource.driverClassName>org.apache.derby.jdbc.EmbeddedDriver</gb.datasource.driverClassName>
