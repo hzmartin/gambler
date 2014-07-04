@@ -46,9 +46,9 @@ public class ServerResponse {
 		this.debug = debug;
 	}
 
-	public final void setResponseStatus(ResponseStatus status) {
+	public final void setResponseStatus(ResponseStatus status, Object... args) {
 		this.code = status.getCode();
-		this.msg = status.getMessage();
+		this.msg = String.format(status.getMessage(), args);
 	}
 
 }

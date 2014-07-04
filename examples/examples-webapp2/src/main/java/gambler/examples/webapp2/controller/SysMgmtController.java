@@ -54,7 +54,7 @@ public class SysMgmtController extends AbstractController {
 		}
 		User dbUser = authUserService.findUserById(userId);
 		if (dbUser != null) {
-			throw new ActionException(ResponseStatus.USER_ALREADY_EXSIST);
+			throw new ActionException(ResponseStatus.USER_ALREADY_EXSIST, new Object[]{userId});
 		}
 		User user = new User();
 		user.setUserId(userId);

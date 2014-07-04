@@ -153,7 +153,7 @@ public class RequestAspectAdvice {
 				Object result = pjp.proceed();
 				serverResponse.setData(result);
 			} catch (ActionException ae) {
-				serverResponse.setResponseStatus(ae.getStatus());
+				serverResponse.setResponseStatus(ae.getStatus(), ae.getArgs());
 				serverResponse.setDebug(ae.getMessage());
 			} catch (Exception e) {
 				serverResponse.setResponseStatus(ResponseStatus.SERVER_BUSY);

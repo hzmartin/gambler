@@ -10,7 +10,7 @@ public enum ResponseStatus {
 
     USER_NOT_LOGGED("0003", "用户没有登录"),
 
-    USER_ALREADY_EXSIST("0004", "用户已存在"),
+    USER_ALREADY_EXSIST("0004", "用户%s已存在"),
 
     LOGIN_FAILED("0005", "用户名或密码错误"),
 
