@@ -3,12 +3,14 @@ package gambler.examples.webapp2.service;
 import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.quartz.CronExpression;
 import org.quartz.CronTrigger;
+import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -34,8 +36,16 @@ public class SchedulerService {
 
     }
     
+    public List getCurrentlyExecutingJobs() throws SchedulerException{
+        return scheduler.getCurrentlyExecutingJobs();
+    }
+
+    public void triggerJobWithVolatileTrigger(String jobName, String jobGroup, JobDataMap jobDataMap) throws SchedulerException {
+        scheduler.triggerJobWithVolatileTrigger(jobName, jobGroup, jobDataMap);
+    }
+
     public Date rescheduleJob(String triggerName, String triggerGroup, Date startTime,
-            Date endTime, Integer repeatCount, Long repeatInterval) throws SchedulerException{
+            Date endTime, Integer repeatCount, Long repeatInterval) throws SchedulerException {
         if (startTime == null) {
             startTime = new Date(System.currentTimeMillis());
         }
@@ -48,7 +58,7 @@ public class SchedulerService {
                 repeatCount, repeatInterval);
         return scheduler.rescheduleJob(triggerName, triggerGroup, newTrigger);
     }
-    
+
     public Date rescheduleCronJob(String triggerName, String triggerGroup,
             CronExpression cronExpression) throws SchedulerException {
         Trigger oldTrigger = scheduler.getTrigger(triggerName, triggerGroup);
@@ -66,8 +76,8 @@ public class SchedulerService {
     public void resumeTrigger(String triggerName, String triggerGroup) throws SchedulerException {
         scheduler.resumeTrigger(triggerName, triggerGroup);
     }
-    
-    public boolean deleteJob(String jobName, String jobGroup) throws SchedulerException{
+
+    public boolean deleteJob(String jobName, String jobGroup) throws SchedulerException {
         return scheduler.deleteJob(jobName, jobGroup);
     }
 
