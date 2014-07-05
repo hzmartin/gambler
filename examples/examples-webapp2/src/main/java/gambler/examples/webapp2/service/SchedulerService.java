@@ -33,6 +33,15 @@ public class SchedulerService {
 
     }
 
+    public void pauseTrigger(String triggerName, String group) throws SchedulerException {
+        scheduler.pauseTrigger(triggerName, group);
+
+    }
+
+    public void resumeTrigger(String triggerName, String group) throws SchedulerException {
+        scheduler.resumeTrigger(triggerName, group);
+    }
+
     @SuppressWarnings("rawtypes")
     public JobDetail addJob(String jobClassName, String jobName,
             String jobGroup, String jobDataMapJson, String description,
@@ -59,7 +68,7 @@ public class SchedulerService {
         return jobDetail;
     }
 
-    public void scheduleJob(String jobName, String jobGroup,
+    public Date scheduleJob(String jobName, String jobGroup,
             String triggerName, String triggerGroup, Date startTime,
             Date endTime, Integer repeatCount, Long repeatInterval)
             throws SchedulerException {
@@ -72,20 +81,20 @@ public class SchedulerService {
         SimpleTrigger trigger = new SimpleTrigger(avoidNullName(triggerName),
                 triggerGroup, jobName, jobGroup, startTime, endTime,
                 repeatCount, repeatInterval);
-        scheduler.scheduleJob(trigger);
+        return scheduler.scheduleJob(trigger);
     }
 
-    public void unscheduleJob(String triggerName, String triggerGroup)
+    public boolean unscheduleJob(String triggerName, String triggerGroup)
             throws SchedulerException {
-        scheduler.unscheduleJob(triggerName, triggerGroup);
+        return scheduler.unscheduleJob(triggerName, triggerGroup);
     }
 
-    public void scheduleCronJob(String jobName, String jobGroup,
+    public Date scheduleCronJob(String jobName, String jobGroup,
             String triggerName, String triggerGroup,
             CronExpression cronExpression) throws SchedulerException {
         CronTrigger cronTrigger = new CronTrigger(avoidNullName(triggerName),
                 triggerGroup, jobName, jobGroup);
         cronTrigger.setCronExpression(cronExpression);
-        scheduler.scheduleJob(cronTrigger);
+        return scheduler.scheduleJob(cronTrigger);
     }
 }
