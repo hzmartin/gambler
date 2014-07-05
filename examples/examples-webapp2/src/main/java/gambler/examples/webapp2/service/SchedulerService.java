@@ -13,6 +13,7 @@ import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleTrigger;
+import org.quartz.Trigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -32,14 +33,42 @@ public class SchedulerService {
         }
 
     }
+    
+    public Date rescheduleJob(String triggerName, String triggerGroup, Date startTime,
+            Date endTime, Integer repeatCount, Long repeatInterval) throws SchedulerException{
+        if (startTime == null) {
+            startTime = new Date(System.currentTimeMillis());
+        }
+        if (repeatCount == null) {
+            repeatCount = SimpleTrigger.REPEAT_INDEFINITELY;
+        }
+        Trigger oldTrigger = scheduler.getTrigger(triggerName, triggerGroup);
+        SimpleTrigger newTrigger = new SimpleTrigger(triggerName,
+                triggerGroup, oldTrigger.getJobName(), oldTrigger.getJobGroup(), startTime, endTime,
+                repeatCount, repeatInterval);
+        return scheduler.rescheduleJob(triggerName, triggerGroup, newTrigger);
+    }
+    
+    public Date rescheduleCronJob(String triggerName, String triggerGroup,
+            CronExpression cronExpression) throws SchedulerException {
+        Trigger oldTrigger = scheduler.getTrigger(triggerName, triggerGroup);
+        CronTrigger newTrigger = new CronTrigger(triggerName,
+                triggerGroup, oldTrigger.getJobName(), oldTrigger.getJobGroup());
+        newTrigger.setCronExpression(cronExpression);
+        return scheduler.rescheduleJob(triggerName, triggerGroup, newTrigger);
+    }
 
-    public void pauseTrigger(String triggerName, String group) throws SchedulerException {
-        scheduler.pauseTrigger(triggerName, group);
+    public void pauseTrigger(String triggerName, String triggerGroup) throws SchedulerException {
+        scheduler.pauseTrigger(triggerName, triggerGroup);
 
     }
 
-    public void resumeTrigger(String triggerName, String group) throws SchedulerException {
-        scheduler.resumeTrigger(triggerName, group);
+    public void resumeTrigger(String triggerName, String triggerGroup) throws SchedulerException {
+        scheduler.resumeTrigger(triggerName, triggerGroup);
+    }
+    
+    public boolean deleteJob(String jobName, String jobGroup) throws SchedulerException{
+        return scheduler.deleteJob(jobName, jobGroup);
     }
 
     @SuppressWarnings("rawtypes")
