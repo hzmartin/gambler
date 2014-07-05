@@ -1,11 +1,11 @@
 package gambler.examples.webapp2.service;
 
+import gambler.examples.webapp2.exception.ActionException;
+import gambler.examples.webapp2.resp.ResponseStatus;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
-
 import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.StringUtils;
 import org.quartz.CronExpression;
 import org.quartz.CronTrigger;
@@ -96,5 +96,28 @@ public class SchedulerService {
                 triggerGroup, jobName, jobGroup);
         cronTrigger.setCronExpression(cronExpression);
         return scheduler.scheduleJob(cronTrigger);
+    }
+
+    public void start() throws SchedulerException, ActionException {
+        if (scheduler.isShutdown()) {
+            throw new ActionException(ResponseStatus.SERVICE_UNAVAILABLE, "scheduler has been shutdown, please recycle the server!");
+        }
+        scheduler.start();
+    }
+
+    public void standby() throws SchedulerException, ActionException {
+        if (scheduler.isShutdown()) {
+            throw new ActionException(ResponseStatus.SERVICE_UNAVAILABLE, "scheduler has been shutdown, please recycle the server!");
+        }
+        if (scheduler.isStarted()) {
+            scheduler.standby();
+        }
+    }
+
+    public void shutdown(boolean waitForJobsToComplete) throws SchedulerException {
+        if (scheduler.isShutdown()) {
+            return;
+        }
+        scheduler.shutdown(waitForJobsToComplete);
     }
 }

@@ -20,9 +20,11 @@ public enum ResponseStatus {
     
     PASSWORD_ERROR("0008", "密码校验错误"),
 
-    UNKNOWN_ERROR("4004", "未知错误"),
+    UNKNOWN_ERROR("5100", "未知错误"),
     
-    SERVER_BUSY("5000", "网络繁忙，请稍候再试！");
+    SERVER_BUSY("5000", "网络繁忙，请稍候再试！"),
+    
+    SERVICE_UNAVAILABLE("5003", "服务不可用！");
 
     private String code;
 
