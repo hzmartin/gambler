@@ -3,9 +3,11 @@ package gambler.examples.webapp2.dto;
 
 public class TriggerDto {
     
-    private String triggerName;
+    private String name;
     
-    private String triggerGroup;
+    private String group;
+    
+    private String description;
     
     private String previousFireTime;
     
