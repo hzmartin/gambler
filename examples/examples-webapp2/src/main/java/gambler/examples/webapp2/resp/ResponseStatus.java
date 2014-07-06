@@ -2,6 +2,7 @@ package gambler.examples.webapp2.resp;
 
 public enum ResponseStatus {
 
+    //<1000 normal error
     OK("0000", "操作成功"),
 
     PARAM_ILLEGAL("0001", "请求参数不合法"),
@@ -20,6 +21,10 @@ public enum ResponseStatus {
     
     PASSWORD_ERROR("0008", "密码校验错误"),
 
+    //1000+ job error
+    JOB_NOT_EXIST("1000", "Job(name=%s, group=%s)不存在"),
+    
+    //5000+ server error
     UNKNOWN_ERROR("5100", "未知错误"),
     
     SERVER_BUSY("5000", "网络繁忙，请稍候再试！"),

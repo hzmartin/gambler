@@ -2,6 +2,8 @@ package gambler.examples.webapp2.controller;
 
 import gambler.examples.webapp2.annotation.AuthRequired;
 import gambler.examples.webapp2.annotation.LogRequestParam;
+import gambler.examples.webapp2.dto.JobDto;
+import gambler.examples.webapp2.dto.JobExecutionContextDto;
 import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
 import gambler.examples.webapp2.service.SchedulerService;
@@ -9,19 +11,11 @@ import gambler.examples.webapp2.util.TimeTagUtil;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.junit.Assert;
 import org.quartz.CronExpression;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
 import org.quartz.SchedulerException;
-import org.quartz.Trigger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,19 +28,63 @@ public class SchedulerController extends AbstractController {
     @Resource
     private SchedulerService schedulerService;
 
+    @RequestMapping(value = "/getTriggerList")
+    @AuthRequired
+    @ResponseBody
+    public Object getTriggerList(
+            final HttpServletRequest request) throws SchedulerException {
+        return schedulerService.getTriggerList();
+    }
+    
+    @RequestMapping(value = "/getTrigger")
+    @AuthRequired
+    @ResponseBody
+    public Object getTrigger(
+            final HttpServletRequest request,
+            @LogRequestParam(name = "triggerName") @RequestParam String triggerName,
+            @LogRequestParam(name = "triggerGroup") @RequestParam(required = false) String triggerGroup) throws SchedulerException {
+        return schedulerService.getTrigger(triggerName, triggerGroup);
+    }
+    
+    @RequestMapping(value = "/getTriggerState")
+    @AuthRequired
+    @ResponseBody
+    public Object getTriggerState(
+            final HttpServletRequest request,
+            @LogRequestParam(name = "triggerName") @RequestParam String triggerName,
+            @LogRequestParam(name = "triggerGroup") @RequestParam(required = false) String triggerGroup) throws SchedulerException {
+        return schedulerService.getTriggerState(triggerName, triggerGroup);
+    }
+    
+    @RequestMapping(value = "/getJobList")
+    @AuthRequired
+    @ResponseBody
+    public Object getJobList(
+            final HttpServletRequest request,
+            @LogRequestParam(name = "withTrigger") @RequestParam(required = false, defaultValue = "false") Boolean withTrigger) throws SchedulerException {
+        return schedulerService.getJobList(withTrigger);
+    }
+    
+    @RequestMapping(value = "/getJob")
+    @AuthRequired
+    @ResponseBody
+    public Object getJob(
+            final HttpServletRequest request,
+            @LogRequestParam(name = "jobName") @RequestParam String jobName,
+            @LogRequestParam(name = "jobGroup") @RequestParam(required = false) String jobGroup,
+            @LogRequestParam(name = "withTrigger") @RequestParam(required = false, defaultValue = "false") Boolean withTrigger) throws SchedulerException {
+        return schedulerService.getJob(jobName, jobGroup, withTrigger);
+    }
+
     @RequestMapping(value = "/executeOnce")
     @AuthRequired
     @ResponseBody
-    public Object executeOnce(String jobName, String jobGroup, String jobDataMapJson) throws SchedulerException {
-        JSONObject fromObject = JSONObject.fromObject(jobDataMapJson);
-        Set keySet = fromObject.keySet();
-        JobDataMap jobDataMap = new JobDataMap();
-        for (Object paramname : keySet) {
-            jobDataMap.put(paramname,
-                    fromObject.get(paramname));
-
-        }
-        schedulerService.triggerJobWithVolatileTrigger(jobName, jobGroup, jobDataMap);
+    public Object executeOnce(
+            final HttpServletRequest request,
+            @LogRequestParam(name = "jobName") @RequestParam String jobName,
+            @LogRequestParam(name = "jobGroup") @RequestParam(required = false) String jobGroup,
+            @LogRequestParam(name = "jobDataMapJson") @RequestParam(required = false) String jobDataMapJson) throws SchedulerException {
+        schedulerService.executeOnce(jobName, jobGroup, jobDataMapJson);
         return null;
     }
 
@@ -55,31 +93,8 @@ public class SchedulerController extends AbstractController {
     @ResponseBody
     public Object getCurrentlyExecutingJobs(
             final HttpServletRequest request) throws SchedulerException {
-        List<JobExecutionContext> execContexts = schedulerService.getCurrentlyExecutingJobs();
-        JSONArray jobs = new JSONArray();
-        for (JobExecutionContext context : execContexts) {
-            JSONObject job = new JSONObject();
-            JobDetail jobDetail = context.getJobDetail();
-            job.put("jobName", jobDetail.getName());
-            job.put("jobGroup", jobDetail.getGroup());
-            job.put("jobDescription", jobDetail.getDescription());
-            job.put("jobClass", jobDetail.getJobClass());
-            JobDataMap jobDataMap = jobDetail.getJobDataMap();
-            Set<String> keys = jobDataMap.keySet();
-            for (String key : keys) {
-                job.put("jobDataMap." + key, jobDataMap.get(key));
-            }
-            Trigger trigger = context.getTrigger();
-            job.put("triggerName", trigger.getName());
-            job.put("triggerGroup", trigger.getGroup());
-            job.put("previousFireTime", TimeTagUtil.format(context.getPreviousFireTime()));
-            job.put("scheduledFireTime", TimeTagUtil.format(context.getScheduledFireTime()));
-            job.put("nextFireTime", TimeTagUtil.format(context.getNextFireTime()));
-            job.put("fireTime", TimeTagUtil.format(context.getFireTime()));
-            jobs.add(job);
-
-        }
-        return jobs;
+        List<JobExecutionContextDto> contexts = schedulerService.getCurrentlyExecutingJobs();
+        return contexts;
     }
 
     @RequestMapping(value = "/addJob")
@@ -97,13 +112,10 @@ public class SchedulerController extends AbstractController {
             @LogRequestParam(name = "shouldRecover") @RequestParam(required = false, defaultValue = "false") boolean shouldRecover,
             @LogRequestParam(name = "replace") @RequestParam(required = false, defaultValue = "true") boolean replace)
             throws SchedulerException, ActionException {
-        JobDetail jobDetail = schedulerService.addJob(jobClassName, jobName,
+        JobDto jobDto = schedulerService.addJob(jobClassName, jobName,
                 jobGroup, jobDataMapJson, description, volatility, durability,
                 shouldRecover, replace);
-        JSONObject object = new JSONObject();
-        object.put("name", jobDetail.getName());
-        object.put("group", jobDetail.getGroup());
-        return object;
+        return jobDto;
     }
 
     @RequestMapping(value = "/deleteJob")
@@ -133,7 +145,8 @@ public class SchedulerController extends AbstractController {
             @LogRequestParam(name = "startTime") @RequestParam(required = false) String startTime,
             @LogRequestParam(name = "endTime") @RequestParam(required = false) String endTime,
             @LogRequestParam(name = "repeatCount") @RequestParam(required = false) Integer repeatCount,
-            @LogRequestParam(name = "repeatInterval") @RequestParam Long repeatInterval)
+            @LogRequestParam(name = "repeatInterval") @RequestParam Long repeatInterval,
+            @LogRequestParam(name = "description") @RequestParam String description)
             throws SchedulerException, ActionException {
         Date start = null;
         Date end = null;
@@ -165,7 +178,7 @@ public class SchedulerController extends AbstractController {
                     "repeat interval must be >= 0");
         }
         return TimeTagUtil.format(schedulerService.scheduleJob(jobName, jobGroup, triggerName,
-                triggerGroup, start, end, repeatCount, repeatInterval));
+                triggerGroup, start, end, repeatCount, repeatInterval, description));
     }
 
     @RequestMapping(value = "/scheduleCronJob")
@@ -177,7 +190,8 @@ public class SchedulerController extends AbstractController {
             @LogRequestParam(name = "jobGroup") @RequestParam(required = false) String jobGroup,
             @LogRequestParam(name = "triggerName") @RequestParam(required = false) String triggerName,
             @LogRequestParam(name = "triggerGroup") @RequestParam(required = false) String triggerGroup,
-            @LogRequestParam(name = "cronEx") @RequestParam String cronEx)
+            @LogRequestParam(name = "cronEx") @RequestParam String cronEx,
+            @LogRequestParam(name = "description") @RequestParam String description)
             throws SchedulerException, ActionException {
         CronExpression cronExpression = null;
         try {
@@ -187,7 +201,7 @@ public class SchedulerController extends AbstractController {
                     "cron expression illegal");
         }
         return TimeTagUtil.format(schedulerService.scheduleCronJob(jobName, jobGroup, triggerName,
-                triggerGroup, cronExpression));
+                triggerGroup, cronExpression, description));
     }
 
     @RequestMapping(value = "/rescheduleJob")
@@ -200,7 +214,8 @@ public class SchedulerController extends AbstractController {
             @LogRequestParam(name = "startTime") @RequestParam(required = false) String startTime,
             @LogRequestParam(name = "endTime") @RequestParam(required = false) String endTime,
             @LogRequestParam(name = "repeatCount") @RequestParam(required = false) Integer repeatCount,
-            @LogRequestParam(name = "repeatInterval") @RequestParam Long repeatInterval)
+            @LogRequestParam(name = "repeatInterval") @RequestParam Long repeatInterval,
+            @LogRequestParam(name = "description") @RequestParam String description)
             throws SchedulerException, ActionException {
 
         if (StringUtils.isBlank(triggerName)) {
@@ -237,7 +252,7 @@ public class SchedulerController extends AbstractController {
                     "repeat interval must be >= 0");
         }
         return TimeTagUtil.format(schedulerService.rescheduleJob(triggerName, triggerGroup, start, end,
-                repeatCount, repeatInterval));
+                repeatCount, repeatInterval, description));
     }
 
     @RequestMapping(value = "/rescheduleCronJob")
@@ -247,7 +262,8 @@ public class SchedulerController extends AbstractController {
             final HttpServletRequest request,
             @LogRequestParam(name = "triggerName") @RequestParam String triggerName,
             @LogRequestParam(name = "triggerGroup") @RequestParam(required = false) String triggerGroup,
-            @LogRequestParam(name = "cronEx") @RequestParam String cronEx)
+            @LogRequestParam(name = "cronEx") @RequestParam String cronEx,
+            @LogRequestParam(name = "description") @RequestParam String description)
             throws SchedulerException, ActionException {
         if (StringUtils.isBlank(triggerName)) {
             throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
@@ -261,7 +277,7 @@ public class SchedulerController extends AbstractController {
                     "cron expression illegal");
         }
         return TimeTagUtil.format(schedulerService.rescheduleCronJob(triggerName,
-                triggerGroup, cronExpression));
+                triggerGroup, cronExpression, description));
     }
 
     @RequestMapping(value = "/unscheduleJob")

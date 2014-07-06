@@ -1,7 +1,11 @@
 package gambler.examples.webapp2.service;
 
+import gambler.examples.webapp2.dto.JobDto;
+import gambler.examples.webapp2.dto.JobExecutionContextDto;
+import gambler.examples.webapp2.dto.TriggerDto;
 import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
+import gambler.examples.webapp2.util.TimeTagUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,32 +33,141 @@ public class SchedulerService {
     @Qualifier("quartzScheduler")
     private Scheduler scheduler;
 
-    private String avoidNullName(String name) {
-        if (StringUtils.isBlank(name)) {
+    private String avoidNullWithUuid(String str) {
+        if (StringUtils.isBlank(str)) {
             return UUID.randomUUID().toString();
         } else {
-            return name;
+            return str;
         }
 
     }
 
-    //getJobList, getTriggerList, getJob, getTriggersOfJob
-    public List getAllJobs() {
-        List jobs = new ArrayList();
-        return jobs;
+    public List<TriggerDto> getTriggerList() throws SchedulerException {
+        List<TriggerDto> triggerDtos = new ArrayList<TriggerDto>();
+        String[] triggerGroupNames = scheduler.getTriggerGroupNames();
+        for (String triggerGroupName : triggerGroupNames) {
+            String[] triggerNames = scheduler.getTriggerNames(triggerGroupName);
+            for (String triggerName : triggerNames) {
+                TriggerDto triggerDto = getTrigger(triggerName, triggerGroupName);
+                if (triggerDto != null) {
+                    triggerDtos.add(triggerDto);
+                }
+            }
+        }
+        return triggerDtos;
     }
 
-    public List<JobExecutionContext> getCurrentlyExecutingJobs() throws SchedulerException {
-        List<JobExecutionContext> jobs = scheduler.getCurrentlyExecutingJobs();
-        return jobs;
+    public TriggerDto getTrigger(String triggerName, String triggerGroup) throws SchedulerException {
+        TriggerDto tDto = new TriggerDto();
+        int state = scheduler.getTriggerState(triggerName, triggerGroup);
+        Trigger trigger = scheduler.getTrigger(triggerName, triggerGroup);
+        if (trigger == null) {
+            return null;
+        }
+        tDto.setName(trigger.getName());
+        tDto.setGroup(trigger.getGroup());
+        tDto.setDescription(trigger.getDescription());
+        tDto.setJobName(trigger.getJobName());
+        tDto.setJobGroup(trigger.getJobGroup());
+        tDto.setPreviousFireTime(TimeTagUtil.format(trigger.getPreviousFireTime()));
+        tDto.setNextFireTime(TimeTagUtil.format(trigger.getNextFireTime()));
+        tDto.setState(state);
+        return tDto;
+    }
+    
+    public int getTriggerState(String triggerName, String triggerGroup) throws SchedulerException {
+        return scheduler.getTriggerState(triggerName, triggerGroup);
     }
 
-    public void triggerJobWithVolatileTrigger(String jobName, String jobGroup, JobDataMap jobDataMap) throws SchedulerException {
+    public List<JobDto> getJobList(boolean withTrigger) throws SchedulerException {
+        List<JobDto> jobDtos = new ArrayList<JobDto>();
+        String[] jobGroupNames = scheduler.getJobGroupNames();
+        for (String jobGroup : jobGroupNames) {
+            String[] jobNames = scheduler.getJobNames(jobGroup);
+            for (String jobName : jobNames) {
+                JobDto job = getJob(jobName, jobGroup, withTrigger);
+                if (job != null) {
+                    jobDtos.add(job);
+                }
+            }
+        }
+        return jobDtos;
+    }
+
+    public JobDto getJob(String jobName, String jobGroup, boolean withTrigger) throws SchedulerException {
+        JobDetail jobDetail = scheduler.getJobDetail(jobName, jobGroup);
+        if (jobDetail == null) {
+            return null;
+        }
+        JobDto jobDto = new JobDto();
+        jobDto.setName(jobName);
+        jobDto.setGroup(jobGroup);
+        jobDto.setDescription(jobDetail.getDescription());
+        jobDto.setJobClass(jobDetail.getJobClass().getName());
+        jobDto.setJobDataMap(jobDetail.getJobDataMap());
+        if (withTrigger) {
+            Trigger[] triggers = scheduler.getTriggersOfJob(jobName, jobGroup);
+            if (triggers != null && triggers.length > 0) {
+                List<TriggerDto> triggerDtos = new ArrayList<TriggerDto>();
+                for (Trigger trigger : triggers) {
+                    TriggerDto tDto = new TriggerDto();
+                    tDto.setJobName(jobName);
+                    tDto.setJobGroup(jobGroup);
+                    tDto.setName(trigger.getName());
+                    tDto.setGroup(trigger.getGroup());
+                    tDto.setDescription(trigger.getDescription());
+                    tDto.setPreviousFireTime(TimeTagUtil.format(trigger.getPreviousFireTime()));
+                    tDto.setNextFireTime(TimeTagUtil.format(trigger.getNextFireTime()));
+                    tDto.setMisfireInstruction(trigger.getMisfireInstruction());
+                    int state = scheduler.getTriggerState(trigger.getName(), trigger.getGroup());
+                    tDto.setState(state);
+                    triggerDtos.add(tDto);
+                }
+                jobDto.setTriggers(triggerDtos);
+            }
+        }
+        return jobDto;
+    }
+
+    public List<JobExecutionContextDto> getCurrentlyExecutingJobs() throws SchedulerException {
+        List<JobExecutionContext> contexts = scheduler.getCurrentlyExecutingJobs();
+        List<JobExecutionContextDto> contextDtoList = new ArrayList<JobExecutionContextDto>();
+        for (JobExecutionContext context : contexts) {
+            JobExecutionContextDto contextDto = new JobExecutionContextDto();
+            JobDetail jobDetail = context.getJobDetail();
+            contextDto.setJobName(jobDetail.getName());
+            contextDto.setJobGroup(jobDetail.getGroup());
+            contextDto.setJobDescription(jobDetail.getDescription());
+            contextDto.setJobClass(jobDetail.getJobClass().getName());
+            contextDto.setJobDataMap(jobDetail.getJobDataMap());
+            Trigger trigger = context.getTrigger();
+            contextDto.setTriggerName(trigger.getName());
+            contextDto.setTriggerGroup(trigger.getGroup());
+            contextDto.setTriggerDescription(trigger.getDescription());
+            contextDto.setFireTime(TimeTagUtil.format(context.getFireTime()));
+            contextDto.setNextFireTime(TimeTagUtil.format(context.getNextFireTime()));
+            contextDto.setPreviousFireTime(TimeTagUtil.format(context.getPreviousFireTime()));
+            contextDto.setScheduledFireTime(TimeTagUtil.format(context.getScheduledFireTime()));
+            contextDtoList.add(contextDto);
+
+        }
+        return contextDtoList;
+    }
+
+    public void executeOnce(String jobName, String jobGroup, String jobDataMapJson) throws SchedulerException {
+        JSONObject fromObject = JSONObject.fromObject(jobDataMapJson);
+        Set keySet = fromObject.keySet();
+        JobDataMap jobDataMap = new JobDataMap();
+        for (Object paramname : keySet) {
+            jobDataMap.put(paramname,
+                    fromObject.get(paramname));
+
+        }
         scheduler.triggerJobWithVolatileTrigger(jobName, jobGroup, jobDataMap);
     }
 
     public Date rescheduleJob(String triggerName, String triggerGroup, Date startTime,
-            Date endTime, Integer repeatCount, Long repeatInterval) throws SchedulerException {
+            Date endTime, Integer repeatCount, Long repeatInterval, String decription) throws SchedulerException {
         if (startTime == null) {
             startTime = new Date(System.currentTimeMillis());
         }
@@ -65,15 +178,17 @@ public class SchedulerService {
         SimpleTrigger newTrigger = new SimpleTrigger(triggerName,
                 triggerGroup, oldTrigger.getJobName(), oldTrigger.getJobGroup(), startTime, endTime,
                 repeatCount, repeatInterval);
+        newTrigger.setDescription(decription);
         return scheduler.rescheduleJob(triggerName, triggerGroup, newTrigger);
     }
 
     public Date rescheduleCronJob(String triggerName, String triggerGroup,
-            CronExpression cronExpression) throws SchedulerException {
+            CronExpression cronExpression, String decription) throws SchedulerException {
         Trigger oldTrigger = scheduler.getTrigger(triggerName, triggerGroup);
         CronTrigger newTrigger = new CronTrigger(triggerName,
                 triggerGroup, oldTrigger.getJobName(), oldTrigger.getJobGroup());
         newTrigger.setCronExpression(cronExpression);
+        newTrigger.setDescription(decription);
         return scheduler.rescheduleJob(triggerName, triggerGroup, newTrigger);
     }
 
@@ -91,7 +206,7 @@ public class SchedulerService {
     }
 
     @SuppressWarnings("rawtypes")
-    public JobDetail addJob(String jobClassName, String jobName,
+    public JobDto addJob(String jobClassName, String jobName,
             String jobGroup, String jobDataMapJson, String description,
             boolean volatility, boolean durability, boolean shouldRecover,
             boolean replace) throws SchedulerException {
@@ -102,7 +217,7 @@ public class SchedulerService {
             throw new SchedulerException("add job " + jobClassName + " error!",
                     e);
         }
-        JobDetail jobDetail = new JobDetail(avoidNullName(jobName),
+        JobDetail jobDetail = new JobDetail(avoidNullWithUuid(jobName),
                 jobGroup, jobClass, volatility, durability, shouldRecover);
         jobDetail.setDescription(description);
         JSONObject fromObject = JSONObject.fromObject(jobDataMapJson);
@@ -113,12 +228,15 @@ public class SchedulerService {
 
         }
         scheduler.addJob(jobDetail, replace);
-        return jobDetail;
+        JobDto jobDto = new JobDto();
+        jobDto.setName(jobDetail.getName());
+        jobDto.setGroup(jobDetail.getGroup());
+        return jobDto;
     }
 
     public Date scheduleJob(String jobName, String jobGroup,
             String triggerName, String triggerGroup, Date startTime,
-            Date endTime, Integer repeatCount, Long repeatInterval)
+            Date endTime, Integer repeatCount, Long repeatInterval, String decription)
             throws SchedulerException {
         if (startTime == null) {
             startTime = new Date(System.currentTimeMillis());
@@ -126,9 +244,10 @@ public class SchedulerService {
         if (repeatCount == null) {
             repeatCount = SimpleTrigger.REPEAT_INDEFINITELY;
         }
-        SimpleTrigger trigger = new SimpleTrigger(avoidNullName(triggerName),
+        SimpleTrigger trigger = new SimpleTrigger(avoidNullWithUuid(triggerName),
                 triggerGroup, jobName, jobGroup, startTime, endTime,
                 repeatCount, repeatInterval);
+        trigger.setDescription(decription);
         return scheduler.scheduleJob(trigger);
     }
 
@@ -139,10 +258,11 @@ public class SchedulerService {
 
     public Date scheduleCronJob(String jobName, String jobGroup,
             String triggerName, String triggerGroup,
-            CronExpression cronExpression) throws SchedulerException {
-        CronTrigger cronTrigger = new CronTrigger(avoidNullName(triggerName),
+            CronExpression cronExpression, String decription) throws SchedulerException {
+        CronTrigger cronTrigger = new CronTrigger(avoidNullWithUuid(triggerName),
                 triggerGroup, jobName, jobGroup);
         cronTrigger.setCronExpression(cronExpression);
+        cronTrigger.setDescription(decription);
         return scheduler.scheduleJob(cronTrigger);
     }
 
