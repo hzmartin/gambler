@@ -80,8 +80,8 @@ public class SchedulerService {
     }
 
     /**
-     * 
-     * @see #getJob(java.lang.String, java.lang.String, boolean) 
+     *
+     * @see #getJob(java.lang.String, java.lang.String, boolean)
      */
     public List<JobDto> getJobList(boolean withTrigger) throws SchedulerException {
         List<JobDto> jobDtos = new ArrayList<JobDto>();
@@ -161,16 +161,22 @@ public class SchedulerService {
         return contextDtoList;
     }
 
-    public void executeOnce(String jobName, String jobGroup, String jobDataMapJson) throws SchedulerException {
-        JSONObject fromObject = JSONObject.fromObject(jobDataMapJson);
-        Set keySet = fromObject.keySet();
-        JobDataMap jobDataMap = new JobDataMap();
-        for (Object paramname : keySet) {
-            jobDataMap.put(paramname,
-                    fromObject.get(paramname));
+    public void executeOnce(String jobName, String jobGroup, String jobClass, String jobDataMapJson) throws SchedulerException {
 
+        if (StringUtils.isNotBlank(jobClass)) {
+            addJob(jobClass, jobName, jobGroup, jobDataMapJson, null, false, false, false, true);
+            scheduler.triggerJobWithVolatileTrigger(jobName, jobGroup);
+        } else {
+            JSONObject fromObject = JSONObject.fromObject(jobDataMapJson);
+            Set keySet = fromObject.keySet();
+            JobDataMap jobDataMap = new JobDataMap();
+            for (Object paramname : keySet) {
+                jobDataMap.put(paramname,
+                        fromObject.get(paramname));
+
+            }
+            scheduler.triggerJobWithVolatileTrigger(jobName, jobGroup, jobDataMap);
         }
-        scheduler.triggerJobWithVolatileTrigger(jobName, jobGroup, jobDataMap);
     }
 
     public Date rescheduleJob(String triggerName, String triggerGroup, Date startTime,
@@ -213,19 +219,19 @@ public class SchedulerService {
     }
 
     @SuppressWarnings("rawtypes")
-    public JobDto addJob(String jobClassName, String jobName,
+    public JobDto addJob(String jobClass, String jobName,
             String jobGroup, String jobDataMapJson, String description,
             boolean volatility, boolean durability, boolean shouldRecover,
             boolean replace) throws SchedulerException {
-        Class jobClass = null;
+        Class jobClazz = null;
         try {
-            jobClass = Class.forName(jobClassName);
+            jobClazz = Class.forName(jobClass);
         } catch (ClassNotFoundException e) {
-            throw new SchedulerException("add job " + jobClassName + " error!",
+            throw new SchedulerException("add job " + jobClass + " error!",
                     e);
         }
         JobDetail jobDetail = new JobDetail(avoidNullWithUuid(jobName),
-                jobGroup, jobClass, volatility, durability, shouldRecover);
+                jobGroup, jobClazz, volatility, durability, shouldRecover);
         jobDetail.setDescription(description);
         JSONObject fromObject = JSONObject.fromObject(jobDataMapJson);
         Set keySet = fromObject.keySet();

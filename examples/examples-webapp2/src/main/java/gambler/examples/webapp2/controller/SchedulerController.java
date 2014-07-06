@@ -112,8 +112,9 @@ public class SchedulerController extends AbstractController {
             final HttpServletRequest request,
             @LogRequestParam(name = "jobName") @RequestParam String jobName,
             @LogRequestParam(name = "jobGroup") @RequestParam(required = false) String jobGroup,
+            @LogRequestParam(name = "jobClass") @RequestParam(required = false)  String jobClass,
             @LogRequestParam(name = "jobDataMapJson") @RequestParam(required = false) String jobDataMapJson) throws SchedulerException {
-        schedulerService.executeOnce(jobName, jobGroup, jobDataMapJson);
+        schedulerService.executeOnce(jobName, jobGroup, jobClass, jobDataMapJson);
         return null;
     }
 
@@ -131,7 +132,7 @@ public class SchedulerController extends AbstractController {
     @ResponseBody
     public Object addJob(
             final HttpServletRequest request,
-            @LogRequestParam(name = "jobClass") @RequestParam String jobClassName,
+            @LogRequestParam(name = "jobClass") @RequestParam String jobClass,
             @LogRequestParam(name = "jobName") @RequestParam(required = false) String jobName,
             @LogRequestParam(name = "jobGroup") @RequestParam(required = false) String jobGroup,
             @LogRequestParam(name = "jobDataMapJson") @RequestParam(required = false) String jobDataMapJson,
@@ -141,7 +142,7 @@ public class SchedulerController extends AbstractController {
             @LogRequestParam(name = "shouldRecover") @RequestParam(required = false, defaultValue = "false") boolean shouldRecover,
             @LogRequestParam(name = "replace") @RequestParam(required = false, defaultValue = "true") boolean replace)
             throws SchedulerException, ActionException {
-        JobDto jobDto = schedulerService.addJob(jobClassName, jobName,
+        JobDto jobDto = schedulerService.addJob(jobClass, jobName,
                 jobGroup, jobDataMapJson, description, volatility, durability,
                 shouldRecover, replace);
         return jobDto;
