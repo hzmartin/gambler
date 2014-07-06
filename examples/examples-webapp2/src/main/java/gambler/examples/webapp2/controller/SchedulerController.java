@@ -28,6 +28,35 @@ public class SchedulerController extends AbstractController {
     @Resource
     private SchedulerService schedulerService;
 
+    @RequestMapping(value = "/shutdown")
+    @AuthRequired
+    @ResponseBody
+    public Object shutdown(
+            final HttpServletRequest request,
+            @LogRequestParam(name = "waitForJobsToComplete") @RequestParam(required = false, defaultValue = "false") Boolean waitForJobsToComplete) throws SchedulerException, ActionException {
+        schedulerService.shutdown(waitForJobsToComplete);
+        return null;
+    }
+    
+    
+    @RequestMapping(value = "/standby")
+    @AuthRequired
+    @ResponseBody
+    public Object standby(
+            final HttpServletRequest request) throws SchedulerException, ActionException {
+        schedulerService.standby();
+        return null;
+    }
+    
+    @RequestMapping(value = "/start")
+    @AuthRequired
+    @ResponseBody
+    public Object start(
+            final HttpServletRequest request) throws SchedulerException, ActionException {
+        schedulerService.start();
+        return null;
+    }
+    
     @RequestMapping(value = "/getTriggerList")
     @AuthRequired
     @ResponseBody

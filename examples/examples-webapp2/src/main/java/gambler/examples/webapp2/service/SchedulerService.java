@@ -74,7 +74,7 @@ public class SchedulerService {
         tDto.setState(state);
         return tDto;
     }
-    
+
     public int getTriggerState(String triggerName, String triggerGroup) throws SchedulerException {
         return scheduler.getTriggerState(triggerName, triggerGroup);
     }
@@ -270,14 +270,16 @@ public class SchedulerService {
         if (scheduler.isShutdown()) {
             throw new ActionException(ResponseStatus.SERVICE_UNAVAILABLE, "scheduler has been shutdown, please recycle the server!");
         }
-        scheduler.start();
+        if (scheduler.isInStandbyMode()) {
+            scheduler.start();
+        }
     }
 
     public void standby() throws SchedulerException, ActionException {
         if (scheduler.isShutdown()) {
             throw new ActionException(ResponseStatus.SERVICE_UNAVAILABLE, "scheduler has been shutdown, please recycle the server!");
         }
-        if (scheduler.isStarted()) {
+        if (!scheduler.isInStandbyMode()) {
             scheduler.standby();
         }
     }
