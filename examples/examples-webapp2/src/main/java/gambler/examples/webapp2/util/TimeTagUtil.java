@@ -2,6 +2,7 @@ package gambler.examples.webapp2.util;
 
 import java.text.ParseException;
 import java.util.Date;
+import org.apache.commons.lang.time.DateFormatUtils;
 
 import org.apache.commons.lang.time.DateUtils;
 
@@ -14,4 +15,8 @@ public class TimeTagUtil {
 	public static Date parseDate(String str) throws ParseException {
 		return DateUtils.parseDate(str, pattern);
 	}
+        
+        public static String format(Date date){
+            return DateFormatUtils.format(date, "yyyyMMddHHmmss");
+        }
 }

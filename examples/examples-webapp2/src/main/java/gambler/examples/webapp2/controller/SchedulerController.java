@@ -7,18 +7,21 @@ import gambler.examples.webapp2.resp.ResponseStatus;
 import gambler.examples.webapp2.service.SchedulerService;
 import gambler.examples.webapp2.util.TimeTagUtil;
 import java.text.ParseException;
-
 import java.util.Date;
-
+import java.util.List;
+import java.util.Set;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.StringUtils;
+import org.junit.Assert;
 import org.quartz.CronExpression;
+import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
 import org.quartz.SchedulerException;
+import org.quartz.Trigger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +33,54 @@ public class SchedulerController extends AbstractController {
 
     @Resource
     private SchedulerService schedulerService;
+
+    @RequestMapping(value = "/executeOnce")
+    @AuthRequired
+    @ResponseBody
+    public Object executeOnce(String jobName, String jobGroup, String jobDataMapJson) throws SchedulerException {
+        JSONObject fromObject = JSONObject.fromObject(jobDataMapJson);
+        Set keySet = fromObject.keySet();
+        JobDataMap jobDataMap = new JobDataMap();
+        for (Object paramname : keySet) {
+            jobDataMap.put(paramname,
+                    fromObject.get(paramname));
+
+        }
+        schedulerService.triggerJobWithVolatileTrigger(jobName, jobGroup, jobDataMap);
+        return null;
+    }
+
+    @RequestMapping(value = "/getCurrentlyExecutingJobs")
+    @AuthRequired
+    @ResponseBody
+    public Object getCurrentlyExecutingJobs(
+            final HttpServletRequest request) throws SchedulerException {
+        List<JobExecutionContext> execContexts = schedulerService.getCurrentlyExecutingJobs();
+        JSONArray jobs = new JSONArray();
+        for (JobExecutionContext context : execContexts) {
+            JSONObject job = new JSONObject();
+            JobDetail jobDetail = context.getJobDetail();
+            job.put("jobName", jobDetail.getName());
+            job.put("jobGroup", jobDetail.getGroup());
+            job.put("jobDescription", jobDetail.getDescription());
+            job.put("jobClass", jobDetail.getJobClass());
+            JobDataMap jobDataMap = jobDetail.getJobDataMap();
+            Set<String> keys = jobDataMap.keySet();
+            for (String key : keys) {
+                job.put("jobDataMap." + key, jobDataMap.get(key));
+            }
+            Trigger trigger = context.getTrigger();
+            job.put("triggerName", trigger.getName());
+            job.put("triggerGroup", trigger.getGroup());
+            job.put("previousFireTime", TimeTagUtil.format(context.getPreviousFireTime()));
+            job.put("scheduledFireTime", TimeTagUtil.format(context.getScheduledFireTime()));
+            job.put("nextFireTime", TimeTagUtil.format(context.getNextFireTime()));
+            job.put("fireTime", TimeTagUtil.format(context.getFireTime()));
+            jobs.add(job);
+
+        }
+        return jobs;
+    }
 
     @RequestMapping(value = "/addJob")
     @AuthRequired
@@ -113,8 +164,8 @@ public class SchedulerController extends AbstractController {
             throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
                     "repeat interval must be >= 0");
         }
-        return schedulerService.scheduleJob(jobName, jobGroup, triggerName,
-                triggerGroup, start, end, repeatCount, repeatInterval);
+        return TimeTagUtil.format(schedulerService.scheduleJob(jobName, jobGroup, triggerName,
+                triggerGroup, start, end, repeatCount, repeatInterval));
     }
 
     @RequestMapping(value = "/scheduleCronJob")
@@ -135,8 +186,8 @@ public class SchedulerController extends AbstractController {
             throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
                     "cron expression illegal");
         }
-        return schedulerService.scheduleCronJob(jobName, jobGroup, triggerName,
-                triggerGroup, cronExpression);
+        return TimeTagUtil.format(schedulerService.scheduleCronJob(jobName, jobGroup, triggerName,
+                triggerGroup, cronExpression));
     }
 
     @RequestMapping(value = "/rescheduleJob")
@@ -185,7 +236,8 @@ public class SchedulerController extends AbstractController {
             throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
                     "repeat interval must be >= 0");
         }
-        return schedulerService.rescheduleJob(triggerName, triggerGroup, start, end, repeatCount, repeatInterval);
+        return TimeTagUtil.format(schedulerService.rescheduleJob(triggerName, triggerGroup, start, end,
+                repeatCount, repeatInterval));
     }
 
     @RequestMapping(value = "/rescheduleCronJob")
@@ -208,8 +260,8 @@ public class SchedulerController extends AbstractController {
             throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
                     "cron expression illegal");
         }
-        return schedulerService.rescheduleCronJob(triggerName,
-                triggerGroup, cronExpression);
+        return TimeTagUtil.format(schedulerService.rescheduleCronJob(triggerName,
+                triggerGroup, cronExpression));
     }
 
     @RequestMapping(value = "/unscheduleJob")

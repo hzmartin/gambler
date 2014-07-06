@@ -2,6 +2,7 @@ package gambler.examples.webapp2.service;
 
 import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +13,7 @@ import org.quartz.CronExpression;
 import org.quartz.CronTrigger;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleTrigger;
@@ -35,9 +37,15 @@ public class SchedulerService {
         }
 
     }
-    
-    public List getCurrentlyExecutingJobs() throws SchedulerException{
-        return scheduler.getCurrentlyExecutingJobs();
+
+    public List getAllJobs() {
+        List jobs = new ArrayList();
+        return jobs;
+    }
+
+    public List<JobExecutionContext> getCurrentlyExecutingJobs() throws SchedulerException {
+        List<JobExecutionContext> jobs = scheduler.getCurrentlyExecutingJobs();
+        return jobs;
     }
 
     public void triggerJobWithVolatileTrigger(String jobName, String jobGroup, JobDataMap jobDataMap) throws SchedulerException {

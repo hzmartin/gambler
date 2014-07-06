@@ -43,7 +43,8 @@ public class SysMgmtController extends AbstractController {
 	public Object createSuper(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId,
-			@RequestParam(required = true) String password)
+			@RequestParam(required = true) String password,
+                        @LogRequestParam(name = "nick") @RequestParam(required = false) String nick)
 			throws ActionException, AccessForbiddenException {
 		if (!sysconf.getBoolean("switch.enableCreateSuper", false)) {
 			throw new AccessForbiddenException("switch.enableCreateSuper off");
@@ -60,6 +61,7 @@ public class SysMgmtController extends AbstractController {
 		user.setUserId(userId);
 		user.setIssuper(1);
 		user.setIsactive(1);
+                user.setNick(nick);
 		user.setPassword(authUserService.getSaltedPassword(password, userId));
 		return authUserService.saveAsSystemUser(user);
 	}
