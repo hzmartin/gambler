@@ -38,6 +38,7 @@ public class SchedulerService {
 
     }
 
+    //getJobList, getTriggerList, getJob, getTriggersOfJob
     public List getAllJobs() {
         List jobs = new ArrayList();
         return jobs;
