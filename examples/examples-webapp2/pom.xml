@@ -373,6 +373,7 @@
                 <filtering>true</filtering>
                 <includes>
                     <include>log4j.xml</include>
+                    <include>quartz.properties</include>
                     <include>datasource.properties</include>
                     <include>sysconf.xml</include>
                 </includes>
@@ -382,6 +383,7 @@
                 <filtering>false</filtering>
                 <excludes>
                     <exclude>log4j.xml</exclude>
+                    <exclude>quartz.properties</exclude>
                     <exclude>datasource.properties</exclude>
                     <exclude>sysconf.xml</exclude>
                 </excludes>
