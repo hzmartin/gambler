@@ -1,6 +1,6 @@
-package gambler.examples.webapp2.vo;
+package gambler.examples.webapp2.dto;
 
-public class PermissionVO {
+public class PermissionDto {
 
     private Long pid;
 

@@ -13,8 +13,8 @@ import gambler.examples.webapp2.exception.UnexpectedException;
 import gambler.examples.webapp2.resp.ResponseStatus;
 import gambler.examples.webapp2.service.AuthUserService;
 import gambler.examples.webapp2.util.RegexUtil;
-import gambler.examples.webapp2.vo.Account;
-import gambler.examples.webapp2.vo.PermissionVO;
+import gambler.examples.webapp2.dto.AccountDto;
+import gambler.examples.webapp2.dto.PermissionDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +72,7 @@ public class SysMgmtController extends AbstractController {
 	public Object updatePassword(final HttpServletRequest request,
 			@RequestParam String userId, @RequestParam String oldPass,
 			@RequestParam String newPass) throws ActionException {
-		Account loginUser = authUserService.getLoginUser(request);
+		AccountDto loginUser = authUserService.getLoginUser(request);
 
 		if (loginUser.getIssuper() == 0) {
 			if (loginUser.getUserId().equals(userId)) {
@@ -106,7 +106,7 @@ public class SysMgmtController extends AbstractController {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"userId illegal");
 		}
-		Account loginUser = authUserService.getLoginUser(request);
+		AccountDto loginUser = authUserService.getLoginUser(request);
 		User user = authUserService.findUserById(userId);
 		User newUser = new User();
 		newUser.setUserId(userId);
@@ -139,7 +139,7 @@ public class SysMgmtController extends AbstractController {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"userId illegal");
 		}
-		Account loginUser = authUserService.getLoginUser(request);
+		AccountDto loginUser = authUserService.getLoginUser(request);
 		if (loginUser.getUserId().equals(userId)) {
 			throw new ActionException(ResponseStatus.NO_PERMISSION, loginUser
 					+ "无法删除自己的账号！");
@@ -170,7 +170,7 @@ public class SysMgmtController extends AbstractController {
 		if (user == null) {
 			throw new ActionException(ResponseStatus.USER_NOT_EXSIST);
 		} else {
-			return new Account(user);
+			return new AccountDto(user);
 		}
 
 	}
@@ -194,10 +194,10 @@ public class SysMgmtController extends AbstractController {
 				.getUserPermissions(user.getUserId());
 		List<UserRole> userRoles = authUserService.getUserRoles(user
 				.getUserId());
-		List<PermissionVO> result = new ArrayList<PermissionVO>();
+		List<PermissionDto> result = new ArrayList<PermissionDto>();
 		List<Permission> allPerms = AuthConstants.getAllPermissions();
 		for (Permission perm : allPerms) {
-			PermissionVO pvo = new PermissionVO();
+			PermissionDto pvo = new PermissionDto();
 			pvo.setPid(perm.getPid());
 			pvo.setName(perm.getName());
 			pvo.setRemark(perm.getRemark());
@@ -222,7 +222,7 @@ public class SysMgmtController extends AbstractController {
 			}
 			result.add(pvo);
 		}
-		return new Object[] { new Account(user), result };
+		return new Object[] { new AccountDto(user), result };
 
 	}
 
@@ -255,7 +255,7 @@ public class SysMgmtController extends AbstractController {
 		if (map.isEmpty()) {
 			return null;
 		}
-		Account loginUser = authUserService.getLoginUser(request);
+		AccountDto loginUser = authUserService.getLoginUser(request);
 		if (loginUser.getUserId().equals(userId)) {
 			throw new ActionException(ResponseStatus.NO_PERMISSION, loginUser
 					+ "无法给自己分配权限！");

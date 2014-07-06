@@ -1,6 +1,6 @@
-package gambler.examples.webapp2.vo;
+package gambler.examples.webapp2.dto;
 
-public class NaviItem {
+public class NaviItemDto {
 
     private String name;
 
@@ -12,13 +12,13 @@ public class NaviItem {
      * @param name
      * @param url
      */
-    public NaviItem(String name, String url) {
+    public NaviItemDto(String name, String url) {
         super();
         this.name = name;
         this.url = url;
     }
 
-    public NaviItem(String name, String url, String target) {
+    public NaviItemDto(String name, String url, String target) {
         super();
         this.name = name;
         this.url = url;

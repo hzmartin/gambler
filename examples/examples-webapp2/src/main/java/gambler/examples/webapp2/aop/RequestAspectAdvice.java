@@ -7,8 +7,8 @@ import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
 import gambler.examples.webapp2.resp.ServerResponse;
 import gambler.examples.webapp2.service.AuthUserService;
-import gambler.examples.webapp2.vo.Account;
-import gambler.examples.webapp2.vo.NaviItem;
+import gambler.examples.webapp2.dto.AccountDto;
+import gambler.examples.webapp2.dto.NaviItemDto;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -115,7 +115,7 @@ public class RequestAspectAdvice {
 					serverResponse
 							.setResponseStatus(ResponseStatus.USER_NOT_LOGGED);
 				} else if (permRequired) {
-					Account loginUser = authUserService.getLoginUser(request);
+					AccountDto loginUser = authUserService.getLoginUser(request);
 					// check userperm
 					boolean hasPermission = authUserService
 							.checkUserPermission(loginUser.getUserId(),
@@ -169,9 +169,9 @@ public class RequestAspectAdvice {
 			if (result instanceof ModelAndView) {
 				ModelAndView result1 = (ModelAndView) result;
 				result1.getModel().put("msmode", sysconf.getString("msmode"));
-				Account loginUser = authUserService.getLoginUser(request);
+				AccountDto loginUser = authUserService.getLoginUser(request);
 				if (loginUser != null) {
-					List<NaviItem> menus = new ArrayList<NaviItem>();
+					List<NaviItemDto> menus = new ArrayList<NaviItemDto>();
 					int count = sysconf.getInteger("mainnav.count", 0);
 					for (int i = 0; i < count; i++) {
 						String name = sysconf.getString("mainnav.name"
@@ -189,11 +189,11 @@ public class RequestAspectAdvice {
 											pid);
 							if (hasThisPerm) {
 								//passed
-								menus.add(new NaviItem(name, url));
+								menus.add(new NaviItemDto(name, url));
 							}
 						} else {
 							//no perm required
-							menus.add(new NaviItem(name, url));
+							menus.add(new NaviItemDto(name, url));
 						}
 					}
 

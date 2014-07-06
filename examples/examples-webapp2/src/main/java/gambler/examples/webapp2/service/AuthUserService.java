@@ -8,7 +8,7 @@ import gambler.examples.webapp2.domain.auth.RolePermission;
 import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.domain.auth.UserPermission;
 import gambler.examples.webapp2.domain.auth.UserRole;
-import gambler.examples.webapp2.vo.Account;
+import gambler.examples.webapp2.dto.AccountDto;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -46,10 +46,10 @@ public class AuthUserService extends AbstractService {
 		return hasLogined(request) || cookieLogin(request) != null;
 	}
 
-	public Account login(final HttpServletRequest request,
+	public AccountDto login(final HttpServletRequest request,
 			final HttpServletResponse response, String userId, String password,
 			boolean remme) {
-		Account loginUser = verifyLogin(request, userId, password);
+		AccountDto loginUser = verifyLogin(request, userId, password);
 		if (loginUser == null) {
 			return null;
 		}
@@ -65,7 +65,7 @@ public class AuthUserService extends AbstractService {
 		return null != getLoginUser(request);
 	}
 
-	private Account verifyLogin(final HttpServletRequest request,
+	private AccountDto verifyLogin(final HttpServletRequest request,
 			String userId, String password) {
 		User user = userDao.find(userId);
 		if (user == null) {
@@ -77,7 +77,7 @@ public class AuthUserService extends AbstractService {
 		user.setLastLogin(new Timestamp(System.currentTimeMillis()));
 		userDao.update(user);
 
-		Account account = new Account(user);
+		AccountDto account = new AccountDto(user);
 		HttpSession session = request.getSession();
 		session.setAttribute(SESSION_USER_KEY, account);
 		return account;
@@ -95,11 +95,11 @@ public class AuthUserService extends AbstractService {
 		return md5Hex;
 	}
 
-	public Account getLoginUser(HttpServletRequest request) {
-		return (Account) request.getSession().getAttribute(SESSION_USER_KEY);
+	public AccountDto getLoginUser(HttpServletRequest request) {
+		return (AccountDto) request.getSession().getAttribute(SESSION_USER_KEY);
 	}
 
-	public Account cookieLogin(HttpServletRequest request) {
+	public AccountDto cookieLogin(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		if (cookies == null || cookies.length == 0) {
 			return null;

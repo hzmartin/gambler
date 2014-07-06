@@ -4,7 +4,7 @@ import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
 import gambler.examples.webapp2.service.AuthUserService;
-import gambler.examples.webapp2.vo.Account;
+import gambler.examples.webapp2.dto.AccountDto;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +35,7 @@ public class LoginController extends AbstractController {
 		if (dbUser == null) {
 			throw new ActionException(ResponseStatus.USER_NOT_EXSIST);
 		}
-		Account login = authUserService.login(request, response, userId,
+		AccountDto login = authUserService.login(request, response, userId,
 				password, remme);
 		if (login == null) {
 			throw new ActionException(ResponseStatus.LOGIN_FAILED);
@@ -47,7 +47,7 @@ public class LoginController extends AbstractController {
 	@ResponseBody
 	public Object logout(final HttpServletRequest request,
 			final HttpServletResponse response) {
-		Account loginUser = authUserService.getLoginUser(request);
+		AccountDto loginUser = authUserService.getLoginUser(request);
 		authUserService.logout(request, response);
 		logger.info(loginUser + " 登出成功！");
 		return null;

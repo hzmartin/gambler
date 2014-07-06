@@ -1,10 +1,10 @@
-package gambler.examples.webapp2.vo;
+package gambler.examples.webapp2.dto;
 
 import gambler.examples.webapp2.domain.auth.User;
 
 import java.sql.Timestamp;
 
-public class Account {
+public class AccountDto {
 
 	private String userId;
 
@@ -18,7 +18,7 @@ public class Account {
 
 	private Timestamp dateJoined;
 
-	public Account(User user) {
+	public AccountDto(User user) {
 		this.userId = user.getUserId();
 		this.nick = user.getNick();
 		this.lastLogin = user.getLastLogin();
