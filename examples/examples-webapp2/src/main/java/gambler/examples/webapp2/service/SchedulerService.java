@@ -69,8 +69,8 @@ public class SchedulerService {
         tDto.setDescription(trigger.getDescription());
         tDto.setJobName(trigger.getJobName());
         tDto.setJobGroup(trigger.getJobGroup());
-        tDto.setPreviousFireTime(TimeTagUtil.format(trigger.getPreviousFireTime()));
-        tDto.setNextFireTime(TimeTagUtil.format(trigger.getNextFireTime()));
+        tDto.setPreviousFireTime(TimeTagUtil.format_yyyyMMddHHmmss(trigger.getPreviousFireTime()));
+        tDto.setNextFireTime(TimeTagUtil.format_yyyyMMddHHmmss(trigger.getNextFireTime()));
         tDto.setState(state);
         return tDto;
     }
@@ -79,6 +79,10 @@ public class SchedulerService {
         return scheduler.getTriggerState(triggerName, triggerGroup);
     }
 
+    /**
+     * 
+     * @see #getJob(java.lang.String, java.lang.String, boolean) 
+     */
     public List<JobDto> getJobList(boolean withTrigger) throws SchedulerException {
         List<JobDto> jobDtos = new ArrayList<JobDto>();
         String[] jobGroupNames = scheduler.getJobGroupNames();
@@ -94,6 +98,9 @@ public class SchedulerService {
         return jobDtos;
     }
 
+    /**
+     * get job detail and related triggers if <code>withTrigger</code> is true
+     */
     public JobDto getJob(String jobName, String jobGroup, boolean withTrigger) throws SchedulerException {
         JobDetail jobDetail = scheduler.getJobDetail(jobName, jobGroup);
         if (jobDetail == null) {
@@ -116,8 +123,8 @@ public class SchedulerService {
                     tDto.setName(trigger.getName());
                     tDto.setGroup(trigger.getGroup());
                     tDto.setDescription(trigger.getDescription());
-                    tDto.setPreviousFireTime(TimeTagUtil.format(trigger.getPreviousFireTime()));
-                    tDto.setNextFireTime(TimeTagUtil.format(trigger.getNextFireTime()));
+                    tDto.setPreviousFireTime(TimeTagUtil.format_yyyyMMddHHmmss(trigger.getPreviousFireTime()));
+                    tDto.setNextFireTime(TimeTagUtil.format_yyyyMMddHHmmss(trigger.getNextFireTime()));
                     tDto.setMisfireInstruction(trigger.getMisfireInstruction());
                     int state = scheduler.getTriggerState(trigger.getName(), trigger.getGroup());
                     tDto.setState(state);
@@ -144,10 +151,10 @@ public class SchedulerService {
             contextDto.setTriggerName(trigger.getName());
             contextDto.setTriggerGroup(trigger.getGroup());
             contextDto.setTriggerDescription(trigger.getDescription());
-            contextDto.setFireTime(TimeTagUtil.format(context.getFireTime()));
-            contextDto.setNextFireTime(TimeTagUtil.format(context.getNextFireTime()));
-            contextDto.setPreviousFireTime(TimeTagUtil.format(context.getPreviousFireTime()));
-            contextDto.setScheduledFireTime(TimeTagUtil.format(context.getScheduledFireTime()));
+            contextDto.setFireTime(TimeTagUtil.format_yyyyMMddHHmmss(context.getFireTime()));
+            contextDto.setNextFireTime(TimeTagUtil.format_yyyyMMddHHmmss(context.getNextFireTime()));
+            contextDto.setPreviousFireTime(TimeTagUtil.format_yyyyMMddHHmmss(context.getPreviousFireTime()));
+            contextDto.setScheduledFireTime(TimeTagUtil.format_yyyyMMddHHmmss(context.getScheduledFireTime()));
             contextDtoList.add(contextDto);
 
         }

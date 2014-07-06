@@ -42,10 +42,18 @@ public class AuthUserService extends AbstractService {
 	@Autowired
 	private AuthDao userDao;
 
+        /**
+         * check session and cookie
+         * @return true if logined
+         */
 	public boolean checkLogin(HttpServletRequest request) {
-		return hasLogined(request) || cookieLogin(request) != null;
+		return null != getLoginUser(request) || cookieLogin(request) != null;
 	}
 
+        /**
+         * login, set session attribute and cookie if remme is true
+         * @return login account
+         */
 	public AccountDto login(final HttpServletRequest request,
 			final HttpServletResponse response, String userId, String password,
 			boolean remme) {
@@ -53,16 +61,10 @@ public class AuthUserService extends AbstractService {
 		if (loginUser == null) {
 			return null;
 		}
-		HttpSession session = request.getSession();
-		session.setAttribute(SESSION_USER_KEY, loginUser);
 		if (remme) {
 			remmCookie(response, userId, password);
 		}
 		return loginUser;
-	}
-
-	public boolean hasLogined(HttpServletRequest request) {
-		return null != getLoginUser(request);
 	}
 
 	private AccountDto verifyLogin(final HttpServletRequest request,
@@ -83,6 +85,10 @@ public class AuthUserService extends AbstractService {
 		return account;
 	}
 
+        /**
+         * check password is correct
+         * @return true if equals
+         */
 	public boolean isCorrentPassword(String rawPass, String dbPass,
 			String userId) {
 		if (rawPass == null || rawPass.isEmpty())
@@ -90,6 +96,10 @@ public class AuthUserService extends AbstractService {
 		return getSaltedPassword(rawPass, userId).equals(dbPass);
 	}
 
+        /**
+         * 
+         * @return salted password which is stored in database
+         */
 	public String getSaltedPassword(String rawPass, String userId) {
 		String md5Hex = DigestUtils.md5Hex(rawPass + userId + "Gkx*&#F-j93+");
 		return md5Hex;
@@ -141,10 +151,6 @@ public class AuthUserService extends AbstractService {
 
 	/**
 	 * 销毁Cookie和Session
-	 * 
-	 * @param session
-	 * @param request
-	 * @param response
 	 */
 	@SuppressWarnings("rawtypes")
 	public void logout(HttpServletRequest request, HttpServletResponse response) {

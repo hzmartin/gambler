@@ -58,6 +58,7 @@
                 <gb.datasource.maxStatements>0</gb.datasource.maxStatements>
                 <gb.switch.enableCreateSuper>true</gb.switch.enableCreateSuper>
                 <gb.switch.enableAuthentication>false</gb.switch.enableAuthentication>
+                <org.quartz.threadPool.threadCount>3</org.quartz.threadPool.threadCount>
             </properties>
         </profile>
     </profiles>

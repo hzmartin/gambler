@@ -206,7 +206,7 @@ public class SchedulerController extends AbstractController {
             throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
                     "repeat interval must be >= 0");
         }
-        return TimeTagUtil.format(schedulerService.scheduleJob(jobName, jobGroup, triggerName,
+        return TimeTagUtil.format_yyyyMMddHHmmss(schedulerService.scheduleJob(jobName, jobGroup, triggerName,
                 triggerGroup, start, end, repeatCount, repeatInterval, description));
     }
 
@@ -229,7 +229,7 @@ public class SchedulerController extends AbstractController {
             throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
                     "cron expression illegal");
         }
-        return TimeTagUtil.format(schedulerService.scheduleCronJob(jobName, jobGroup, triggerName,
+        return TimeTagUtil.format_yyyyMMddHHmmss(schedulerService.scheduleCronJob(jobName, jobGroup, triggerName,
                 triggerGroup, cronExpression, description));
     }
 
@@ -280,7 +280,7 @@ public class SchedulerController extends AbstractController {
             throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
                     "repeat interval must be >= 0");
         }
-        return TimeTagUtil.format(schedulerService.rescheduleJob(triggerName, triggerGroup, start, end,
+        return TimeTagUtil.format_yyyyMMddHHmmss(schedulerService.rescheduleJob(triggerName, triggerGroup, start, end,
                 repeatCount, repeatInterval, description));
     }
 
@@ -305,7 +305,7 @@ public class SchedulerController extends AbstractController {
             throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
                     "cron expression illegal");
         }
-        return TimeTagUtil.format(schedulerService.rescheduleCronJob(triggerName,
+        return TimeTagUtil.format_yyyyMMddHHmmss(schedulerService.rescheduleCronJob(triggerName,
                 triggerGroup, cronExpression, description));
     }
 

@@ -16,7 +16,7 @@ public class TimeTagUtil {
 		return DateUtils.parseDate(str, pattern);
 	}
         
-        public static String format(Date date){
+        public static String format_yyyyMMddHHmmss(Date date){
             return DateFormatUtils.format(date, "yyyyMMddHHmmss");
         }
 }
