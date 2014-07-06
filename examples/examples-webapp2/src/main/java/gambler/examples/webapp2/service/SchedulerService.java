@@ -161,7 +161,7 @@ public class SchedulerService {
         return contextDtoList;
     }
 
-    public void executeOnce(String jobName, String jobGroup, String jobClass, String jobDataMapJson) throws SchedulerException {
+    public void runOnceNow(String jobName, String jobGroup, String jobClass, String jobDataMapJson) throws SchedulerException {
 
         if (StringUtils.isNotBlank(jobClass)) {
             addJob(jobClass, jobName, jobGroup, jobDataMapJson, null, false, false, false, true);

@@ -33,7 +33,7 @@ public class SchedulerController extends AbstractController {
     @ResponseBody
     public Object shutdown(
             final HttpServletRequest request,
-            @LogRequestParam(name = "waitForJobsToComplete") @RequestParam(required = false, defaultValue = "false") Boolean waitForJobsToComplete) throws SchedulerException, ActionException {
+            @LogRequestParam(name = "waitForJobsToComplete") @RequestParam(required = false, defaultValue = "false") boolean waitForJobsToComplete) throws SchedulerException, ActionException {
         schedulerService.shutdown(waitForJobsToComplete);
         return null;
     }
@@ -90,7 +90,7 @@ public class SchedulerController extends AbstractController {
     @ResponseBody
     public Object getJobList(
             final HttpServletRequest request,
-            @LogRequestParam(name = "withTrigger") @RequestParam(required = false, defaultValue = "false") Boolean withTrigger) throws SchedulerException {
+            @LogRequestParam(name = "withTrigger") @RequestParam(required = false, defaultValue = "false") boolean withTrigger) throws SchedulerException {
         return schedulerService.getJobList(withTrigger);
     }
     
@@ -101,20 +101,20 @@ public class SchedulerController extends AbstractController {
             final HttpServletRequest request,
             @LogRequestParam(name = "jobName") @RequestParam String jobName,
             @LogRequestParam(name = "jobGroup") @RequestParam(required = false) String jobGroup,
-            @LogRequestParam(name = "withTrigger") @RequestParam(required = false, defaultValue = "false") Boolean withTrigger) throws SchedulerException {
+            @LogRequestParam(name = "withTrigger") @RequestParam(required = false, defaultValue = "false") boolean withTrigger) throws SchedulerException {
         return schedulerService.getJob(jobName, jobGroup, withTrigger);
     }
 
-    @RequestMapping(value = "/executeOnce")
+    @RequestMapping(value = "/runOnceNow")
     @AuthRequired
     @ResponseBody
-    public Object executeOnce(
+    public Object runOnceNow(
             final HttpServletRequest request,
             @LogRequestParam(name = "jobName") @RequestParam String jobName,
             @LogRequestParam(name = "jobGroup") @RequestParam(required = false) String jobGroup,
             @LogRequestParam(name = "jobClass") @RequestParam(required = false)  String jobClass,
             @LogRequestParam(name = "jobDataMapJson") @RequestParam(required = false) String jobDataMapJson) throws SchedulerException {
-        schedulerService.executeOnce(jobName, jobGroup, jobClass, jobDataMapJson);
+        schedulerService.runOnceNow(jobName, jobGroup, jobClass, jobDataMapJson);
         return null;
     }
 
