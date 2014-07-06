@@ -1,5 +1,6 @@
 package gambler.examples.webapp2.dto;
 
+import java.util.List;
 import org.quartz.JobDataMap;
 
 
