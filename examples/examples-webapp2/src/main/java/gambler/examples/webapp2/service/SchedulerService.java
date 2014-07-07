@@ -136,7 +136,8 @@ public class SchedulerService {
         return jobDto;
     }
 
-    public List<JobExecutionContextDto> getCurrentlyExecutingJobs() throws SchedulerException {
+    @SuppressWarnings("unchecked")
+	public List<JobExecutionContextDto> getCurrentlyExecutingJobs() throws SchedulerException {
         List<JobExecutionContext> contexts = scheduler.getCurrentlyExecutingJobs();
         List<JobExecutionContextDto> contextDtoList = new ArrayList<JobExecutionContextDto>();
         for (JobExecutionContext context : contexts) {
@@ -161,7 +162,8 @@ public class SchedulerService {
         return contextDtoList;
     }
 
-    public void runOnceNow(String jobName, String jobGroup, String jobClass, String jobDataMapJson) throws SchedulerException {
+    @SuppressWarnings("rawtypes")
+	public void runOnceNow(String jobName, String jobGroup, String jobClass, String jobDataMapJson) throws SchedulerException {
 
         if (StringUtils.isNotBlank(jobClass)) {
             addJob(jobClass, jobName, jobGroup, jobDataMapJson, null, false, false, false, true);
