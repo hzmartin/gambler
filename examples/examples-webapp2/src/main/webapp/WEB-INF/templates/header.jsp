@@ -21,9 +21,6 @@
 				</c:forEach>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><div style="margin-top: 5px;"></div> <img id="uicon"
-					src="/assets/ico/apple-touch-icon-57-precomposed.png"
-					style="width: 40px; height: 40px; border-radius: 50%;" /></li>
 				<li id="fat-menu" class="dropdown"><a href="#"
 					class="dropdown-toggle" data-toggle="dropdown" id="username"> </a>
 					<ul class="dropdown-menu">
