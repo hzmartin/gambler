@@ -1,4 +1,4 @@
-package gambler.examples.webapp2.job;
+package jobs;
 
 import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.service.AuthUserService;
