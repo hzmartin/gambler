@@ -99,6 +99,8 @@ public class RequestAspectAdvice {
 		}
 		HttpServletRequest request = (HttpServletRequest) pjp.getArgs()[0];
 		String target = request.getRequestURI();
+		AccountDto loginUser = authUserService.getLoginUser(request);
+		execLogStr.append(", login as " + loginUser);
 		ServerResponse serverResponse = new ServerResponse();
 		AuthRequired authRequiredAnno = method
 				.getAnnotation(AuthRequired.class);
@@ -115,7 +117,6 @@ public class RequestAspectAdvice {
 					serverResponse
 							.setResponseStatus(ResponseStatus.USER_NOT_LOGGED);
 				} else if (permRequired) {
-					AccountDto loginUser = authUserService.getLoginUser(request);
 					// check userperm
 					boolean hasPermission = authUserService
 							.checkUserPermission(loginUser.getUserId(),
@@ -169,7 +170,6 @@ public class RequestAspectAdvice {
 			if (result instanceof ModelAndView) {
 				ModelAndView result1 = (ModelAndView) result;
 				result1.getModel().put("msmode", sysconf.getString("msmode"));
-				AccountDto loginUser = authUserService.getLoginUser(request);
 				if (loginUser != null) {
 					List<NaviItemDto> menus = new ArrayList<NaviItemDto>();
 					int count = sysconf.getInteger("mainnav.count", 0);

@@ -4,12 +4,26 @@
 	</prop>
 	<prop namespace="mainnav">
 		<key name="count">10</key>
-		<key name="name1">Baidu</key>
-		<key name="url1">http://www.baidu.com</key>
-		<key name="perm1">1</key>
+		<key name="name" order="1">Baidu</key>
+		<key name="url" order="2">http://www.baidu.com</key>
+		<key name="perm" order="3">1</key>
 	</prop>
 	<prop namespace="switch">
 		<key name="enableCreateSuper">${gb.switch.enableCreateSuper}</key>
-                <key name="enableAuthentication">${gb.switch.enableAuthentication}</key>
+        <key name="enableAuthentication">${gb.switch.enableAuthentication}</key>
+	</prop>
+	<prop namespace="job_definition">
+		<key name="job_name" order="1">hello</key>
+		<key name="job_class"  order="1">jobs.HelloWorldJob</key>
+		<key name="job_description"  order="1">hello</key>
+		<key name="job_name" order="2">native</key>
+		<key name="job_class"  order="2">org.quartz.jobs.NativeJob</key>
+		<key name="job_description"  order="2">Job for running Native executables</key>
+		<key name="job_native_param_name" order="1">command</key>
+		<key name="job_native_param_description" order="1">actual executable name with for path</key>
+		<key name="job_native_param_required" order="1">true</key>
+		<key name="job_native_param_name" order="2">parameters</key>
+		<key name="job_native_param_description" order="2">parameters string</key>
+		<key name="job_native_param_required" order="2">false</key>
 	</prop>
 </map>
