@@ -71,7 +71,10 @@ INSERT INTO gb_permission (pid, name, remark) VALUES (5, '进入权限管理系�
 INSERT INTO gb_permission (pid, name, remark) VALUES (6, '查看用户权限信息', '系统管理');
 INSERT INTO gb_permission (pid, name, remark) VALUES (7, '更新用户权限信息', '系统管理');
 
+INSERT INTO gb_permission (pid, name, remark) VALUES (500, '执行NativeJob', 'JOB');
+
 INSERT INTO gb_permission (pid, name, remark) VALUES (1000, '进入主页', 'MISC');
+INSERT INTO gb_permission (pid, name, remark) VALUES (1001, '测试', 'MISC');
 
 INSERT INTO gb_role (rid, name, remark) VALUES (0, '系统普通用户', '系统普通用户：拥有系统默认权限配置');
 INSERT INTO gb_role (rid, name, remark) VALUES (1, '系统管理员', '系统管理员：所有系统管理权限');

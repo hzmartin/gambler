@@ -10,9 +10,10 @@ public class JobParameterDto {
 
 	}
 
-	public JobParameterDto(String name, String desciption) {
+	public JobParameterDto(String name, String desciption, boolean required) {
 		this.name = name;
 		this.description = desciption;
+                this.required = required;
 	}
 
 	/**

@@ -173,15 +173,15 @@ public class RequestAspectAdvice {
 				if (loginUser != null) {
 					List<NaviItemDto> menus = new ArrayList<NaviItemDto>();
 					int count = sysconf.getInteger("mainnav.count", 0);
-					for (int i = 0; i < count; i++) {
-						String name = sysconf.getString("mainnav.name"
-								+ (i + 1));
-						String url = sysconf.getString("mainnav.url" + (i + 1));
+					for (int nidx = 1; nidx <= count; nidx++) {
+						String name = sysconf.getString("mainnav.name."
+								+ nidx);
+						String url = sysconf.getString("mainnav.url." + nidx);
 						if (StringUtils.isBlank(name)
 								|| StringUtils.isBlank(url)) {
 							continue;
 						}
-						Long pid = sysconf.getLong("mainnav.perm" + (i + 1));
+						Long pid = sysconf.getLong("mainnav.perm." + nidx);
 						if (pid != null) {
 							//check nav item perm
 							boolean hasThisPerm = authUserService

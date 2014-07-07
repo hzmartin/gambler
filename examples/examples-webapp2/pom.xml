@@ -51,7 +51,7 @@
 				<gb.datasource.maxIdleTime>1000</gb.datasource.maxIdleTime>
 				<gb.datasource.maxStatements>0</gb.datasource.maxStatements>
 				<gb.switch.enableCreateSuper>true</gb.switch.enableCreateSuper>
-				<gb.switch.enableAuthentication>false</gb.switch.enableAuthentication>
+				<gb.switch.enableAuthentication>true</gb.switch.enableAuthentication>
 				<org.quartz.threadPool.threadCount>3</org.quartz.threadPool.threadCount>
 			</properties>
 		</profile>
@@ -90,7 +90,7 @@
 				<gb.datasource.maxIdleTime>1000</gb.datasource.maxIdleTime>
 				<gb.datasource.maxStatements>0</gb.datasource.maxStatements>
 				<gb.switch.enableCreateSuper>true</gb.switch.enableCreateSuper>
-				<gb.switch.enableAuthentication>false</gb.switch.enableAuthentication>
+				<gb.switch.enableAuthentication>true</gb.switch.enableAuthentication>
 				<org.quartz.threadPool.threadCount>3</org.quartz.threadPool.threadCount>
 			</properties>
 		</profile>
