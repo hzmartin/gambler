@@ -44,7 +44,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Component
 @Aspect
 public class RequestAspectAdvice {
-	private static final Logger logger = Logger.getLogger(RequestAspectAdvice.class);
+	private static final Logger logger = Logger
+			.getLogger(RequestAspectAdvice.class);
 
 	@Resource
 	protected AuthUserService authUserService;
@@ -102,53 +103,49 @@ public class RequestAspectAdvice {
 		AccountDto loginUser = authUserService.getLoginUser(request);
 		execLogStr.append(", login as " + loginUser);
 		ServerResponse serverResponse = new ServerResponse();
-		AuthRequired authRequiredAnno = method
+		AuthRequired authRequired = method
 				.getAnnotation(AuthRequired.class);
-		if (authRequiredAnno != null && sysconf.getBoolean("switch.enableAuthentication", Boolean.TRUE)) {
-			boolean loginRequired = authRequiredAnno.loginRequired();
-			long[] requiredPerms = authRequiredAnno.requiredPerms();
+		if (authRequired != null
+				&& sysconf.getBoolean("switch.enableAuthentication",
+						Boolean.TRUE)) {
+			long[] requiredPerms = authRequired.permission();
 			boolean permRequired = requiredPerms != null
 					&& requiredPerms.length > 0;
-			if (loginRequired || permRequired) {
-				// checklogin
-				boolean hasLogined = authUserService.checkLogin(request);
-				serverResponse.setResponseStatus(ResponseStatus.OK);
-				if (!hasLogined) {
+			// checklogin
+			boolean hasLogined = authUserService.checkLogin(request);
+			serverResponse.setResponseStatus(ResponseStatus.OK);
+			if (!hasLogined) {
+				serverResponse
+						.setResponseStatus(ResponseStatus.USER_NOT_LOGGED);
+			} else if (permRequired) {
+				// check userperm
+				boolean hasPermission = authUserService.checkUserPermission(
+						loginUser.getUserId(), requiredPerms);
+				if (!hasPermission) {
 					serverResponse
-							.setResponseStatus(ResponseStatus.USER_NOT_LOGGED);
-				} else if (permRequired) {
-					// check userperm
-					boolean hasPermission = authUserService
-							.checkUserPermission(loginUser.getUserId(),
-									requiredPerms);
-					if (!hasPermission) {
-						serverResponse
-								.setResponseStatus(ResponseStatus.NO_PERMISSION);
-					}
+							.setResponseStatus(ResponseStatus.NO_PERMISSION);
 				}
-				if (!ResponseStatus.OK.getCode().equals(
-						serverResponse.getCode())) {
-					if (method.isAnnotationPresent(ResponseBody.class)) {
-						JSONObject object = JSONObject
-								.fromObject(serverResponse);
-						execLogStr.append(", result=" + object.toString());
-						logger.info(execLogStr.toString());
-						return serverResponse;
+			}
+			if (!ResponseStatus.OK.getCode().equals(serverResponse.getCode())) {
+				if (method.isAnnotationPresent(ResponseBody.class)) {
+					JSONObject object = JSONObject.fromObject(serverResponse);
+					execLogStr.append(", result=" + object.toString());
+					logger.info(execLogStr.toString());
+					return serverResponse;
+				} else {
+					if (serverResponse.getCode().equals(
+							ResponseStatus.USER_NOT_LOGGED.getCode())) {
+						return new ModelAndView("signin", "nextUrl", target);
+					} else if (serverResponse.getCode().equals(
+							ResponseStatus.NO_PERMISSION.getCode())) {
+						return new ModelAndView("403");
 					} else {
-						if (serverResponse.getCode().equals(
-								ResponseStatus.USER_NOT_LOGGED.getCode())) {
-							return new ModelAndView("signin", "nextUrl", target);
-						} else if (serverResponse.getCode().equals(
-								ResponseStatus.NO_PERMISSION.getCode())) {
-							return new ModelAndView("403");
-						} else {
-							return new ModelAndView("500");
-						}
+						return new ModelAndView("500");
 					}
 				}
 			}
-
 		}
+
 		if (method.isAnnotationPresent(ResponseBody.class)) {
 			try {
 				Object result = pjp.proceed();
@@ -174,8 +171,7 @@ public class RequestAspectAdvice {
 					List<NaviItemDto> menus = new ArrayList<NaviItemDto>();
 					int count = sysconf.getInteger("mainnav.count", 0);
 					for (int nidx = 1; nidx <= count; nidx++) {
-						String name = sysconf.getString("mainnav.name."
-								+ nidx);
+						String name = sysconf.getString("mainnav.name." + nidx);
 						String url = sysconf.getString("mainnav.url." + nidx);
 						if (StringUtils.isBlank(name)
 								|| StringUtils.isBlank(url)) {
@@ -183,16 +179,16 @@ public class RequestAspectAdvice {
 						}
 						Long pid = sysconf.getLong("mainnav.perm." + nidx);
 						if (pid != null) {
-							//check nav item perm
+							// check nav item perm
 							boolean hasThisPerm = authUserService
 									.checkUserPermission(loginUser.getUserId(),
 											pid);
 							if (hasThisPerm) {
-								//passed
+								// passed
 								menus.add(new NaviItemDto(name, url));
 							}
 						} else {
-							//no perm required
+							// no perm required
 							menus.add(new NaviItemDto(name, url));
 						}
 					}

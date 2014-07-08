@@ -95,7 +95,7 @@ public class SysMgmtController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/createOrUpdateUser")
-	@AuthRequired(requiredPerms = { AuthConstants.PERM_SYSTEM.PERM_CREATE_UPDATE_USER })
+	@AuthRequired(permission = { AuthConstants.PERM_SYSTEM.PERM_CREATE_UPDATE_USER })
 	@ResponseBody
 	public Object createOrUpdateUser(
 			final HttpServletRequest request,
@@ -130,7 +130,7 @@ public class SysMgmtController extends AbstractController {
 
 	@RequestMapping(value = "/delUser")
 	@ResponseBody
-	@AuthRequired(requiredPerms = { AuthConstants.PERM_SYSTEM.PERM_DEL_USER })
+	@AuthRequired(permission = { AuthConstants.PERM_SYSTEM.PERM_DEL_USER })
 	public Object delSysUsers(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId)
@@ -157,7 +157,7 @@ public class SysMgmtController extends AbstractController {
 
 	@RequestMapping(value = "/getUser")
 	@ResponseBody
-	@AuthRequired(requiredPerms = { AuthConstants.PERM_SYSTEM.PERM_LIST_USER })
+	@AuthRequired(permission = { AuthConstants.PERM_SYSTEM.PERM_LIST_USER })
 	public Object getUser(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId)
@@ -177,7 +177,7 @@ public class SysMgmtController extends AbstractController {
 
 	@RequestMapping(value = "/getUserPermission")
 	@ResponseBody
-	@AuthRequired(requiredPerms = { AuthConstants.PERM_SYSTEM.PERM_LIST_USERPERM })
+	@AuthRequired(permission = { AuthConstants.PERM_SYSTEM.PERM_LIST_USERPERM })
 	public Object getUserPermission(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId)
@@ -238,7 +238,7 @@ public class SysMgmtController extends AbstractController {
 	 */
 	@RequestMapping(value = "/updateUserPermission")
 	@ResponseBody
-	@AuthRequired(requiredPerms = { AuthConstants.PERM_SYSTEM.PERM_UPDATE_USERPERM })
+	@AuthRequired(permission = { AuthConstants.PERM_SYSTEM.PERM_UPDATE_USERPERM })
 	public Object updateUserPermission(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId,

@@ -9,7 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AuthRequired
 {
-	boolean loginRequired() default true;
-
-	long[] requiredPerms() default {};
+	long[] permission() default {};
 }

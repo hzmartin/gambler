@@ -27,7 +27,7 @@ public class MiscViewController extends AbstractController{
 	}
 
 	@RequestMapping(value = "/index")
-	@AuthRequired(requiredPerms={AuthConstants.PERM_MISC.PERM_ENTER_HOME_PAGE})
+	@AuthRequired(permission={AuthConstants.PERM_MISC.PERM_ENTER_HOME_PAGE})
 	public Object index(final HttpServletRequest request,
 			final HttpServletResponse response) {
 		return new ModelAndView("index");
