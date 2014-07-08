@@ -27,7 +27,7 @@
 			</activation>
 			<properties>
 				<gb.msmode>DEV</gb.msmode>
-				<gb.log4j.path>logs</gb.log4j.path>
+				<gb.log4j.path>logs/example.log</gb.log4j.path>
 				<gb.log4j.level>DEBUG</gb.log4j.level>
 				<gb.log4j.appender>CONSOLE</gb.log4j.appender>
 				<gb.datasource.url><![CDATA[jdbc:mysql://127.0.0.1:3306/example?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true]]></gb.datasource.url>
@@ -66,7 +66,7 @@
 			</activation>
 			<properties>
 				<gb.msmode>DEV</gb.msmode>
-				<gb.log4j.path>logs</gb.log4j.path>
+				<gb.log4j.path>logs/example.log</gb.log4j.path>
 				<gb.log4j.level>DEBUG</gb.log4j.level>
 				<gb.log4j.appender>CONSOLE</gb.log4j.appender>
 				<gb.datasource.url>jdbc:derby:${project.parent.basedir}/example-derby</gb.datasource.url>
