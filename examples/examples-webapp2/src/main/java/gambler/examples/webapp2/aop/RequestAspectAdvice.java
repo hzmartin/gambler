@@ -100,8 +100,6 @@ public class RequestAspectAdvice {
 		}
 		HttpServletRequest request = (HttpServletRequest) pjp.getArgs()[0];
 		String target = request.getRequestURI();
-		AccountDto loginUser = authUserService.getLoginUser(request);
-		execLogStr.append(", login as " + loginUser);
 		ServerResponse serverResponse = new ServerResponse();
 		AuthRequired authRequired = method
 				.getAnnotation(AuthRequired.class);
@@ -113,6 +111,7 @@ public class RequestAspectAdvice {
 					&& requiredPerms.length > 0;
 			// checklogin
 			boolean hasLogined = authUserService.checkLogin(request);
+			AccountDto loginUser = authUserService.getLoginUser(request);
 			serverResponse.setResponseStatus(ResponseStatus.OK);
 			if (!hasLogined) {
 				serverResponse
@@ -127,6 +126,7 @@ public class RequestAspectAdvice {
 				}
 			}
 			if (!ResponseStatus.OK.getCode().equals(serverResponse.getCode())) {
+				execLogStr.append(", login as " + loginUser);
 				if (method.isAnnotationPresent(ResponseBody.class)) {
 					JSONObject object = JSONObject.fromObject(serverResponse);
 					execLogStr.append(", result=" + object.toString());
@@ -145,7 +145,8 @@ public class RequestAspectAdvice {
 				}
 			}
 		}
-
+		AccountDto loginUser = authUserService.getLoginUser(request);
+		execLogStr.append(", login as " + loginUser);
 		if (method.isAnnotationPresent(ResponseBody.class)) {
 			try {
 				Object result = pjp.proceed();
