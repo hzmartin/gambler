@@ -42,6 +42,10 @@ public class ServerResponse {
 
 	public final void setResponseStatus(ResponseStatus status, Object... args) {
 		this.code = status.getCode();
+		if (args == null || args.length == 0) {
+			this.msg = status.getMessage();
+			return;
+		}
 		try {
 			this.msg = String.format(status.getMessage(), args);
 		} catch (Exception e) {
