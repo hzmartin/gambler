@@ -2,34 +2,31 @@ package gambler.examples.webapp2.resp;
 
 public enum ResponseStatus {
 
-    //<1000 normal error
-    OK("0000", "操作成功"),
+    OK("OK", "操作成功"),
 
-    PARAM_ILLEGAL("0001", "请求参数不合法"),
+    PARAM_ILLEGAL("PARAM_ILLEGAL", "请求参数不合法"),
 
-    USER_NOT_EXSIST("0002", "用户不存在"),
+    USER_NOT_EXSIST("USER_NOT_EXSIST", "用户不存在"),
 
-    USER_NOT_LOGGED("0003", "用户没有登录"),
+    USER_NOT_LOGGED("USER_NOT_LOGGED", "用户没有登录"),
 
-    USER_ALREADY_EXSIST("0004", "用户%s已存在"),
+    USER_ALREADY_EXSIST("USER_ALREADY_EXSIST", "用户%s已存在"),
 
-    LOGIN_FAILED("0005", "用户名或密码错误"),
+    LOGIN_FAILED("LOGIN_FAILED", "用户名或密码错误"),
 
-    NO_PERMISSION("0006", "权限不足，无法进行该操作"),
+    NO_PERMISSION("NO_PERMISSION", "权限不足，无法进行该操作"),
     
-    EXCEED_MAX_TRYTIMES("0007", "尝试次数过多，请稍后再试"), //尝试次数过多
+    EXCEED_MAX_TRYTIMES("EXCEED_MAX_TRYTIMES", "尝试次数过多，请稍后再试"), //尝试次数过多
     
-    PASSWORD_ERROR("0008", "密码校验错误"),
+    PASSWORD_ERROR("PASSWORD_ERROR", "密码校验错误"),
 
-    //1000+ job error
-    JOB_NOT_EXIST("1000", "Job(name=%s, group=%s)不存在"),
+    JOB_NOT_EXIST("JOB_NOT_EXIST", "Job(name=%s, group=%s)不存在"),
     
-    //5000+ server error
-    UNKNOWN_ERROR("5100", "未知错误"),
+    UNKNOWN_ERROR("UNKNOWN_ERROR", "未知错误"),
     
-    SERVER_BUSY("5000", "网络繁忙，请稍候再试！"),
+    SERVER_BUSY("SERVER_BUSY", "网络繁忙，请稍候再试！"),
     
-    SERVICE_UNAVAILABLE("5003", "服务不可用！");
+    SERVICE_UNAVAILABLE("SERVICE_UNAVAILABLE", "服务不可用！");
 
     private String code;
 

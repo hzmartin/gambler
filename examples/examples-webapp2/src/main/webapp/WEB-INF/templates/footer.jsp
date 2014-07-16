@@ -15,7 +15,7 @@
 	$("#logout").click(function(event) {
 		event.preventDefault();
 		$.getJSON("/account/logout.do", function(data) {
-			if (data.code == "0000") {
+			if (data.code == "OK") {
 				window.location.href = "signin.do";
 			} else {
 				alert(data.msg);

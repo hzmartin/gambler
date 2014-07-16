@@ -63,7 +63,7 @@
 					remme : _remme
 				},
 				success : function(data) {
-					if (data.code == "0000") {
+					if (data.code == "OK") {
 						window.location.href = nextUrl;
 					} else {
 						$("#tip").html(
