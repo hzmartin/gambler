@@ -322,6 +322,7 @@ public class SchedulerService {
 		}
 		if (scheduler.isInStandbyMode()) {
 			scheduler.start();
+			return;
 		}
 		if (scheduler.isStarted()) {
 			throw new ActionException("scheduler had been started!");
