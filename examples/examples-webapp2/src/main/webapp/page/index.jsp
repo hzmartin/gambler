@@ -6,10 +6,7 @@
 	<div class="jumbotron">
 		<div class="container">
 			<h1>
-				Gambler
-				<c:if test="${msmode ne ''}">
-					<span class="badge"><c:out value="${msmode}" /></span>
-				</c:if>
+				Gambler<c:if test="${msmode ne ''}"><span class="badge"><c:out value="${msmode}" /></span></c:if>
 			</h1>
 			<p>
 				Feedback: <a href="mailto:hzwangqihui@gmail.com">hzwangqihui@gmail.com</a>
@@ -22,7 +19,7 @@
 		</h2>
 		<hr />
 		<ol>
-			<li>Test...</li>
+			<li>主要用于日常任务管理</li>
 		</ol>
 	</div>
 </div>

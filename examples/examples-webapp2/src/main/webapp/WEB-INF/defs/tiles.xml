@@ -2,25 +2,29 @@
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN" "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
 <tiles-definitions>
 	<definition name="base" template="/WEB-INF/templates/layout.jsp">
-		<put-attribute name="title" value="Gambler" />
+		<put-attribute name="title" value="Gambler Scheduler" />
 		<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
 	</definition>
 	<definition name="index" extends="base">
-		<put-attribute name="title" value="Gambler Home" />
+		<put-attribute name="title" value="Gambler Scheduler" />
 		<put-attribute name="content" value="/page/index.jsp" />
 	</definition>
 	<definition name="signin" template="/page/signin.jsp">
 		<put-attribute name="title" value="Gambler Login" />
 	</definition>
 	<definition name="404" template="/page/404.jsp">
-		<put-attribute name="title" value="Gambler - 404 File Not Found" />
+		<put-attribute name="title" value="Gambler Scheduler - 404 File Not Found" />
 	</definition>
 	<definition name="500" template="/page/500.jsp">
-		<put-attribute name="title" value="Gambler - Server Busy" />
+		<put-attribute name="title" value="Gambler Scheduler - Server Busy" />
 	</definition>
 	<definition name="403" template="/page/403.jsp">
-		<put-attribute name="title" value="Gambler - Forbidden" />
+		<put-attribute name="title" value="Gambler Scheduler - Forbidden" />
 	</definition>
 	
+	<definition name="schedulecontrol" extends="base">
+        <put-attribute name="title" value="Gambler Scheduler - Schedule Control" />
+        <put-attribute name="content" value="/page/cont/schedulecontrol.jsp" />
+    </definition>
 </tiles-definitions> 

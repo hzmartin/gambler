@@ -13,12 +13,16 @@ public class ActionException extends Exception {
 	 */
 	private Object[] args;
 
+	public ActionException(String detailMessage) {
+		super(detailMessage);
+	}
+	
 	public ActionException(ResponseStatus status) {
 		this.status = status;
 	}
 
-	public ActionException(ResponseStatus status, String debugMessage) {
-		super(debugMessage);
+	public ActionException(ResponseStatus status, String detailMessage) {
+		super(detailMessage);
 		this.status = status;
 	}
 	
@@ -27,8 +31,8 @@ public class ActionException extends Exception {
 		this.args = args;
 	}
 
-	public ActionException(ResponseStatus status, Object[] args, String debugMessage) {
-		super(debugMessage);
+	public ActionException(ResponseStatus status, Object[] args, String detailMessage) {
+		super(detailMessage);
 		this.status = status;
 		this.args = args;
 	}

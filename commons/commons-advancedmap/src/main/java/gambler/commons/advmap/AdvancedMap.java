@@ -16,8 +16,8 @@ import org.apache.log4j.Logger;
  * 
  * More description:<br/>
  * <p>
- * If one value in the map is "dkkj#{ns1.key1.en_US}df", and it will still
- * search the value whose full path key is "ns1.key1.en_US" and replace it. the
+ * If one value in the map is "dkkj#ns1.key1.en_US#df", and it will still search
+ * the value whose full path key is "ns1.key1.en_US" and replace it. the
  * variable replacement feature can be turned off by switch field
  * <code>varReplaceEnable</code>(default: true)
  * </p>
@@ -62,28 +62,18 @@ public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
 	/**
 	 * Start symbol of variables in property's value
 	 */
-	private static String VARIABLE_START_SYMBOL = "#{";
-
-	/**
-	 * Regular expression for start symbol of variables
-	 */
-	private static String VARIABLE_START_SYMBOL_RE = "#\\{";
+	private static String VARIABLE_START_SYMBOL = "#";
 
 	/**
 	 * End symbol of variables in property's value
 	 */
-	private static String VARIABLE_END_SYMBOL = "}";
-
-	/**
-	 * Regular expression for end symbol of variables
-	 */
-	private static String VARIABLE_END_SYMBOL_RE = "\\}";
+	private static String VARIABLE_END_SYMBOL = "#";
 
 	public abstract void load();
 
 	private boolean varReplaceEnable = true;
 
-	private Set<String> recursiveKeys = new HashSet<String>();
+	private Set<AdvancedKey> recursiveKeys = new HashSet<AdvancedKey>();
 
 	private String name;
 
@@ -133,7 +123,7 @@ public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
 	/**
 	 * get variables in the given string. <br/>
 	 * for example:<br/>
-	 * <code>String str = helodl${kdlw.dkf}jekf${keolf.ekfl} </code><br/>
+	 * <code>String str = helodl#kdlw.dkf#jekf#keolf.ekfl# </code><br/>
 	 * this method will extract two variable names, <i>kdlw.dkf</i> and
 	 * <i>keolf.ekfl</i>
 	 * 
@@ -144,11 +134,16 @@ public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
 		Set<String> variables = new HashSet<String>();
 		int startSymbol = str.indexOf(VARIABLE_START_SYMBOL);
 		while (startSymbol != -1) {
-			int endSymbol = str.indexOf(VARIABLE_END_SYMBOL, startSymbol + 2);
-			if (startSymbol + 2 < endSymbol) {
-				variables.add(str.substring(startSymbol + 2, endSymbol).trim());
+			int endSymbol = str.indexOf(VARIABLE_END_SYMBOL, startSymbol
+					+ VARIABLE_START_SYMBOL.length());
+			if (startSymbol + 1 < endSymbol) {
+				variables.add(str
+						.substring(
+								startSymbol + VARIABLE_START_SYMBOL.length(),
+								endSymbol).trim());
 			}
-			startSymbol = str.indexOf(VARIABLE_START_SYMBOL, endSymbol);
+			startSymbol = str.indexOf(VARIABLE_START_SYMBOL, endSymbol
+					+ VARIABLE_END_SYMBOL.length());
 		}
 		return variables;
 	}
@@ -156,7 +151,7 @@ public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
 	/**
 	 * <p>
 	 * find the property by the given key if the target value contains
-	 * #{xxx.xxx}, this method will replace it by the existing value in the
+	 * #xxx.xxx#, this method will replace it by the existing value in the
 	 * properties once <code>varReplaceEnable</code> is true.
 	 * </p>
 	 * <p>
@@ -186,11 +181,13 @@ public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
 		if (varReplaceEnable && value != null) {
 			Set<String> varnames = getVariableNames(value);
 			if (varnames.size() > 0) {
-				recursiveKeys.add(advkey.toString());
+				recursiveKeys.add(advkey);
 				for (Iterator<String> iter = varnames.iterator(); iter
 						.hasNext();) {
 					String fullPathKey = iter.next();
-					if (recursiveKeys.contains(fullPathKey)) {
+					AdvancedKey inclusiveKey = AdvancedKey
+							.buildAdvancedKey(fullPathKey);
+					if (recursiveKeys.contains(inclusiveKey)) {
 						throw new IllegalStateException(
 								"recursive key "
 										+ fullPathKey
@@ -198,10 +195,15 @@ public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
 					}
 					// recursive call
 					String varvalue = get(fullPathKey);
-					value = value.replaceAll(VARIABLE_START_SYMBOL_RE
-							+ fullPathKey + VARIABLE_END_SYMBOL_RE,
-							varvalue == null ? "" : varvalue);
-
+					String replacement = VARIABLE_START_SYMBOL + fullPathKey
+							+ VARIABLE_END_SYMBOL;
+					int startSymbolIndex = value.indexOf(replacement);
+					if (startSymbolIndex != -1) {
+						value = value.substring(0, startSymbolIndex)
+								+ (varvalue == null ? "" : varvalue)
+								+ value.substring(startSymbolIndex
+										+ replacement.length());
+					}
 					recursiveKeys.clear();
 				}
 			} else {

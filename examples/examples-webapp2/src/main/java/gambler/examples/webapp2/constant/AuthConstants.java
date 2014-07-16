@@ -34,17 +34,18 @@ public class AuthConstants {
 		long PERM_UPDATE_USERPERM = 7L;// 更新用户权限信息
 
 	}
-        
-        public static interface PERM_JOB{
-            long PERM_EXEC_NATIVE_JOB = 500;
-        }
+
+	public static interface PERM_SCHEDULER {
+		long PERM_VIEW_SCHEDULE_INFO = 400;
+		long PERM_EXEC_NATIVE_JOB = 500;
+	}
 
 	/**
 	 * 其他：1000+
 	 */
 	public static interface PERM_MISC {
 		long PERM_ENTER_HOME_PAGE = 1000; // 进入主页
-                long PERM_TEST_ANY = 1001;// 测试
+		long PERM_TEST_ANY = 1001;// 测试
 
 	}
 

@@ -12,7 +12,7 @@
 <meta name="description" content="">
 <meta name="author" content="Martin">
 <title><tiles:getAsString name="title" /></title>
-<link rel="shortcut icon" href="/bootstrap3/assets/ico/favicon.png">
+<link rel="shortcut icon" href="/assets/ico/favicon.png">
 
 <!-- Bootstrap core CSS -->
 <link href="/bootstrap3/css/bootstrap.min.css" rel="stylesheet">

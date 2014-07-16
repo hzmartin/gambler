@@ -1,5 +1,7 @@
 package gambler.examples.webapp2.resp;
 
+import org.apache.commons.lang.StringUtils;
+
 public class ServerResponse {
 
 	private String code;
@@ -7,8 +9,6 @@ public class ServerResponse {
 	private String msg;
 
 	private Object data;
-
-	private String debug;
 
 	public ServerResponse() {
 		setResponseStatus(ResponseStatus.OK);
@@ -27,7 +27,9 @@ public class ServerResponse {
 	}
 
 	public void setMsg(String msg) {
-		this.msg = msg;
+		if (!StringUtils.isBlank(msg)) {
+			this.msg = msg;
+		}
 	}
 
 	public Object getData() {
@@ -38,17 +40,13 @@ public class ServerResponse {
 		this.data = data;
 	}
 
-	public String getDebug() {
-		return debug;
-	}
-
-	public void setDebug(String debug) {
-		this.debug = debug;
-	}
-
 	public final void setResponseStatus(ResponseStatus status, Object... args) {
 		this.code = status.getCode();
-		this.msg = String.format(status.getMessage(), args);
+		try {
+			this.msg = String.format(status.getMessage(), args);
+		} catch (Exception e) {
+			this.msg = status.getMessage();
+		}
 	}
 
 }

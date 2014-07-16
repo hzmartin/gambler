@@ -153,10 +153,10 @@ public class RequestAspectAdvice {
 				serverResponse.setData(result);
 			} catch (ActionException ae) {
 				serverResponse.setResponseStatus(ae.getStatus(), ae.getArgs());
-				serverResponse.setDebug(ae.getMessage());
+				serverResponse.setMsg(ae.getMessage());
 			} catch (Exception e) {
 				serverResponse.setResponseStatus(ResponseStatus.SERVER_BUSY);
-				serverResponse.setDebug(e.getMessage());
+				serverResponse.setMsg(e.getMessage());
 				logger.error(execLogStr, e);
 			}
 			JSONObject object = JSONObject.fromObject(serverResponse);

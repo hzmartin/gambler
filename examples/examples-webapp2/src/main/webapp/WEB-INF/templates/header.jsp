@@ -10,9 +10,8 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="/index.do">Gambler<c:if test="${msmode ne ''}">
-					<span class="badge"><c:out value="${msmode}" /></span>
-				</c:if></a>
+			<a class="navbar-brand" href="/index.do"><img
+				src="./assets/ico/favicon.png" />Gambler<c:if test="${msmode ne ''}"><span class="badge"><c:out value="${msmode}" /></span></c:if></a>
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">

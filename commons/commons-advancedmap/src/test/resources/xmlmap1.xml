@@ -7,7 +7,7 @@
 		<key name="jenny">Welcome to Beijing</key>
 	</prop>
 	<prop namespace="base" locale="zh_CN">
-		<key name="third">Welcome to Beijing #{base.jack.zh_CN}</key>
+		<key name="third">Welcome to Beijing #base.jack.zh_CN#</key>
 	</prop>
 	<prop>
 		<key name="hello" order="2">Nice</key>

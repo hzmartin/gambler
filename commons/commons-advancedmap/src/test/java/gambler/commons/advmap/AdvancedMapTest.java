@@ -33,6 +33,16 @@ public class AdvancedMapTest extends TestCase {
 		global = null;
 	}
 
+	public void testRecur() {
+		try {
+			XMLMap xmlMap = new XMLMap("xmlmap3", 1, "xmlmap3.xml");
+			xmlMap.get("recur");
+			fail("recur exception expected");
+		} catch (IllegalStateException e) {
+			assertTrue(true);
+		}
+	}
+
 	public void testGetProperty() {
 		assertEquals("Welcome to Beijing",
 				xml1.getString("base.jenny." + Locale.getDefault()));
