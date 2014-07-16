@@ -15,8 +15,8 @@ public class TimeTagUtil {
 	public static Date parseDate(String str) throws ParseException {
 		return DateUtils.parseDate(str, pattern);
 	}
-        
-        public static String format_yyyyMMddHHmmss(Date date){
-            return DateFormatUtils.format(date, "yyyyMMddHHmmss");
-        }
+
+	public static String format_yyyyMMddHHmmss(Date date) {
+		return DateFormatUtils.format(date, "yyyyMMddHHmmss");
+	}
 }

@@ -12,7 +12,7 @@ import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.exception.UnexpectedException;
 import gambler.examples.webapp2.resp.ResponseStatus;
 import gambler.examples.webapp2.service.AuthUserService;
-import gambler.examples.webapp2.util.RegexUtil;
+import gambler.examples.webapp2.util.RegexValidateUtil;
 import gambler.examples.webapp2.dto.AccountDto;
 import gambler.examples.webapp2.dto.PermissionDto;
 
@@ -49,7 +49,7 @@ public class SysMgmtController extends AbstractController {
 		if (!sysconf.getBoolean("switch.enableCreateSuper", false)) {
 			throw new AccessForbiddenException("switch.enableCreateSuper off");
 		}
-		if (!RegexUtil.isValidUserId(userId)) {
+		if (!RegexValidateUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"userId illegal");
 		}
@@ -102,7 +102,7 @@ public class SysMgmtController extends AbstractController {
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId,
 			@LogRequestParam(name = "nick") @RequestParam(required = false) String nick)
 			throws UnexpectedException, ActionException {
-		if (!RegexUtil.isValidUserId(userId)) {
+		if (!RegexValidateUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"userId illegal");
 		}
@@ -135,7 +135,7 @@ public class SysMgmtController extends AbstractController {
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId)
 			throws UnexpectedException, ActionException {
-		if (!RegexUtil.isValidUserId(userId)) {
+		if (!RegexValidateUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"userId illegal");
 		}
@@ -162,7 +162,7 @@ public class SysMgmtController extends AbstractController {
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId)
 			throws ActionException {
-		if (!RegexUtil.isValidUserId(userId)) {
+		if (!RegexValidateUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"userId illegal");
 		}
@@ -182,7 +182,7 @@ public class SysMgmtController extends AbstractController {
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId)
 			throws ActionException {
-		if (!RegexUtil.isValidUserId(userId)) {
+		if (!RegexValidateUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"userId illegal");
 		}
@@ -244,7 +244,7 @@ public class SysMgmtController extends AbstractController {
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId,
 			@LogRequestParam(name = "config") @RequestParam(required = true) String config)
 			throws ActionException {
-		if (!RegexUtil.isValidUserId(userId)) {
+		if (!RegexValidateUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"userId illegal");
 		}
