@@ -408,7 +408,7 @@
 					<include>log4j.xml</include>
 					<include>quartz.properties</include>
 					<include>datasource.properties</include>
-					<include>sysconf.xml</include>
+					<include>conf_sys.xml</include>
 				</includes>
 			</resource>
 			<resource>
@@ -418,7 +418,7 @@
 					<exclude>log4j.xml</exclude>
 					<exclude>quartz.properties</exclude>
 					<exclude>datasource.properties</exclude>
-					<exclude>sysconf.xml</exclude>
+					<exclude>conf_sys.xml</exclude>
 				</excludes>
 			</resource>
 		</resources>

@@ -3,17 +3,14 @@ package gambler.examples.webapp2.aop;
 import gambler.commons.advmap.XMLMap;
 import gambler.examples.webapp2.annotation.AuthRequired;
 import gambler.examples.webapp2.annotation.LogRequestParam;
+import gambler.examples.webapp2.dto.AccountDto;
 import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
 import gambler.examples.webapp2.resp.ServerResponse;
 import gambler.examples.webapp2.service.AuthUserService;
-import gambler.examples.webapp2.dto.AccountDto;
-import gambler.examples.webapp2.dto.NaviItemDto;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -165,40 +162,6 @@ public class RequestAspectAdvice {
 			return serverResponse;
 		} else {
 			Object result = pjp.proceed();
-			if (result instanceof ModelAndView) {
-				ModelAndView result1 = (ModelAndView) result;
-				result1.getModel().put("msmode", sysconf.getString("msmode"));
-				if (loginUser != null) {
-					List<NaviItemDto> menus = new ArrayList<NaviItemDto>();
-					int count = sysconf.getInteger("mainnav.count", 0);
-					for (int nidx = 1; nidx <= count; nidx++) {
-						String name = sysconf.getString("mainnav.name." + nidx);
-						String url = sysconf.getString("mainnav.url." + nidx);
-						if (StringUtils.isBlank(name)
-								|| StringUtils.isBlank(url)) {
-							continue;
-						}
-						Long pid = sysconf.getLong("mainnav.perm." + nidx);
-						if (pid != null) {
-							// check nav item perm
-							boolean hasThisPerm = authUserService
-									.checkUserPermission(loginUser.getUserId(),
-											pid);
-							if (hasThisPerm) {
-								// passed
-								menus.add(new NaviItemDto(name, url));
-							}
-						} else {
-							// no perm required
-							menus.add(new NaviItemDto(name, url));
-						}
-					}
-
-					result1.getModel().put("mainnav", menus);
-				}
-			} else {
-				logger.warn("目前Controller返回只支持ModelAndView与@ResponseBody");
-			}
 			return result;
 		}
 

@@ -7,20 +7,18 @@ import gambler.examples.webapp2.domain.auth.Permission;
 import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.domain.auth.UserPermission;
 import gambler.examples.webapp2.domain.auth.UserRole;
+import gambler.examples.webapp2.dto.AccountDto;
+import gambler.examples.webapp2.dto.PermissionDto;
 import gambler.examples.webapp2.exception.AccessForbiddenException;
 import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.exception.UnexpectedException;
 import gambler.examples.webapp2.resp.ResponseStatus;
-import gambler.examples.webapp2.service.AuthUserService;
 import gambler.examples.webapp2.util.RegexValidateUtil;
-import gambler.examples.webapp2.dto.AccountDto;
-import gambler.examples.webapp2.dto.PermissionDto;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import net.sf.json.JSONObject;
@@ -35,16 +33,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/sysmgmt")
 public class SysMgmtController extends AbstractController {
 
-	@Resource
-	private AuthUserService authUserService;
-
 	@RequestMapping(value = "/createSuper")
 	@ResponseBody
 	public Object createSuper(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId,
 			@RequestParam(required = true) String password,
-                        @LogRequestParam(name = "nick") @RequestParam(required = false) String nick)
+			@LogRequestParam(name = "nick") @RequestParam(required = false) String nick)
 			throws ActionException, AccessForbiddenException {
 		if (!sysconf.getBoolean("switch.enableCreateSuper", false)) {
 			throw new AccessForbiddenException("switch.enableCreateSuper off");
@@ -55,13 +50,14 @@ public class SysMgmtController extends AbstractController {
 		}
 		User dbUser = authUserService.findUserById(userId);
 		if (dbUser != null) {
-			throw new ActionException(ResponseStatus.USER_ALREADY_EXSIST, new Object[]{userId});
+			throw new ActionException(ResponseStatus.USER_ALREADY_EXSIST,
+					new Object[] { userId });
 		}
 		User user = new User();
 		user.setUserId(userId);
 		user.setIssuper(1);
 		user.setIsactive(1);
-                user.setNick(nick);
+		user.setNick(nick);
 		user.setPassword(authUserService.getSaltedPassword(password, userId));
 		return authUserService.saveAsSystemUser(user);
 	}
@@ -76,14 +72,15 @@ public class SysMgmtController extends AbstractController {
 
 		if (loginUser.getIssuper() == 0) {
 			if (loginUser.getUserId().equals(userId)) {
-				throw new ActionException(ResponseStatus.NO_PERMISSION,
-						loginUser + "不允许修改别人的密码！");
+				throw new ActionException(
+						ResponseStatus.NO_PERMISSION,
+						loginUser
+								+ " is only allowed to change your own password！");
 			}
 			User user = authUserService.findUserById(userId);
 			if (!authUserService.isCorrentPassword(oldPass, user.getPassword(),
 					user.getUserId())) {
-				throw new ActionException(ResponseStatus.PASSWORD_ERROR,
-						"密码校验失败!");
+				throw new ActionException(ResponseStatus.PASSWORD_ERROR);
 			}
 		}
 		User newUser = new User();
@@ -142,7 +139,7 @@ public class SysMgmtController extends AbstractController {
 		AccountDto loginUser = authUserService.getLoginUser(request);
 		if (loginUser.getUserId().equals(userId)) {
 			throw new ActionException(ResponseStatus.NO_PERMISSION, loginUser
-					+ "无法删除自己的账号！");
+					+ " is not allowed to delete your own account！");
 		}
 		int delUserCount = authUserService.deleteUser(userId);
 		if (delUserCount == 1) {
@@ -258,7 +255,7 @@ public class SysMgmtController extends AbstractController {
 		AccountDto loginUser = authUserService.getLoginUser(request);
 		if (loginUser.getUserId().equals(userId)) {
 			throw new ActionException(ResponseStatus.NO_PERMISSION, loginUser
-					+ "无法给自己分配权限！");
+					+ " can't grant permission to yourself！");
 		}
 		User user = authUserService.findUserById(userId);
 		@SuppressWarnings("unchecked")

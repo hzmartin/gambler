@@ -4,7 +4,6 @@ import gambler.examples.webapp2.annotation.AuthRequired;
 import gambler.examples.webapp2.constant.AuthConstants;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +21,7 @@ public class SchedulerViewController extends AbstractController{
 
 	@RequestMapping(value = "/schedulecontrol.do")
 	@AuthRequired(permission={AuthConstants.PERM_SCHEDULER.PERM_VIEW_SCHEDULE_INFO})
-	public Object schedulecontrol(final HttpServletRequest request,
-			final HttpServletResponse response) {
+	public Object schedulecontrol(final HttpServletRequest request) {
 		return new ModelAndView("schedulecontrol");
 	}
 

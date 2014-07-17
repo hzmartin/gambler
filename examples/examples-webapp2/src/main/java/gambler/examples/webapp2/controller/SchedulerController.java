@@ -9,7 +9,6 @@ import gambler.examples.webapp2.dto.JobDto;
 import gambler.examples.webapp2.dto.JobExecutionContextDto;
 import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
-import gambler.examples.webapp2.service.AuthUserService;
 import gambler.examples.webapp2.service.DefinitionService;
 import gambler.examples.webapp2.service.SchedulerService;
 import gambler.examples.webapp2.util.TimeTagUtil;
@@ -41,9 +40,6 @@ public class SchedulerController extends AbstractController {
 
 	@Resource
 	private DefinitionService definitionService;
-
-	@Resource
-	private AuthUserService authUserService;
 
 	@RequestMapping(value = "/getSchedulerInfo")
 	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_VIEW_SCHEDULE_INFO })

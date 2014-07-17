@@ -1,18 +1,4 @@
 <map>
-    <prop>
-        <key name="msmode">${gb.msmode}</key>
-        <key name="siteurl">http://localhost:8080</key>
-    </prop>
-    <prop namespace="mainnav">
-        <key name="count">10</key>
-        <key name="name" order="1">Schedule Control</key>
-        <key name="url" order="1">#siteurl#/schedulecontrol.do</key>
-        <key name="perm" order="1">400</key>
-    </prop>
-    <prop namespace="switch">
-        <key name="enableCreateSuper">${gb.switch.enableCreateSuper}</key>
-        <key name="enableAuthentication">${gb.switch.enableAuthentication}</key>
-    </prop>
     <prop namespace="job_definition">
         <key name="count">10</key>
         <key name="job_name" order="1">hello</key>

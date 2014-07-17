@@ -1,0 +1,8 @@
+<map>
+    <prop namespace="mainnav">
+        <key name="count">10</key>
+        <key name="name" order="1">Scheduler</key>
+        <key name="url" order="1">#siteurl#/schedulecontrol.do</key>
+        <key name="perm" order="1">400</key>
+    </prop>
+</map>

@@ -23,8 +23,4 @@
 		<put-attribute name="title" value="Gambler Scheduler - Forbidden" />
 	</definition>
 	
-	<definition name="schedulecontrol" extends="base">
-        <put-attribute name="title" value="Gambler Scheduler - Schedule Control" />
-        <put-attribute name="content" value="/page/cont/schedulecontrol.jsp" />
-    </definition>
 </tiles-definitions> 

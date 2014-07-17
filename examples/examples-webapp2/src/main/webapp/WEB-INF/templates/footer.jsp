@@ -22,4 +22,18 @@
 			}
 		});
 	});
+	$(".site_mainnav").click(function(event) {
+		event.preventDefault();
+		$('.site_mainnav').removeClass('active');
+		$(this).addClass('active');
+		var url = $(this).attr('url');
+		$.ajax({
+			cache : false,
+			type : "GET",
+			url : url,
+			success : function(data) {
+				$('#site_content').html(data);
+			}
+		});
+	});
 </script>

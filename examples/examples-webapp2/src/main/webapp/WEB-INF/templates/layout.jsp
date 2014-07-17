@@ -44,8 +44,9 @@
 
 	<div id="wrap">
 		<tiles:insertAttribute name="header" />
-
-		<tiles:insertAttribute name="content" />
+		<div class="container" id="site_content">
+			<tiles:insertAttribute name="content" />
+		</div>
 	</div>
 	<tiles:insertAttribute name="footer" />
 </body>

@@ -1,0 +1,10 @@
+<map>
+    <prop>
+        <key name="msmode">${gb.msmode}</key>
+        <key name="siteurl">http://localhost:8080</key>
+    </prop>
+    <prop namespace="switch">
+        <key name="enableCreateSuper">${gb.switch.enableCreateSuper}</key>
+        <key name="enableAuthentication">${gb.switch.enableAuthentication}</key>
+    </prop>
+</map>

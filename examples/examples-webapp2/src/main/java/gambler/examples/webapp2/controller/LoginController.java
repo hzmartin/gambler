@@ -1,12 +1,10 @@
 package gambler.examples.webapp2.controller;
 
 import gambler.examples.webapp2.domain.auth.User;
+import gambler.examples.webapp2.dto.AccountDto;
 import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
-import gambler.examples.webapp2.service.AuthUserService;
-import gambler.examples.webapp2.dto.AccountDto;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,9 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/account")
 public class LoginController extends AbstractController {
-
-	@Resource
-	private AuthUserService authUserService;
 
 	@RequestMapping(value = "/login")
 	@ResponseBody

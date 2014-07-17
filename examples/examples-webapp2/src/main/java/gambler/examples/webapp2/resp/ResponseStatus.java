@@ -2,31 +2,31 @@ package gambler.examples.webapp2.resp;
 
 public enum ResponseStatus {
 
-	OK("OK", "操作成功"),
+	OK("OK", "success"),
 
-	PARAM_ILLEGAL("PARAM_ILLEGAL", "请求参数不合法"),
+	PARAM_ILLEGAL("PARAM_ILLEGAL", "illegal request parameter"),
 
-	USER_NOT_EXSIST("USER_NOT_EXSIST", "用户不存在"),
+	USER_NOT_EXSIST("USER_NOT_EXSIST", "user doesn't exist"),
 
-	USER_NOT_LOGGED("USER_NOT_LOGGED", "用户没有登录"),
+	USER_NOT_LOGGED("USER_NOT_LOGGED", "user doesn't login"),
 
-	USER_ALREADY_EXSIST("USER_ALREADY_EXSIST", "用户%s已存在"),
+	USER_ALREADY_EXSIST("USER_ALREADY_EXSIST", "User(%s) already exist"),
 
-	LOGIN_FAILED("LOGIN_FAILED", "用户名或密码错误"),
+	LOGIN_FAILED("LOGIN_FAILED", "username or password error"),
 
-	NO_PERMISSION("NO_PERMISSION", "权限不足，无法进行该操作"),
+	NO_PERMISSION("NO_PERMISSION", "forbidden"),
 
-	EXCEED_MAX_TRYTIMES("EXCEED_MAX_TRYTIMES", "尝试次数过多，请稍后再试"), // 尝试次数过多
+	EXCEED_MAX_TRYTIMES("EXCEED_MAX_TRYTIMES", "try too many times"),
 
-	PASSWORD_ERROR("PASSWORD_ERROR", "密码校验错误"),
+	PASSWORD_ERROR("PASSWORD_ERROR", "password error"),
 
-	JOB_NOT_EXIST("JOB_NOT_EXIST", "Job(name=%s, group=%s)不存在"),
+	JOB_NOT_EXIST("JOB_NOT_EXIST", "job(name=%s, group=%s) doesn't exist"),
 
-	UNKNOWN_ERROR("UNKNOWN_ERROR", "未知错误"),
+	UNKNOWN_ERROR("UNKNOWN_ERROR", "unknown error"),
 	
-	SERVER_BUSY("SERVER_BUSY", "网络繁忙，请稍候再试！"),
+	SERVER_BUSY("SERVER_BUSY", "server busy, please try again later!"),
 
-	SERVICE_UNAVAILABLE("SERVICE_UNAVAILABLE", "服务不可用！");
+	SERVICE_UNAVAILABLE("SERVICE_UNAVAILABLE", "service unavailable");
 
 	private String code;
 

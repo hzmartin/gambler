@@ -16,7 +16,7 @@
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<c:forEach var="i" items="${mainnav}">
-					<li><a href="${i.url}">${i.name}</a></li>
+					<li class="site_mainnav" url="${i.url}"><a href="#">${i.name}</a></li>
 				</c:forEach>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
