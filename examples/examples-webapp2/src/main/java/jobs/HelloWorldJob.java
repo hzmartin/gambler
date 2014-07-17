@@ -27,11 +27,6 @@ public class HelloWorldJob extends QuartzJobBean {
         JobDataMap jobDataMap = jobDetail.getJobDataMap();
         System.out.println("hello " + user + ", execute Job(" + jobDetail.getFullName() + ", " + jobDetail.getDescription() + ")" + jobDataMap.getString("msg") + " @"
                 + timestamp);
-        try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			log.error("sleep error!", e);
-		}
         log.info("job end! @" + timestamp);
     }
 

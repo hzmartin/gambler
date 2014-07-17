@@ -26,16 +26,16 @@
 	<div class="container">
 
 		<form class="form-signin">
-			<h2 class="form-signin-heading">账号登陆</h2>
-			<input id="userId" type="text" class="form-control" placeholder="手机"
+			<h2 class="form-signin-heading">Please sign in</h2>
+			<input id="userId" type="text" class="form-control" placeholder="user id"
 				required autofocus> <input id="password" type="password"
-				class="form-control" placeholder="密码" required> <label
+				class="form-control" placeholder="password" required> <label
 				class="checkbox"> <input type="checkbox" id="remme"
-				checked="checked"> 一个月内记住我
+				checked="checked"> Remember me
 			</label>
 			<div id="tip"></div>
 			<button id="login" class="btn btn-lg btn-success btn-block"
-				type="submit">登陆</button>
+				type="submit">Sign in</button>
 		</form>
 	</div>
 

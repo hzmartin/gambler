@@ -6,7 +6,7 @@
 	<div class="jumbotron">
 		<div class="container">
 			<h1>
-				Gambler Schedule System<c:if test="${msmode ne ''}"><span class="badge"><c:out value="${msmode}" /></span></c:if>
+				Schedule System<c:if test="${msmode ne ''}"><span class="badge"><c:out value="${msmode}" /></span></c:if>
 			</h1>
 			<p>
 				Feedback: <a href="mailto:hzwangqihui@gmail.com">hzwangqihui@gmail.com</a>

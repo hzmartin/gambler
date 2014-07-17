@@ -67,7 +67,7 @@
 																		+ value.endTime
 																		+ '</td><td>'
 																		+ value.misfireInstruction
-																		+ '</td><td><button type="button" class="btn btn-default trigger_view">View</button></tr>');
+																		+ '</td><td><button type="button" class="btn btn-primary trigger_view">View</button></tr>');
 											});
 							bind_action_handler();
 						}

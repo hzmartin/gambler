@@ -37,10 +37,10 @@
 	<hr />
 	<h3>Actions</h3>
 	<p>
-		<button type="button" class="btn btn-default" id="jobdetail_refresh">Refresh</button>
+		<button type="button" class="btn btn-primary" id="jobdetail_refresh">Refresh</button>
 		<button type="button" class="btn btn-warning" id="job_runoncenow">Run
 			Once Now</button>
-		<button type="button" class="btn btn-primary" id="job_simple_schedule">Simple
+		<button type="button" class="btn btn-success" id="job_simple_schedule">Simple
 			Schedule</button>
 		<button type="button" class="btn btn-info" id="job_cron_schedule">Cron
 			Schedule</button>

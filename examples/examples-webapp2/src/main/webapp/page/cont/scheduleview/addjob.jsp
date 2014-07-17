@@ -63,7 +63,7 @@
 		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<button type="submit" class="btn btn-default" id="job_add_btn">Submit</button>
+				<button type="submit" class="btn btn-primary" id="job_add_btn">Submit</button>
 			</div>
 		</div>
 		<div class="form-group">
