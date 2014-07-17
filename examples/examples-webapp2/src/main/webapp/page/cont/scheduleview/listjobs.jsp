@@ -46,7 +46,8 @@
 																		+ value.jobClass
 																		+ '</td><td>'
 																		+ value.description
-																		+ '</td><td><button type="button" class="btn btn-default job_view">View</button>&nbsp;<button type="button" class="btn btn-danger job_del">Delete</button></td></tr>');
+																		+ '</td><td><button type="button" class="btn btn-default job_view">View</button>'
+																		+ '&nbsp;<button type="button" class="btn btn-danger job_del">Delete</button></td></tr>');
 											});
 							bind_action_handler();
 						}

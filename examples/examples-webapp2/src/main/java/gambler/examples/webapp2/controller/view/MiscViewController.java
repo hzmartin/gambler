@@ -1,10 +1,11 @@
-package gambler.examples.webapp2.controller;
+package gambler.examples.webapp2.controller.view;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import gambler.examples.webapp2.annotation.AuthRequired;
 import gambler.examples.webapp2.constant.AuthConstants;
+import gambler.examples.webapp2.controller.AbstractController;
 import gambler.examples.webapp2.dto.AccountDto;
 import gambler.examples.webapp2.dto.NaviItemDto;
 

@@ -3,14 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="container" id="site_sub_navtabs">
 	<ul class="nav nav-tabs">
-		<li url="/scheduleview/listjobs.do"><a href="#">List Jobs</a></li>
-		<li url="/scheduleview/listtriggers.do"><a href="#">List
-				Triggers</a></li>
-		<li url="/scheduleview/addjob.do"><a href="#">Create Job</a></li>
+		<li url="/sysmgmtview/listusers.do"><a href="#">Users</a></li>
 	</ul>
 </div>
 <div id="site_sub_navtabs_content" class="container">
-	<h3 class="text-center">Job Management</h3>
+	<h1 class="text-center">System Management</h1>
+	<h3 class="text-center">click <small><i>Users</i></small> tab for more information</h3>
 </div>
 <script>
 	$('#site_sub_navtabs .nav-tabs li').click(function() {

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="container">
-	<h1>
+	<h1 class="text-center">
 		<span id="scheduler_name"></span>
 	</h1>
 	<hr />
@@ -73,8 +73,9 @@
 			success : function(resp) {
 				if (resp.code == "OK") {
 					updateSchedulerInfo(resp.data);
+				} else {
+					$('#tip').text(resp.msg);
 				}
-				$('#tip').text(resp.msg);
 			}
 		});
 	}

@@ -22,6 +22,40 @@
 			}
 		});
 	});
+	$("#updatepassword").click(function(event) {
+		event.preventDefault();
+		var oldPass = prompt("Old Password:");
+		if (!oldPass) {
+			return;
+		}
+		var newpass = prompt("New Password");
+		if (!newpass) {
+			return;
+		}
+		$.getJSON("/sysmgmt/updatePassword.do", {
+			userId : userId,
+			oldPass : $.md5(oldPass),
+			newPass : $.md5(newpass)
+		}, function(data) {
+			alert(data.msg);
+		});
+	});
+	$('#switchuser').click(function(event) {
+		event.preventDefault();
+		var targetId = prompt("please enter the target user id");
+		if (!targetId) {
+			return;
+		}
+		$.getJSON("/account/switchUser.do", {
+			userId : targetId
+		}, function(data) {
+			if (data.code == "OK") {
+				window.location.href = "index.html";
+			} else {
+				alert(data.msg);
+			}
+		});
+	});
 	$(".site_mainnav").click(function(event) {
 		event.preventDefault();
 		$('.site_mainnav').removeClass('active');

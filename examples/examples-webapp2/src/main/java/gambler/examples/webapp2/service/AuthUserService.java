@@ -9,6 +9,8 @@ import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.domain.auth.UserPermission;
 import gambler.examples.webapp2.domain.auth.UserRole;
 import gambler.examples.webapp2.dto.AccountDto;
+import gambler.examples.webapp2.exception.ActionException;
+import gambler.examples.webapp2.resp.ResponseStatus;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -42,18 +44,20 @@ public class AuthUserService extends AbstractService {
 	@Autowired
 	private AuthDao userDao;
 
-        /**
-         * check session and cookie
-         * @return true if logined
-         */
+	/**
+	 * check session and cookie
+	 * 
+	 * @return true if logined
+	 */
 	public boolean checkLogin(HttpServletRequest request) {
 		return null != getLoginUser(request) || cookieLogin(request) != null;
 	}
 
-        /**
-         * login, set session attribute and cookie if remme is true
-         * @return login account
-         */
+	/**
+	 * login, set session attribute and cookie if remme is true
+	 * 
+	 * @return login account
+	 */
 	public AccountDto login(final HttpServletRequest request,
 			final HttpServletResponse response, String userId, String password,
 			boolean remme) {
@@ -85,10 +89,22 @@ public class AuthUserService extends AbstractService {
 		return account;
 	}
 
-        /**
-         * check password is correct
-         * @return true if equals
-         */
+	public void switchUser(final HttpServletRequest request, String userId) throws ActionException {
+		User user = userDao.find(userId);
+		if (user == null) {
+			throw new ActionException(ResponseStatus.USER_NOT_EXSIST);
+		}
+
+		AccountDto account = new AccountDto(user);
+		HttpSession session = request.getSession();
+		session.setAttribute(SESSION_USER_KEY, account);
+	}
+
+	/**
+	 * check password is correct
+	 * 
+	 * @return true if equals
+	 */
 	public boolean isCorrentPassword(String rawPass, String dbPass,
 			String userId) {
 		if (rawPass == null || rawPass.isEmpty())
@@ -96,10 +112,10 @@ public class AuthUserService extends AbstractService {
 		return getSaltedPassword(rawPass, userId).equals(dbPass);
 	}
 
-        /**
-         * 
-         * @return salted password which is stored in database
-         */
+	/**
+	 * 
+	 * @return salted password which is stored in database
+	 */
 	public String getSaltedPassword(String rawPass, String userId) {
 		String md5Hex = DigestUtils.md5Hex(rawPass + userId + "Gkx*&#F-j93+");
 		return md5Hex;
@@ -126,8 +142,8 @@ public class AuthUserService extends AbstractService {
 		if (userId == null || password == null) {
 			return null;
 		}
-                userId = getStringEncryptor().decrypt(userId);
-                password = getStringEncryptor().decrypt(password);
+		userId = getStringEncryptor().decrypt(userId);
+		password = getStringEncryptor().decrypt(password);
 		return verifyLogin(request, userId, password);
 	}
 
@@ -189,11 +205,11 @@ public class AuthUserService extends AbstractService {
 	@Transactional
 	public int saveAsSystemUser(User user) {
 		int count = userDao.save(user);
-		if (count == 1) {
+		if (count == 1 && user.getIssuper() == 0) {
 			User dbUser = userDao.find(user.getUserId());
 			UserRole userRole = new UserRole();
 			userRole.setUid(dbUser.getUid());
-			userRole.setRid(AuthConstants.SYSTEM_USER.getRid());
+			userRole.setRid(AuthConstants.SYSTEM_USER_ROLE);
 			userDao.createUserRole(userRole);
 		}
 		return count;

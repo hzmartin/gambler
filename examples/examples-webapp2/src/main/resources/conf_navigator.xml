@@ -12,6 +12,6 @@
         
         <key name="name" order="10">System</key>
         <key name="url" order="10">#siteurl#/sysmgmtview/sysmgmt.do</key>
-        <key name="perm" order="10">1</key>
+        <key name="perm" order="10">100</key>
     </prop>
 </map>

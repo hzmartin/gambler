@@ -70,13 +70,11 @@ CREATE TABLE gb_user_role (
 CREATE UNIQUE INDEX ur_unique_idx ON gb_user_role (uid, rid);
 
 
-INSERT INTO gb_permission (pid, name, remark) VALUES (1, '进入系统管理界面', '系统管理');
-INSERT INTO gb_permission (pid, name, remark) VALUES (2, '创建和更新系统用户', '系统管理');
-INSERT INTO gb_permission (pid, name, remark) VALUES (3, '查看系统用户', '系统管理');
-INSERT INTO gb_permission (pid, name, remark) VALUES (4, '删除系统用户', '系统管理');
-INSERT INTO gb_permission (pid, name, remark) VALUES (5, '进入权限管理系统', '系统管理');
-INSERT INTO gb_permission (pid, name, remark) VALUES (6, '查看用户权限信息', '系统管理');
-INSERT INTO gb_permission (pid, name, remark) VALUES (7, '更新用户权限信息', '系统管理');
+INSERT INTO gb_permission (pid, name, remark) VALUES (100, '查看系统用户', '系统管理');
+INSERT INTO gb_permission (pid, name, remark) VALUES (101, '创建和更新系统用户', '系统管理');
+INSERT INTO gb_permission (pid, name, remark) VALUES (102, '删除系统用户', '系统管理');
+INSERT INTO gb_permission (pid, name, remark) VALUES (103, '查看用户权限信息', '系统管理');
+INSERT INTO gb_permission (pid, name, remark) VALUES (104, '更新用户权限信息', '系统管理');
 
 INSERT INTO gb_permission (pid, name, remark) VALUES (500, '执行NativeJob', 'JOB');
 
@@ -84,14 +82,5 @@ INSERT INTO gb_permission (pid, name, remark) VALUES (1000, '进入主页', 'MIS
 INSERT INTO gb_permission (pid, name, remark) VALUES (1001, '测试', 'MISC');
 
 INSERT INTO gb_role (rid, name, remark) VALUES (0, '系统普通用户', '系统普通用户：拥有系统默认权限配置');
-INSERT INTO gb_role (rid, name, remark) VALUES (1, '系统管理员', '系统管理员：所有系统管理权限');
-
-INSERT INTO gb_role_permission (rid, pid) VALUES (1, 1);
-INSERT INTO gb_role_permission (rid, pid) VALUES (1, 2);
-INSERT INTO gb_role_permission (rid, pid) VALUES (1, 3);
-INSERT INTO gb_role_permission (rid, pid) VALUES (1, 4);
-INSERT INTO gb_role_permission (rid, pid) VALUES (1, 5);
-INSERT INTO gb_role_permission (rid, pid) VALUES (1, 6);
-INSERT INTO gb_role_permission (rid, pid) VALUES (1, 7);
 
 INSERT INTO gb_role_permission (rid, pid) VALUES (0, 1000);

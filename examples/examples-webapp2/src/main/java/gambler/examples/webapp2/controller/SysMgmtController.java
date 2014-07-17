@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,7 +72,7 @@ public class SysMgmtController extends AbstractController {
 		AccountDto loginUser = authUserService.getLoginUser(request);
 
 		if (loginUser.getIssuper() == 0) {
-			if (loginUser.getUserId().equals(userId)) {
+			if (!loginUser.getUserId().equals(userId)) {
 				throw new ActionException(
 						ResponseStatus.NO_PERMISSION,
 						loginUser
@@ -108,6 +109,10 @@ public class SysMgmtController extends AbstractController {
 		User newUser = new User();
 		newUser.setUserId(userId);
 		newUser.setIsactive(1);
+		newUser.setIssuper(0);
+		newUser.setNick(nick);
+		newUser.setPassword(authUserService.getSaltedPassword(
+				DigestUtils.md5Hex("123456"), userId));
 		if (user != null) {
 			int updateCount = authUserService.updateUser(newUser);
 			if (updateCount == 1) {

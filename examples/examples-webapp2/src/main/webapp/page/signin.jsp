@@ -17,7 +17,6 @@
 <link href="./bootstrap3/css/bootstrap.css" rel="stylesheet">
 
 <!-- Custom styles for this template -->
-<link href="./css/base.css" rel="stylesheet">
 <link href="./css/signin.css" rel="stylesheet">
 
 </head>

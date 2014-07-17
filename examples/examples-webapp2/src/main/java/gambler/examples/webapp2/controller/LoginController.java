@@ -1,5 +1,7 @@
 package gambler.examples.webapp2.controller;
 
+import gambler.examples.webapp2.annotation.AuthRequired;
+import gambler.examples.webapp2.constant.AuthConstants;
 import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.dto.AccountDto;
 import gambler.examples.webapp2.exception.ActionException;
@@ -48,4 +50,14 @@ public class LoginController extends AbstractController {
 		return null;
 	}
 
+	@RequestMapping(value = "/switchUser")
+	@ResponseBody
+	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	public Object switchUser(final HttpServletRequest request,
+			@RequestParam String userId) throws ActionException {
+		AccountDto loginUser = authUserService.getLoginUser(request);
+		authUserService.switchUser(request, userId);
+		logger.info(loginUser + "已经切换账号至：" + userId + "成功！");
+		return null;
+	}
 }

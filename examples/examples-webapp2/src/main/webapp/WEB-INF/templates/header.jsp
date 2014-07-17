@@ -10,8 +10,7 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="/index.do"><img
-				src="./assets/ico/favicon.png" />Gambler<c:if test="${msmode ne ''}"><span class="badge"><c:out value="${msmode}" /></span></c:if></a>
+			<a class="navbar-brand" href="/index.do">Gambler <c:if test="${msmode ne ''}"><span class="badge"><c:out value="${msmode}" /></span></c:if></a>
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
@@ -23,6 +22,10 @@
 				<li id="fat-menu" class="dropdown"><a href="#"
 					class="dropdown-toggle" data-toggle="dropdown" id="username"> </a>
 					<ul class="dropdown-menu">
+						<c:if test="${sgambler.issuper == 1}">
+							<li><a href="#" id="switchuser">Switch User</a></li>
+						</c:if>
+						<li><a href="#" id="updatepassword">Update Password</a></li>
 						<li><a href="#" id="logout">Logout</a></li>
 					</ul></li>
 			</ul>
