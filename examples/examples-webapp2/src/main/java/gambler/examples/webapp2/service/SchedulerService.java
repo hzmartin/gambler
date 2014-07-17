@@ -76,10 +76,15 @@ public class SchedulerService {
 		tDto.setDescription(trigger.getDescription());
 		tDto.setJobName(trigger.getJobName());
 		tDto.setJobGroup(trigger.getJobGroup());
-		tDto.setPreviousFireTime(TimeTagUtil.format_yyyyMMddHHmmss(trigger
+		tDto.setPreviousFireTime(TimeTagUtil.format_yyyyMMdd_HH_mm_ss(trigger
 				.getPreviousFireTime()));
-		tDto.setNextFireTime(TimeTagUtil.format_yyyyMMddHHmmss(trigger
+		tDto.setNextFireTime(TimeTagUtil.format_yyyyMMdd_HH_mm_ss(trigger
 				.getNextFireTime()));
+		tDto.setStartTime(TimeTagUtil.format_yyyyMMdd_HH_mm_ss(trigger
+				.getStartTime()));
+		tDto.setEndTime(TimeTagUtil.format_yyyyMMdd_HH_mm_ss(trigger
+				.getEndTime()));
+		tDto.setType(trigger.getClass().getSimpleName());
 		tDto.setState(state);
 		return tDto;
 	}
@@ -136,14 +141,15 @@ public class SchedulerService {
 					tDto.setGroup(trigger.getGroup());
 					tDto.setDescription(trigger.getDescription());
 					tDto.setPreviousFireTime(TimeTagUtil
-							.format_yyyyMMddHHmmss(trigger
+							.format_yyyyMMdd_HH_mm_ss(trigger
 									.getPreviousFireTime()));
 					tDto.setNextFireTime(TimeTagUtil
-							.format_yyyyMMddHHmmss(trigger.getNextFireTime()));
+							.format_yyyyMMdd_HH_mm_ss(trigger.getNextFireTime()));
 					tDto.setMisfireInstruction(trigger.getMisfireInstruction());
 					int state = scheduler.getTriggerState(trigger.getName(),
 							trigger.getGroup());
 					tDto.setState(state);
+					tDto.setType(trigger.getClass().getSimpleName());
 					triggerDtos.add(tDto);
 				}
 				jobDto.setTriggers(triggerDtos);
@@ -170,14 +176,14 @@ public class SchedulerService {
 			contextDto.setTriggerName(trigger.getName());
 			contextDto.setTriggerGroup(trigger.getGroup());
 			contextDto.setTriggerDescription(trigger.getDescription());
-			contextDto.setFireTime(TimeTagUtil.format_yyyyMMddHHmmss(context
+			contextDto.setFireTime(TimeTagUtil.format_yyyyMMdd_HH_mm_ss(context
 					.getFireTime()));
 			contextDto.setNextFireTime(TimeTagUtil
-					.format_yyyyMMddHHmmss(context.getNextFireTime()));
+					.format_yyyyMMdd_HH_mm_ss(context.getNextFireTime()));
 			contextDto.setPreviousFireTime(TimeTagUtil
-					.format_yyyyMMddHHmmss(context.getPreviousFireTime()));
+					.format_yyyyMMdd_HH_mm_ss(context.getPreviousFireTime()));
 			contextDto.setScheduledFireTime(TimeTagUtil
-					.format_yyyyMMddHHmmss(context.getScheduledFireTime()));
+					.format_yyyyMMdd_HH_mm_ss(context.getScheduledFireTime()));
 			contextDtoList.add(contextDto);
 
 		}
@@ -261,7 +267,8 @@ public class SchedulerService {
 		try {
 			jobClazz = Class.forName(jobClass);
 		} catch (ClassNotFoundException e) {
-			throw new SchedulerException("add job " + jobClass + " error!", e);
+			throw new SchedulerException("job class " + jobClass
+					+ " not found!", e);
 		}
 		JobDetail jobDetail = new JobDetail(avoidNullWithUuid(jobName),
 				jobGroup, jobClazz, volatility, durability, shouldRecover);

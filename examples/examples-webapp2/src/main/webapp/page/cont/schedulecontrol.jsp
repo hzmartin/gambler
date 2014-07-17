@@ -19,18 +19,18 @@
 	</p>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-1"></div>
-			<div class="col-md-1">
+			<div class="col-xs-1"></div>
+			<div class="col-xs-1">
 				<span id="scheduler_start" class="glyphicon glyphicon-play"></span>
 			</div>
-			<div class="col-md-1">
+			<div class="col-xs-1">
 				<span id="scheduler_pause" class="glyphicon glyphicon-pause"></span>
 			</div>
-			<div class="col-md-1">
+			<div class="col-xs-1">
 				<span id="scheduler_stop" class="glyphicon glyphicon-stop"
 					title="Stop immediately"></span>
 			</div>
-			<div class="col-md-1">
+			<div class="col-xs-1">
 				<span id="scheduler_stop_wait" class="glyphicon glyphicon-off"
 					title="Stop until all jobs completed"></span>
 			</div>
@@ -39,7 +39,7 @@
 	<h3></h3>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-1"></div>
+			<div class="col-xs-1"></div>
 			<div id="tip"></div>
 		</div>
 		<hr />
@@ -73,9 +73,8 @@
 			success : function(resp) {
 				if (resp.code == "OK") {
 					updateSchedulerInfo(resp.data);
-				} else {
-					$('#tip').text(resp.msg);
 				}
+				$('#tip').text(resp.msg);
 			}
 		});
 	}
@@ -110,9 +109,8 @@
 			success : function(resp) {
 				if (resp.code == "OK") {
 					updateSchedulerInfo(resp.data);
-				} else {
-					$('#tip').text(resp.msg);
 				}
+				$('#tip').text(resp.msg);
 			}
 		});
 	});
@@ -128,9 +126,8 @@
 			success : function(resp) {
 				if (resp.code == "OK") {
 					updateSchedulerInfo(resp.data);
-				} else {
-					$('#tip').text(resp.msg);
 				}
+				$('#tip').text(resp.msg);
 			}
 		});
 	});
@@ -149,9 +146,9 @@
 			success : function(resp) {
 				if (resp.code == "OK") {
 					updateSchedulerInfo(resp.data);
-				} else {
-					$('#tip').text(resp.msg);
 				}
+
+				$('#tip').text(resp.msg);
 			}
 		});
 	});

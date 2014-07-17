@@ -37,6 +37,9 @@ public class AuthConstants {
 
 	public static interface PERM_SCHEDULER {
 		long PERM_VIEW_SCHEDULE_INFO = 400;
+		long PERM_VIEW_JOB_INFO = 401;
+		long PERM_VIEW_TRIGGER_INFO = 402;
+		long PERM_ADD_JOB = 403;
 		long PERM_EXEC_NATIVE_JOB = 500;
 	}
 

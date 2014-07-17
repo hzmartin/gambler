@@ -16,7 +16,10 @@ public class TimeTagUtil {
 		return DateUtils.parseDate(str, pattern);
 	}
 
-	public static String format_yyyyMMddHHmmss(Date date) {
-		return DateFormatUtils.format(date, "yyyyMMddHHmmss");
+	public static String format_yyyyMMdd_HH_mm_ss(Date date) {
+		if(date == null){
+			return "";
+		}
+		return DateFormatUtils.format(date, "yyyyMMdd HH:mm:ss");
 	}
 }

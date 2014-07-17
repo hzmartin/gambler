@@ -7,6 +7,7 @@ import gambler.examples.webapp2.dto.AccountDto;
 import gambler.examples.webapp2.dto.JobDefinitionDto;
 import gambler.examples.webapp2.dto.JobDto;
 import gambler.examples.webapp2.dto.JobExecutionContextDto;
+import gambler.examples.webapp2.dto.TriggerDto;
 import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
 import gambler.examples.webapp2.service.DefinitionService;
@@ -21,6 +22,8 @@ import java.util.TreeMap;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 import org.quartz.CronExpression;
@@ -148,7 +151,12 @@ public class SchedulerController extends AbstractController {
 			@LogRequestParam(name = "triggerName") @RequestParam String triggerName,
 			@LogRequestParam(name = "triggerGroup") @RequestParam(required = false) String triggerGroup)
 			throws SchedulerException {
-		return schedulerService.getTriggerState(triggerName, triggerGroup);
+		int state = schedulerService.getTriggerState(triggerName, triggerGroup);
+		String stateLabel = TriggerDto.getTriggerStateLabel(state);
+		JSONObject obj = new JSONObject();
+		obj.put("state", state);
+		obj.put("stateLabel", stateLabel);
+		return obj;
 	}
 
 	@RequestMapping(value = "/getJobList")
@@ -213,6 +221,16 @@ public class SchedulerController extends AbstractController {
 			@LogRequestParam(name = "shouldRecover") @RequestParam(required = false, defaultValue = "false") boolean shouldRecover,
 			@LogRequestParam(name = "replace") @RequestParam(required = false, defaultValue = "true") boolean replace)
 			throws SchedulerException, ActionException {
+		if (StringUtils.isBlank(jobClass)) {
+			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
+					"job class required!");
+		}
+		if (StringUtils.isBlank(jobGroup)) {
+			jobGroup = null;
+		}
+		if (StringUtils.isBlank(jobDataMapJson)) {
+			jobDataMapJson = "{}";
+		}
 		JobDto jobDto = schedulerService.addJob(jobClass, jobName, jobGroup,
 				jobDataMapJson, description, volatility, durability,
 				shouldRecover, replace);
@@ -253,7 +271,7 @@ public class SchedulerController extends AbstractController {
 			ActionException {
 		Date start = null;
 		Date end = null;
-		if (startTime != null) {
+		if (StringUtils.isNotBlank(startTime)) {
 			try {
 				start = TimeTagUtil.parseDate(startTime);
 			} catch (ParseException e) {
@@ -262,7 +280,7 @@ public class SchedulerController extends AbstractController {
 			}
 		}
 
-		if (endTime != null) {
+		if (StringUtils.isNotBlank(endTime)) {
 			try {
 				end = TimeTagUtil.parseDate(endTime);
 			} catch (ParseException e) {
@@ -280,9 +298,16 @@ public class SchedulerController extends AbstractController {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"repeat interval must be >= 0");
 		}
-		return TimeTagUtil.format_yyyyMMddHHmmss(schedulerService.scheduleJob(
-				jobName, jobGroup, triggerName, triggerGroup, start, end,
-				repeatCount, repeatInterval, description, misfireInstruction));
+		if (StringUtils.isBlank(jobGroup)) {
+			jobGroup = null;
+		}
+		if (StringUtils.isBlank(triggerGroup)) {
+			triggerGroup = null;
+		}
+		return TimeTagUtil.format_yyyyMMdd_HH_mm_ss(schedulerService
+				.scheduleJob(jobName, jobGroup, triggerName, triggerGroup,
+						start, end, repeatCount, repeatInterval, description,
+						misfireInstruction));
 	}
 
 	@RequestMapping(value = "/scheduleCronJob")
@@ -306,7 +331,13 @@ public class SchedulerController extends AbstractController {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"cron expression illegal");
 		}
-		return TimeTagUtil.format_yyyyMMddHHmmss(schedulerService
+		if (StringUtils.isBlank(jobGroup)) {
+			jobGroup = null;
+		}
+		if (StringUtils.isBlank(triggerGroup)) {
+			triggerGroup = null;
+		}
+		return TimeTagUtil.format_yyyyMMdd_HH_mm_ss(schedulerService
 				.scheduleCronJob(jobName, jobGroup, triggerName, triggerGroup,
 						cronExpression, description, misfireInstruction));
 	}
@@ -360,7 +391,7 @@ public class SchedulerController extends AbstractController {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"repeat interval must be >= 0");
 		}
-		return TimeTagUtil.format_yyyyMMddHHmmss(schedulerService
+		return TimeTagUtil.format_yyyyMMdd_HH_mm_ss(schedulerService
 				.rescheduleJob(triggerName, triggerGroup, start, end,
 						repeatCount, repeatInterval, description,
 						misfireInstruction));
@@ -389,7 +420,7 @@ public class SchedulerController extends AbstractController {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"cron expression illegal");
 		}
-		return TimeTagUtil.format_yyyyMMddHHmmss(schedulerService
+		return TimeTagUtil.format_yyyyMMdd_HH_mm_ss(schedulerService
 				.rescheduleCronJob(triggerName, triggerGroup, cronExpression,
 						description, misfireInstruction));
 	}

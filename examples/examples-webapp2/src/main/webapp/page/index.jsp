@@ -19,7 +19,7 @@
 		</h2>
 		<hr />
 		<ol>
-			<li>主要用于日常任务管理</li>
+			<li>Focus on jobs management</li>
 		</ol>
 	</div>
 </div>
