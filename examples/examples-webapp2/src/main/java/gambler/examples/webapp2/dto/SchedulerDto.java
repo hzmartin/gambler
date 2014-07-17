@@ -19,8 +19,6 @@ public class SchedulerDto {
 
 	private int numberOfJobsExecuted;
 
-	private String jobStoreClass;
-	
 	public String getSchedulerName() {
 		return schedulerName;
 	}
@@ -83,14 +81,6 @@ public class SchedulerDto {
 
 	public void setNumberOfJobsExecuted(int numberOfJobsExecuted) {
 		this.numberOfJobsExecuted = numberOfJobsExecuted;
-	}
-
-	public String getJobStoreClass() {
-		return jobStoreClass;
-	}
-
-	public void setJobStoreClass(String jobStoreClass) {
-		this.jobStoreClass = jobStoreClass;
 	}
 
 }

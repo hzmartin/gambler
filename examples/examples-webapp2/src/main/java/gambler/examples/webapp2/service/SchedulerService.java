@@ -370,8 +370,6 @@ public class SchedulerService {
 		scheduleDto.setSummary(metaData.getSummary());
 		scheduleDto.setVersion(metaData.getVersion());
 		scheduleDto.setNumberOfJobsExecuted(metaData.getNumberOfJobsExecuted());
-		scheduleDto.setJobStoreClass(metaData.getJobStoreClass()
-				.getCanonicalName());
 		return scheduleDto;
 	}
 }

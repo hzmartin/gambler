@@ -14,7 +14,8 @@ http://www.springframework.org/schema/aop
 http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
            
     <bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-	    <property name="dataSource" ref ="dataSource" />       
+	    <property name="dataSource" ref ="dataSource" />
+	    <property name="schedulerName" value ="Gambler Scheduler" />              
         <property name="configLocation" value="classpath:quartz.properties"/>
         <!--
         <property name="triggers">

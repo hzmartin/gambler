@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="container">
 	<h1>
-		Scheduler <span id="scheduler_name"></span>
+		<span id="scheduler_name"></span>
 	</h1>
 	<hr />
 	<p>
@@ -14,7 +14,6 @@
 		<li>Number Of Jobs Executed: <span
 			id="scheduler_number_of_job_executed"></span></li>
 		<li>Thread Pool Size: <span id="scheduler_thread_pool_size"></span></li>
-		<li>Job Store Class: <span id="scheduler_job_store_class"></span></li>
 		<li>Version: <span id="scheduler_version"></span></li>
 	</ul>
 	</p>
@@ -59,7 +58,6 @@
 		$('#scheduler_version').text(schedulerInfo.version);
 		$('#scheduler_number_of_job_executed').text(
 				schedulerInfo.numberOfJobsExecuted);
-		$('#scheduler_job_store_class').text(schedulerInfo.jobStoreClass);
 		$('#scheduler_name').text(schedulerInfo.schedulerName);
 		$('#scheduler_summary').text(schedulerInfo.summary);
 		$('#scheduler_state').text(schedulerInfo.state);
