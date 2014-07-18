@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="container" id="site_sub_navtabs">
 	<ul class="nav nav-tabs">
-		<li url="/sysmgmtview/listusers.do"><a href="#">Users</a></li>
+		<li url="/gambler/sysmgmtview/listusers.do"><a href="#">Users</a></li>
 	</ul>
 </div>
 <div id="site_sub_navtabs_content" class="container">

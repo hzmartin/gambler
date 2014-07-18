@@ -9,15 +9,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="shortcut icon" href="./assets/ico/favicon.png">
+<link rel="shortcut icon" href="/gambler/assets/ico/favicon.png">
 
 <title><tiles:getAsString name="title" /></title>
 
 <!-- Bootstrap core CSS -->
-<link href="./bootstrap3/css/bootstrap.css" rel="stylesheet">
+<link href="/gambler/bootstrap3/css/bootstrap.css" rel="stylesheet">
 
 <!-- Custom styles for this template -->
-<link href="./css/signin.css" rel="stylesheet">
+<link href="/gambler/css/signin.css" rel="stylesheet">
 
 </head>
 
@@ -42,9 +42,9 @@
 
 	<!-- Bootstrap core JavaScript
     ================================================== -->
-	<script src="./assets/js/jquery.js"></script>
-	<script src="./assets/js/jquery.md5.js"></script>
-	<script src="./bootstrap3/js/bootstrap.min.js"></script>
+	<script src="/gambler/assets/js/jquery.js"></script>
+	<script src="/gambler/assets/js/jquery.md5.js"></script>
+	<script src="/gambler/bootstrap3/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
 		var nextUrl = "${nextUrl}";
 		var login = function() {
@@ -55,7 +55,7 @@
 				cache : false,
 				dataType : "json",
 				type : "GET",
-				url : "/account/login.do",
+				url : "/gambler/account/login.do",
 				data : {
 					userId : userId,
 					password : password,

@@ -52,7 +52,7 @@
 									cache : false,
 									dataType : "json",
 									type : "GET",
-									url : "/sysmgmt/getUserPermission.do",
+									url : "/gambler/sysmgmt/getUserPermission.do",
 									data : {
 										userId : $('#sys_userid').val()
 									},
@@ -130,7 +130,7 @@
 			cache : false,
 			dataType : "json",
 			type : "POST",
-			url : "/sysmgmt/updateUserPermission.do",
+			url : "/gambler/sysmgmt/updateUserPermission.do",
 			data : {
 				userId : userId,
 				config : JSON.stringify(config)
@@ -148,7 +148,7 @@
 			cache : false,
 			dataType : "json",
 			type : "POST",
-			url : "/sysmgmt/delUser.do",
+			url : "/gambler/sysmgmt/delUser.do",
 			data : {
 				userId : $('#sys_userid').val()
 			},
@@ -165,7 +165,7 @@
 			cache : false,
 			dataType : "json",
 			type : "POST",
-			url : "/sysmgmt/createOrUpdateUser.do",
+			url : "/gambler/sysmgmt/createOrUpdateUser.do",
 			data : {
 				userId : $('#sys_userid').val(),
 				nick : $('#sys_nick').val()

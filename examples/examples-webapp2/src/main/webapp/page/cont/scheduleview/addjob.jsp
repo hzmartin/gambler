@@ -76,7 +76,7 @@
 		$.ajax({
 			cache : false,
 			type : "POST",
-			url : "/scheduler/addJob.do",
+			url : "/gambler/scheduler/addJob.do",
 			data : {
 				jobName : $('#job_jobName').val(),
 				jobGroup : $('#job_jobGroup').val(),

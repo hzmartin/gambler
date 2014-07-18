@@ -134,7 +134,7 @@
 		$('#tip').text("");
 		$
 				.getJSON(
-						"/scheduler/getJob.do",
+						"/gambler/scheduler/getJob.do",
 						{
 							jobName : jobName,
 							jobGroup : jobGroup,
@@ -209,7 +209,7 @@
 				cache : false,
 				dataType : "json",
 				type : "POST",
-				url : "/scheduler/unscheduleJob.do",
+				url : "/gambler/scheduler/unscheduleJob.do",
 				data : {
 					triggerName : name,
 					triggerGroup : group
@@ -229,7 +229,7 @@
 				cache : false,
 				dataType : "json",
 				type : "POST",
-				url : "/scheduler/pauseTrigger.do",
+				url : "/gambler/scheduler/pauseTrigger.do",
 				data : {
 					triggerName : name,
 					triggerGroup : group
@@ -249,7 +249,7 @@
 				cache : false,
 				dataType : "json",
 				type : "POST",
-				url : "/scheduler/resumeTrigger.do",
+				url : "/gambler/scheduler/resumeTrigger.do",
 				data : {
 					triggerName : name,
 					triggerGroup : group
@@ -267,7 +267,7 @@
 			cache : false,
 			dataType : "json",
 			type : "POST",
-			url : "/scheduler/runOnceNow.do",
+			url : "/gambler/scheduler/runOnceNow.do",
 			data : {
 				jobName : jobName,
 				jobGroup : jobGroup,
@@ -294,7 +294,7 @@
 			cache : false,
 			dataType : "json",
 			type : "POST",
-			url : "/scheduler/scheduleJob.do",
+			url : "/gambler/scheduler/scheduleJob.do",
 			data : {
 				jobName : jobName,
 				jobGroup : jobGroup,
@@ -322,7 +322,7 @@
 			cache : false,
 			dataType : "json",
 			type : "POST",
-			url : "/scheduler/scheduleCronJob.do",
+			url : "/gambler/scheduler/scheduleCronJob.do",
 			data : {
 				jobName : jobName,
 				jobGroup : jobGroup,

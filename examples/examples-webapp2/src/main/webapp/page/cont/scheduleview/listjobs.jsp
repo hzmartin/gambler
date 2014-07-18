@@ -28,7 +28,7 @@
 					cache : false,
 					dataType : "json",
 					type : "GET",
-					url : "/scheduler/getJobList.do",
+					url : "/gambler/scheduler/getJobList.do",
 					success : function(resp) {
 						if (resp.code == "OK") {
 							$('#job_list tbody').html('');
@@ -64,7 +64,7 @@
 			$.ajax({
 				cache : false,
 				type : "GET",
-				url : "/scheduleview/viewjob.do",
+				url : "/gambler/scheduleview/viewjob.do",
 				data : {
 					jobName : name,
 					jobGroup : group
@@ -90,7 +90,7 @@
 						cache : false,
 						dataType : "json",
 						type : "POST",
-						url : "/scheduler/deleteJob.do",
+						url : "/gambler/scheduler/deleteJob.do",
 						data : {
 							jobName : name,
 							jobGroup : group

@@ -332,7 +332,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>${project.artifactId}</finalName>
+		<finalName>gambler</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -390,7 +390,7 @@
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>6.1.5</version>
 				<configuration>
-					<contextPath>/</contextPath>
+					<contextPath>/gambler</contextPath>
 					<connectors>
 						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
 							<port>8080</port>

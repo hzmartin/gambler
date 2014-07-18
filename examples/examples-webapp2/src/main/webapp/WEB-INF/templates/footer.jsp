@@ -14,7 +14,7 @@
 	$("#username").html(userId + " &nbsp;<b class='caret'></b>");
 	$("#logout").click(function(event) {
 		event.preventDefault();
-		$.getJSON("/account/logout.do", function(data) {
+		$.getJSON("/gambler/account/logout.do", function(data) {
 			if (data.code == "OK") {
 				window.location.href = "signin.do";
 			} else {
@@ -32,7 +32,7 @@
 		if (!newpass) {
 			return;
 		}
-		$.getJSON("/sysmgmt/updatePassword.do", {
+		$.getJSON("/gambler/sysmgmt/updatePassword.do", {
 			userId : userId,
 			oldPass : $.md5(oldPass),
 			newPass : $.md5(newpass)
@@ -46,7 +46,7 @@
 		if (!targetId) {
 			return;
 		}
-		$.getJSON("/account/switchUser.do", {
+		$.getJSON("/gambler/account/switchUser.do", {
 			userId : targetId
 		}, function(data) {
 			if (data.code == "OK") {

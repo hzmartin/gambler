@@ -35,7 +35,7 @@
 					cache : false,
 					dataType : "json",
 					type : "GET",
-					url : "/scheduler/getTriggerList.do",
+					url : "/gambler/scheduler/getTriggerList.do",
 					success : function(resp) {
 						if (resp.code == "OK") {
 							$('#trigger_list tbody').html('');
@@ -84,7 +84,7 @@
 			$.ajax({
 				cache : false,
 				type : "GET",
-				url : "/scheduleview/viewjob.do",
+				url : "/gambler/scheduleview/viewjob.do",
 				data : {
 					jobName : name,
 					jobGroup : group

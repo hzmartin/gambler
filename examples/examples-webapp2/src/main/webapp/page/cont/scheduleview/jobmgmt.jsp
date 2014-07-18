@@ -3,10 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="container" id="site_sub_navtabs">
 	<ul class="nav nav-tabs">
-		<li url="/scheduleview/listjobs.do"><a href="#">List Jobs</a></li>
-		<li url="/scheduleview/listtriggers.do"><a href="#">List
+		<li url="/gambler/scheduleview/listjobs.do"><a href="#">List Jobs</a></li>
+		<li url="/gambler/scheduleview/listtriggers.do"><a href="#">List
 				Triggers</a></li>
-		<li url="/scheduleview/addjob.do"><a href="#">Create Job</a></li>
+		<li url="/gambler/scheduleview/addjob.do"><a href="#">Create Job</a></li>
 	</ul>
 </div>
 <div id="site_sub_navtabs_content" class="container">
@@ -35,7 +35,7 @@
 					cache : false,
 					dataType : "json",
 					type : "GET",
-					url : "/scheduler/getCurrentlyExecutingJobs.do",
+					url : "/gambler/scheduler/getCurrentlyExecutingJobs.do",
 					success : function(resp) {
 						if (resp.code == "OK") {
 							$('#executingjob_list tbody').html('');
