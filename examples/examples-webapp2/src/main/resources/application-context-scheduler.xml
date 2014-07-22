@@ -13,36 +13,24 @@ http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
 http://www.springframework.org/schema/aop
 http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
            
+    <bean id="simpleSchedulerListener" class="gambler.examples.webapp2.listener.SimpleSchedulerListener"/>
+    
     <bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 	    <property name="dataSource" ref ="dataSource" />
 	    <property name="schedulerName" value ="Gambler Scheduler" />              
         <property name="configLocation" value="classpath:quartz.properties"/>
-        <!--
-        <property name="triggers">
-            <list>
-                <ref bean="helloWorldTrigger" />
-            </list>
+        <property name="schedulerListeners">
+        	<list>
+        		<ref bean="simpleSchedulerListener"/>
+        	</list>
         </property>
-        -->
-    </bean>
-    <!--
-    <bean id="helloWorldJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
-        <property name="jobClass">
-            <value>
-                gambler.examples.webapp2.job.HelloWorldJob
-            </value>
+        <property name="globalJobListeners">
+        	<list>
+        	</list>
         </property>
-        <property name="jobDataAsMap">
-            <map>
-                <entry key="name"><value>Martin</value></entry>
-            </map>
+        <property name="globalTriggerListeners">
+        	<list>
+        	</list>
         </property>
     </bean>
-    
-    <bean id="helloWorldTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-        <property name="jobDetail" ref="helloWorldJobDetail" />
-        <property name="repeatInterval" value="3000" />
-        <property name="startDelay" value="0" />
-    </bean>
-    -->
 </beans>
