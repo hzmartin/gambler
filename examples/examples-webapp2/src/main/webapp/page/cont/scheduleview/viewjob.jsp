@@ -75,7 +75,7 @@
 					id="simple_trigger_endtime"><br /> repeat count: <input
 					type="text" class="form-control"
 					placeholder="The number of times for the Trigger to repeat firing"
-					id="simple_trigger_repeatcount"><br /> repeat interval: <input
+					id="simple_trigger_repeatcount"><br /> repeat interval(*required): <input
 					type="text" class="form-control"
 					placeholder="The number of milliseconds to pause between the repeat firing."
 					id="simple_trigger_repeatinterval"> <br />
@@ -111,7 +111,7 @@
 				description:
 				<textarea class="form-control" rows="3" placeholder="description"
 					id="cron_trigger_description"></textarea>
-				<br /> cron expression: <a href="/cron.html" target="_blank">see
+				<br /> cron expression(*required): <a href="/gambler/cron.html" target="_blank">see
 					doc</a><input type="text" class="form-control"
 					placeholder="cron expression" id="cron_trigger_cronex"><br />
 			</div>
