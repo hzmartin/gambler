@@ -196,6 +196,17 @@ public class SchedulerController extends AbstractController {
 		return null;
 	}
 
+	@RequestMapping(value = "/interruptJob")
+	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@ResponseBody
+	public Object interruptJob(
+			final HttpServletRequest request,
+			@LogRequestParam(name = "jobName") @RequestParam String jobName,
+			@LogRequestParam(name = "jobGroup") @RequestParam(required = false) String jobGroup)
+			throws SchedulerException {
+		return schedulerService.interruptJob(jobName, jobGroup);
+	}
+
 	@RequestMapping(value = "/getCurrentlyExecutingJobs")
 	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
 	@ResponseBody

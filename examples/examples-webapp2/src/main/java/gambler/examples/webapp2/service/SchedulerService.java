@@ -27,6 +27,7 @@ import org.quartz.SchedulerException;
 import org.quartz.SchedulerMetaData;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
+import org.quartz.UnableToInterruptJobException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -156,6 +157,11 @@ public class SchedulerService {
 			}
 		}
 		return jobDto;
+	}
+
+	public boolean interruptJob(String jobName, String groupName)
+			throws UnableToInterruptJobException {
+		return scheduler.interrupt(jobName, groupName);
 	}
 
 	@SuppressWarnings("unchecked")

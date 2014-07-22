@@ -28,7 +28,7 @@ public class JobExecutionContextDto {
     private String nextFireTime;
     
     private String fireTime;
-
+    
     public String getJobName() {
         return jobName;
     }
@@ -124,5 +124,5 @@ public class JobExecutionContextDto {
     public void setFireTime(String fireTime) {
         this.fireTime = fireTime;
     }
-    
+
 }
