@@ -15,7 +15,13 @@ http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
            
     <bean id="simpleSchedulerListener" class="gambler.examples.webapp2.listener.SimpleSchedulerListener"/>
     
-    <bean id="simpleJobListener" class="gambler.examples.webapp2.listener.SimpleJobListener"/>
+    <bean id="simpleJobListener" class="gambler.examples.webapp2.listener.SimpleJobListener">
+    	<property name="name" value ="simpleJobListener" />
+    </bean>
+    
+    <bean id="simpleTriggerListener" class="gambler.examples.webapp2.listener.SimpleTriggerListener">
+    	<property name="name" value ="simpleTriggerListener" />
+    </bean>
     
     <bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 	    <property name="dataSource" ref ="dataSource" />
@@ -33,6 +39,7 @@ http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
         </property>
         <property name="globalTriggerListeners">
         	<list>
+        		<ref bean="simpleTriggerListener"/>
         	</list>
         </property>
         <property name="jobListeners">
@@ -42,6 +49,7 @@ http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
         </property>
         <property name="triggerListeners">
         	<list>
+        		<ref bean="simpleTriggerListener"/>
         	</list>
         </property>
     </bean>

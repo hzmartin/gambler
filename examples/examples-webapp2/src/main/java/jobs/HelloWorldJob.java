@@ -34,9 +34,9 @@ public class HelloWorldJob extends QuartzJobBean implements InterruptableJob {
 		int count = 3;
 		while (!jobInterrupted) {
 			count--;
-			System.out.println("hello " + user + ", execute Job("
+			System.out.println("hello " + user + ", Job("
 					+ jobDetail.getFullName() + ", "
-					+ jobDetail.getDescription() + ")"
+					+ jobDetail.getDescription() + ") echoes "
 					+ jobDataMap.getString("msg") + " @" + timestamp);
 
 			if (count <= 0) {
