@@ -111,7 +111,7 @@
 				description:
 				<textarea class="form-control" rows="3" placeholder="description"
 					id="cron_trigger_description"></textarea>
-				<br /> cron expression(*required): <a href="/gambler/cron.html" target="_blank">see
+				<br /> cron expression(*required): <a href="<%= request.getContextPath() %>/cron.html" target="_blank">see
 					doc</a><input type="text" class="form-control"
 					placeholder="cron expression" id="cron_trigger_cronex"><br />
 			</div>
@@ -134,7 +134,7 @@
 		$('#tip').text("");
 		$
 				.getJSON(
-						"/gambler/scheduler/getJob.do",
+						"<%= request.getContextPath() %>/scheduler/getJob.do",
 						{
 							jobName : jobName,
 							jobGroup : jobGroup,
@@ -209,7 +209,7 @@
 				cache : false,
 				dataType : "json",
 				type : "POST",
-				url : "/gambler/scheduler/unscheduleJob.do",
+				url : "<%= request.getContextPath() %>/scheduler/unscheduleJob.do",
 				data : {
 					triggerName : name,
 					triggerGroup : group
@@ -229,7 +229,7 @@
 				cache : false,
 				dataType : "json",
 				type : "POST",
-				url : "/gambler/scheduler/pauseTrigger.do",
+				url : "<%= request.getContextPath() %>/scheduler/pauseTrigger.do",
 				data : {
 					triggerName : name,
 					triggerGroup : group
@@ -249,7 +249,7 @@
 				cache : false,
 				dataType : "json",
 				type : "POST",
-				url : "/gambler/scheduler/resumeTrigger.do",
+				url : "<%= request.getContextPath() %>/scheduler/resumeTrigger.do",
 				data : {
 					triggerName : name,
 					triggerGroup : group
@@ -267,7 +267,7 @@
 			cache : false,
 			dataType : "json",
 			type : "POST",
-			url : "/gambler/scheduler/runOnceNow.do",
+			url : "<%= request.getContextPath() %>/scheduler/runOnceNow.do",
 			data : {
 				jobName : jobName,
 				jobGroup : jobGroup,
@@ -294,7 +294,7 @@
 			cache : false,
 			dataType : "json",
 			type : "POST",
-			url : "/gambler/scheduler/scheduleJob.do",
+			url : "<%= request.getContextPath() %>/scheduler/scheduleJob.do",
 			data : {
 				jobName : jobName,
 				jobGroup : jobGroup,
@@ -322,7 +322,7 @@
 			cache : false,
 			dataType : "json",
 			type : "POST",
-			url : "/gambler/scheduler/scheduleCronJob.do",
+			url : "<%= request.getContextPath() %>/scheduler/scheduleCronJob.do",
 			data : {
 				jobName : jobName,
 				jobGroup : jobGroup,

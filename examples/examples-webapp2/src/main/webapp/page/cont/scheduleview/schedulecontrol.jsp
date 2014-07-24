@@ -69,7 +69,7 @@
 			cache : false,
 			dataType : "json",
 			type : "GET",
-			url : "/gambler/scheduler/getSchedulerInfo.do",
+			url : "<%= request.getContextPath() %>/scheduler/getSchedulerInfo.do",
 			success : function(resp) {
 				if (resp.code == "OK") {
 					updateSchedulerInfo(resp.data);
@@ -88,7 +88,7 @@
 			cache : false,
 			dataType : "json",
 			type : "GET",
-			url : "/gambler/scheduler/start.do",
+			url : "<%= request.getContextPath() %>/scheduler/start.do",
 			success : function(resp) {
 				if (resp.code == "OK") {
 					updateSchedulerInfo(resp.data);
@@ -106,7 +106,7 @@
 			cache : false,
 			dataType : "json",
 			type : "GET",
-			url : "/gambler/scheduler/standby.do",
+			url : "<%= request.getContextPath() %>/scheduler/standby.do",
 			success : function(resp) {
 				if (resp.code == "OK") {
 					updateSchedulerInfo(resp.data);
@@ -123,7 +123,7 @@
 			cache : false,
 			dataType : "json",
 			type : "GET",
-			url : "/gambler/scheduler/shutdown.do",
+			url : "<%= request.getContextPath() %>/scheduler/shutdown.do",
 			success : function(resp) {
 				if (resp.code == "OK") {
 					updateSchedulerInfo(resp.data);
@@ -140,7 +140,7 @@
 			cache : false,
 			dataType : "json",
 			type : "GET",
-			url : "/gambler/scheduler/shutdown.do",
+			url : "<%= request.getContextPath() %>/scheduler/shutdown.do",
 			data : {
 				waitForJobsToComplete : true
 			},

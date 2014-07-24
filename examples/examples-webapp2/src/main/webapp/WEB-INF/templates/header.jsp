@@ -10,7 +10,7 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="/gambler/index.do">Gambler <c:if test="${msmode ne ''}"><span class="badge"><c:out value="${msmode}" /></span></c:if></a>
+			<a class="navbar-brand" href="<%= request.getContextPath() %>/index.do">Gambler <c:if test="${msmode ne ''}"><span class="badge"><c:out value="${msmode}" /></span></c:if></a>
 		</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">

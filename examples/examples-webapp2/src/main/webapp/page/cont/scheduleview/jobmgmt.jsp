@@ -3,11 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="container" id="site_sub_navtabs">
 	<ul class="nav nav-tabs">
-		<li url="/gambler/scheduleview/listjobs.do"><a href="#">List
+		<li url="<%= request.getContextPath() %>/scheduleview/listjobs.do"><a href="#">List
 				Jobs</a></li>
-		<li url="/gambler/scheduleview/listtriggers.do"><a href="#">List
+		<li url="<%= request.getContextPath() %>/scheduleview/listtriggers.do"><a href="#">List
 				Triggers</a></li>
-		<li url="/gambler/scheduleview/addjob.do"><a href="#">Create
+		<li url="<%= request.getContextPath() %>/scheduleview/addjob.do"><a href="#">Create
 				Job</a></li>
 	</ul>
 </div>
@@ -37,7 +37,7 @@
 					cache : false,
 					dataType : "json",
 					type : "GET",
-					url : "/gambler/scheduler/getCurrentlyExecutingJobs.do",
+					url : "<%= request.getContextPath() %>/scheduler/getCurrentlyExecutingJobs.do",
 					success : function(resp) {
 						if (resp.code == "OK") {
 							$('#executingjob_list tbody').html('');
@@ -67,7 +67,7 @@
 								$.ajax({
 									cache : false,
 									type : "POST",
-									url : "/gambler/scheduler/interruptJob.do",
+									url : "<%= request.getContextPath() %>/scheduler/interruptJob.do",
 									data : {
 										jobName : jobName,
 										jobGroup : jobGroup

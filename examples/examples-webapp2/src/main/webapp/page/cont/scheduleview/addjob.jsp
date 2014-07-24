@@ -76,7 +76,7 @@
 		$.ajax({
 			cache : false,
 			type : "POST",
-			url : "/gambler/scheduler/addJob.do",
+			url : "<%= request.getContextPath() %>/scheduler/addJob.do",
 			data : {
 				jobName : $('#job_jobName').val(),
 				jobGroup : $('#job_jobGroup').val(),
