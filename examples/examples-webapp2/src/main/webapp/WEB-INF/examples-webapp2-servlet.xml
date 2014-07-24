@@ -68,9 +68,8 @@ http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
 	</bean>
 
 	<!-- freemarker config -->
-	<!--
 	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-	  <property name="templateLoaderPath" value="/WEB-INF/freemarker/"/>
+	  <property name="templateLoaderPath" value="/page/ftl/"/>
 	  <property name="freemarkerVariables">
 	    <map>
 	      <entry key="xml_escape" value-ref="fmXmlEscape"/>
@@ -79,14 +78,12 @@ http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
 	</bean>
 	
 	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
-	-->
 	<!--
 	
 	  View resolvers can also be configured with ResourceBundles or XML files. If you need
 	  different view resolving based on Locale, you have to use the resource bundle resolver.
 	
 	-->
-	<!-- 
 	<bean id="freemarkerResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
 	  <property name="cache" value="true"/>
 	  <property name="prefix" value=""/>
@@ -94,7 +91,6 @@ http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
 	  <property name="contentType" value="text/html; charset=utf-8"/>
 	  <property name="order" value="2" />
 	</bean>
-	-->
 	
     <bean id="viewResolver"
         class="org.springframework.web.servlet.view.UrlBasedViewResolver">
