@@ -101,9 +101,9 @@ public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
 
 				@Override
 				public void run() {
-					log.info("map(" + AdvancedMap.this.getName()
-							+ ") will be refreshed by scheduled task!");
 					AdvancedMap.this.load();
+					log.info("map(" + AdvancedMap.this.getName()
+							+ ") refreshed by scheduled task!");
 				}
 			}, interval * 1000L, interval * 1000L);
 		} catch (Exception e) {
