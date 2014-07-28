@@ -53,7 +53,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/getJobDefinitionMap")
-	@AuthRequired
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_VIEW_JOB_INFO })
 	@ResponseBody
 	public Object getJobDefinitionMap(final HttpServletRequest request)
 			throws SchedulerException, ActionException {
@@ -78,7 +78,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/getJobDefinition")
-	@AuthRequired
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_VIEW_JOB_INFO })
 	@ResponseBody
 	public Object getJobDefinition(final HttpServletRequest request,
 			@LogRequestParam(name = "jobName") @RequestParam String jobName)
@@ -133,7 +133,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/getTrigger")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_VIEW_TRIGGER_INFO })
 	@ResponseBody
 	public Object getTrigger(
 			final HttpServletRequest request,
@@ -144,7 +144,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/getTriggerState")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_VIEW_TRIGGER_INFO })
 	@ResponseBody
 	public Object getTriggerState(
 			final HttpServletRequest request,
@@ -160,7 +160,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/getJobList")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_VIEW_JOB_INFO })
 	@ResponseBody
 	public Object getJobList(
 			final HttpServletRequest request,
@@ -170,7 +170,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/getJob")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_VIEW_JOB_INFO })
 	@ResponseBody
 	public Object getJob(
 			final HttpServletRequest request,
@@ -190,7 +190,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/runOnceNow")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_EXEC_JOB })
 	@ResponseBody
 	public Object runOnceNow(
 			final HttpServletRequest request,
@@ -205,7 +205,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/interruptJob")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_EXEC_JOB })
 	@ResponseBody
 	public Object interruptJob(
 			final HttpServletRequest request,
@@ -216,7 +216,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/getCurrentlyExecutingJobs")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_VIEW_JOB_INFO })
 	@ResponseBody
 	public Object getCurrentlyExecutingJobs(final HttpServletRequest request)
 			throws SchedulerException {
@@ -226,7 +226,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/addJob")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_ADD_JOB })
 	@ResponseBody
 	public Object addJob(
 			final HttpServletRequest request,
@@ -257,7 +257,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/deleteJob")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_DEL_JOB })
 	@ResponseBody
 	public Object deleteJob(
 			final HttpServletRequest request,
@@ -272,7 +272,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/scheduleJob")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_EXEC_JOB })
 	@ResponseBody
 	public Object scheduleJob(
 			final HttpServletRequest request,
@@ -330,7 +330,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/scheduleCronJob")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_EXEC_JOB })
 	@ResponseBody
 	public Object scheduleCronJob(
 			final HttpServletRequest request,
@@ -362,7 +362,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/rescheduleJob")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_EXEC_JOB })
 	@ResponseBody
 	public Object rescheduleJob(
 			final HttpServletRequest request,
@@ -417,7 +417,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/rescheduleCronJob")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_EXEC_JOB })
 	@ResponseBody
 	public Object rescheduleCronJob(
 			final HttpServletRequest request,
@@ -445,7 +445,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/unscheduleJob")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_EXEC_JOB })
 	@ResponseBody
 	public Object unscheduleJob(
 			final HttpServletRequest request,
@@ -462,7 +462,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/pauseTrigger")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_EXEC_JOB })
 	@ResponseBody
 	public Object pauseTrigger(
 			final HttpServletRequest request,
@@ -474,7 +474,7 @@ public class SchedulerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/resumeTrigger")
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SCHEDULER.PERM_EXEC_JOB })
 	@ResponseBody
 	public Object resumeTrigger(
 			final HttpServletRequest request,

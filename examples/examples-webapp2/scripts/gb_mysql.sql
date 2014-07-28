@@ -87,7 +87,12 @@ INSERT INTO gb_permission (pid, name, remark) VALUES (102, '删除系统用户',
 INSERT INTO gb_permission (pid, name, remark) VALUES (103, '查看用户权限信息', '系统管理');
 INSERT INTO gb_permission (pid, name, remark) VALUES (104, '更新用户权限信息', '系统管理');
 
-INSERT INTO gb_permission (pid, name, remark) VALUES (500, '执行NativeJob', 'JOB');
+INSERT INTO gb_permission (pid, name, remark) VALUES (400, '查看调度器信息', '调度器');
+INSERT INTO gb_permission (pid, name, remark) VALUES (401, '查看任务信息', '调度器');
+INSERT INTO gb_permission (pid, name, remark) VALUES (402, '查看触发器信息', '调度器');
+INSERT INTO gb_permission (pid, name, remark) VALUES (403, '增加任务', '调度器');
+INSERT INTO gb_permission (pid, name, remark) VALUES (404, '执行任务', '调度器');
+INSERT INTO gb_permission (pid, name, remark) VALUES (405, '删除任务', '调度器');
 
 INSERT INTO gb_permission (pid, name, remark) VALUES (1000, '进入主页', 'MISC');
 INSERT INTO gb_permission (pid, name, remark) VALUES (1001, '测试', 'MISC');

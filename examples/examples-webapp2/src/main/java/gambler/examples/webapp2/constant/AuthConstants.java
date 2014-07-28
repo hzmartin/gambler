@@ -33,7 +33,8 @@ public class AuthConstants {
 		long PERM_VIEW_JOB_INFO = 401;
 		long PERM_VIEW_TRIGGER_INFO = 402;
 		long PERM_ADD_JOB = 403;
-		long PERM_EXEC_NATIVE_JOB = 500;
+		long PERM_EXEC_JOB = 404;
+		long PERM_DEL_JOB = 405;
 	}
 
 	public static interface PERM_MISC {

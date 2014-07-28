@@ -16,6 +16,6 @@
         
         <key name="name" order="100">测试</key>
         <key name="url" order="100">#siteurl#/gambler/view.do?name=test</key>
-        <key name="perm" order="100">100</key>
+        <key name="perm" order="100">1001</key>
     </prop>
 </map>
