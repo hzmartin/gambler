@@ -7,7 +7,7 @@
 				Jobs</a></li>
 		<li url="<%= request.getContextPath() %>/scheduleview/listtriggers.do"><a href="#">List
 				Triggers</a></li>
-		<li url="<%= request.getContextPath() %>/scheduleview/addjob.do"><a href="#">Create
+		<li url="<%= request.getContextPath() %>/scheduleview/addjob.do"><a href="#">Add/Edit
 				Job</a></li>
 	</ul>
 </div>

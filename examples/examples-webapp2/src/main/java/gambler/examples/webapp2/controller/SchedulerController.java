@@ -177,7 +177,15 @@ public class SchedulerController extends AbstractController {
 			@LogRequestParam(name = "jobName") @RequestParam String jobName,
 			@LogRequestParam(name = "jobGroup") @RequestParam(required = false) String jobGroup,
 			@LogRequestParam(name = "withTrigger") @RequestParam(required = false, defaultValue = "false") boolean withTrigger)
-			throws SchedulerException {
+			throws SchedulerException, ActionException {
+		if (StringUtils.isBlank(jobName)) {
+			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
+					"job name required!");
+		}
+
+		if (StringUtils.isBlank(jobGroup)) {
+			jobGroup = null;
+		}
 		return schedulerService.getJob(jobName, jobGroup, withTrigger);
 	}
 

@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="container">
 	<div class="page-header">
-		<h3>Add Job</h3>
+		<h3>Add/Edit Job&nbsp;<small><em>durability</em> and <em>recover</em> will not be loaded</small></h3>
 	</div>
 	<form class="form-horizontal" role="form">
 		<div class="form-group">
@@ -63,6 +63,7 @@
 		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-info" id="job_load_btn">Load to Edit</button>
 				<button type="submit" class="btn btn-primary" id="job_add_btn">Submit</button>
 			</div>
 		</div>
@@ -73,10 +74,11 @@
 </div>
 <script>
 	$('#job_add_btn').click(function() {
+		$('#tip').text('');
 		$.ajax({
 			cache : false,
 			type : "POST",
-			url : "<%= request.getContextPath() %>/scheduler/addJob.do",
+			url : "<%=request.getContextPath()%>/scheduler/addJob.do",
 			data : {
 				jobName : $('#job_jobName').val(),
 				jobGroup : $('#job_jobGroup').val(),
@@ -88,6 +90,33 @@
 			},
 			success : function(resp) {
 				$('#tip').text(resp.msg);
+			}
+		});
+	});
+	
+	$("#job_load_btn").click(function(event) {
+		$('#tip').text('');
+		$.ajax({
+			cache : false,
+			type : "POST",
+			url : "<%=request.getContextPath()%>/scheduler/getJob.do",
+			data : {
+				jobName : $('#job_jobName').val(),
+				jobGroup : $('#job_jobGroup').val()
+			},
+			success : function(resp) {
+				if (resp.code == 'OK') {
+					var jobinfo = resp.data;
+					if(jobinfo){
+						$('#job_jobClass').val(jobinfo.jobClass);
+						$('#job_jobDescription').text(jobinfo.description);
+						$('#job_jobVariables').text(JSON.stringify(jobinfo.jobDataMap));	
+					}else{
+						$('#tip').text("job not found!");
+					}
+				} else {
+					$('#tip').text(resp.msg);
+				}
 			}
 		});
 	});

@@ -4,7 +4,7 @@ import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.service.AuthUserService;
 import gambler.examples.webapp2.util.SpringContextHolder;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.quartz.InterruptableJob;
@@ -24,20 +24,19 @@ public class HelloWorldJob extends QuartzJobBean implements InterruptableJob {
 	@Override
 	protected void executeInternal(JobExecutionContext jobexecutioncontext)
 			throws JobExecutionException {
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		log.info("job start... @" + timestamp);
+		JobDetail jobDetail = jobexecutioncontext.getJobDetail();
+		log.info("execute job(" + jobDetail.getFullName() + ") start... @"
+				+ new Date());
 		AuthUserService service = SpringContextHolder
 				.getBean("authUserService");
 		User user = service.findUserById("wangqihui");
-		JobDetail jobDetail = jobexecutioncontext.getJobDetail();
 		JobDataMap jobDataMap = jobDetail.getJobDataMap();
 		int count = 3;
 		while (!jobInterrupted) {
 			count--;
-			System.out.println("hello " + user + ", Job("
-					+ jobDetail.getFullName() + ", "
-					+ jobDetail.getDescription() + ") echoes "
-					+ jobDataMap.getString("msg") + " @" + timestamp);
+			log.info("hello " + user + ", Job(" + jobDetail.getFullName()
+					+ ", " + jobDetail.getDescription() + ") echoes "
+					+ jobDataMap.getString("msg"));
 
 			if (count <= 0) {
 				break;
@@ -48,10 +47,12 @@ public class HelloWorldJob extends QuartzJobBean implements InterruptableJob {
 				e.printStackTrace();
 			}
 		}
-		if(jobInterrupted){
-			log.warn("Job " + jobDetail.getFullName() + " has been interrupted!");
+		if (jobInterrupted) {
+			log.warn("Job " + jobDetail.getFullName()
+					+ " has been interrupted!");
 		}
-		log.info("job end! @" + timestamp);
+		log.info("execute job(" + jobDetail.getFullName() + ") end! @"
+				+ new Date());
 	}
 
 	@Override
