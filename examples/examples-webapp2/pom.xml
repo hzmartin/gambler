@@ -14,7 +14,7 @@
 		<spring.version>3.1.4.RELEASE</spring.version>
 		<gb.switch.enableCreateSuper>false</gb.switch.enableCreateSuper>
 		<gb.switch.enableAuthentication>true</gb.switch.enableAuthentication>
-		<gb.siteurl>http://localhost:8080</gb.siteurl>
+		<gb.siteurl></gb.siteurl>
 	</properties>
 	<profiles>
 		<profile>
@@ -70,7 +70,7 @@
 				<gb.log4j.path>/home/tomcat7/logs/scheduler/scheduler.log</gb.log4j.path>
 				<gb.log4j.level>DEBUG</gb.log4j.level>
 				<gb.log4j.appender>CONSOLE</gb.log4j.appender>
-				<gb.datasource.url>jdbc:derby:/home/tomcat7/gamblerdb</gb.datasource.url>
+				<gb.datasource.url>jdbc:derby:/home/ewallet/test/gamblerdb</gb.datasource.url>
 				<gb.datasource.userName></gb.datasource.userName>
 				<gb.datasource.password></gb.datasource.password>
 				<gb.datasource.driverClassName>org.apache.derby.jdbc.EmbeddedDriver</gb.datasource.driverClassName>
