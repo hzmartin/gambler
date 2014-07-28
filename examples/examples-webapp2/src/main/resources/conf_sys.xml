@@ -1,7 +1,7 @@
 <map>
     <prop>
         <key name="msmode">${gb.msmode}</key>
-        <key name="siteurl">http://localhost:8080</key>
+        <key name="siteurl">${gb.siteurl}</key>
     </prop>
     <prop namespace="switch">
         <key name="enableCreateSuper">${gb.switch.enableCreateSuper}</key>

@@ -14,6 +14,7 @@
 		<spring.version>3.1.4.RELEASE</spring.version>
 		<gb.switch.enableCreateSuper>false</gb.switch.enableCreateSuper>
 		<gb.switch.enableAuthentication>true</gb.switch.enableAuthentication>
+		<gb.siteurl>http://localhost:8080</gb.siteurl>
 	</properties>
 	<profiles>
 		<profile>
