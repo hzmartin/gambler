@@ -56,20 +56,20 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>home</id>
+			<id>derbytest</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 				<property>
 					<name>env</name>
-					<value>home</value>
+					<value>derbytest</value>
 				</property>
 			</activation>
 			<properties>
-				<gb.msmode>DEV</gb.msmode>
-				<gb.log4j.path>logs/example.log</gb.log4j.path>
+				<gb.msmode>TEST</gb.msmode>
+				<gb.log4j.path>/home/tomcat7/logs/scheduler/scheduler.log</gb.log4j.path>
 				<gb.log4j.level>DEBUG</gb.log4j.level>
 				<gb.log4j.appender>CONSOLE</gb.log4j.appender>
-				<gb.datasource.url>jdbc:derby:${project.parent.basedir}/example-derby</gb.datasource.url>
+				<gb.datasource.url>jdbc:derby:/home/tomcat7/gamblerdb</gb.datasource.url>
 				<gb.datasource.userName></gb.datasource.userName>
 				<gb.datasource.password></gb.datasource.password>
 				<gb.datasource.driverClassName>org.apache.derby.jdbc.EmbeddedDriver</gb.datasource.driverClassName>

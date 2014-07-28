@@ -215,5 +215,4 @@ pip-log.txt
 #Mr Developer
 log/
 logs/
-example-derby/
 /examples/examples-webapp2/nbactions.xml
