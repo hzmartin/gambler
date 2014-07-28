@@ -70,6 +70,7 @@ public class AuthenticationService {
 	 * @return true for pass the permission check
 	 * @throws AuthenticationException
 	 */
+	@SuppressWarnings("rawtypes")
 	public boolean checkUserPermission(String userId, Permission perm)
 			throws AuthenticationException {
 		try {
@@ -125,6 +126,7 @@ public class AuthenticationService {
 	 * @param perm
 	 * @return true for pass the permission check
 	 */
+	@SuppressWarnings("rawtypes")
 	public boolean checkRolePermission(long roleId, Permission perm)
 			throws AuthenticationException {
 		try {

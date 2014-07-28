@@ -1,7 +1,6 @@
 package gambler.commons.auth;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * User

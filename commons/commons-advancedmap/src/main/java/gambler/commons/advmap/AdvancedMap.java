@@ -103,11 +103,12 @@ public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
 				public void run() {
 					AdvancedMap.this.load();
 					log.info("map(" + AdvancedMap.this.getName()
-							+ ") refreshed by scheduled task!");
+							+ ") refreshed!");
 				}
 			}, interval * 1000L, interval * 1000L);
 		} catch (Exception e) {
-			log.error("schedule map refresh failed!", e);
+			log.error("scheduled map(" + AdvancedMap.this.getName()
+					+ ") refresh failed!", e);
 		}
 
 	}
