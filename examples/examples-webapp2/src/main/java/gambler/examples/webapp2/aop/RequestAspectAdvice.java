@@ -56,7 +56,7 @@ public class RequestAspectAdvice {
 		Method method = joinPointObject.getMethod();
 		// =============start input param log build=====================
 		StringBuilder execLogStr = new StringBuilder();
-		execLogStr.append("Process request：  "
+		execLogStr.append("Process request:  "
 				+ pjp.getTarget().getClass().getName() + "#"
 				+ pjp.getSignature().getName() + "(");
 		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
