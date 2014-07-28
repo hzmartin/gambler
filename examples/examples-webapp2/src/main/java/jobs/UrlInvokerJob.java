@@ -4,7 +4,6 @@ import gambler.examples.webapp2.exception.UnexpectedException;
 import gambler.examples.webapp2.util.HttpClientPool;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -29,8 +28,7 @@ public class UrlInvokerJob extends QuartzJobBean {
 	protected void executeInternal(JobExecutionContext jobexecutioncontext)
 			throws JobExecutionException {
 		JobDetail jobDetail = jobexecutioncontext.getJobDetail();
-		log.info("execute job(" + jobDetail.getFullName() + ") start... @"
-				+ new Date());
+		log.info("execute job(" + jobDetail.getFullName() + ") start... ");
 		JobDataMap jobDataMap = jobDetail.getJobDataMap();
 		String method = jobDataMap.getString("method");
 		String url = jobDataMap.getString("url");
@@ -67,8 +65,7 @@ public class UrlInvokerJob extends QuartzJobBean {
 					"execute job(%s,%s) fail!", jobDetail.getGroup(),
 					jobDetail.getName()), e);
 		}
-		log.info("execute job(" + jobDetail.getFullName() + ") end! @"
-				+ new Date());
+		log.info("execute job(" + jobDetail.getFullName() + ") end!");
 	}
 
 }

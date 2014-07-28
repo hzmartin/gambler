@@ -4,8 +4,6 @@ import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.service.AuthUserService;
 import gambler.examples.webapp2.util.SpringContextHolder;
 
-import java.util.Date;
-
 import org.apache.log4j.Logger;
 import org.quartz.InterruptableJob;
 import org.quartz.JobDataMap;
@@ -25,8 +23,7 @@ public class HelloWorldJob extends QuartzJobBean implements InterruptableJob {
 	protected void executeInternal(JobExecutionContext jobexecutioncontext)
 			throws JobExecutionException {
 		JobDetail jobDetail = jobexecutioncontext.getJobDetail();
-		log.info("execute job(" + jobDetail.getFullName() + ") start... @"
-				+ new Date());
+		log.info("execute job(" + jobDetail.getFullName() + ") start... ");
 		AuthUserService service = SpringContextHolder
 				.getBean("authUserService");
 		User user = service.findUserById("wangqihui");
@@ -51,8 +48,7 @@ public class HelloWorldJob extends QuartzJobBean implements InterruptableJob {
 			log.warn("Job " + jobDetail.getFullName()
 					+ " has been interrupted!");
 		}
-		log.info("execute job(" + jobDetail.getFullName() + ") end! @"
-				+ new Date());
+		log.info("execute job(" + jobDetail.getFullName() + ") end!");
 	}
 
 	@Override
