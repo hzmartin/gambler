@@ -47,7 +47,7 @@ public class SysMgmtController extends AbstractController {
 		}
 		if (!RegexValidateUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
-					"userId illegal");
+					"以字母开头的字母+数字+下划线，6-20位");
 		}
 		User dbUser = authUserService.findUserById(userId);
 		if (dbUser != null) {
@@ -102,7 +102,7 @@ public class SysMgmtController extends AbstractController {
 			throws UnexpectedException, ActionException {
 		if (!RegexValidateUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
-					"userId illegal");
+					"以字母开头的字母+数字+下划线，6-20位");
 		}
 		AccountDto loginUser = authUserService.getLoginUser(request);
 		User user = authUserService.findUserById(userId);
@@ -139,7 +139,7 @@ public class SysMgmtController extends AbstractController {
 			throws UnexpectedException, ActionException {
 		if (!RegexValidateUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
-					"userId illegal");
+					"以字母开头的字母+数字+下划线，6-20位");
 		}
 		AccountDto loginUser = authUserService.getLoginUser(request);
 		if (loginUser.getUserId().equals(userId)) {
@@ -166,7 +166,7 @@ public class SysMgmtController extends AbstractController {
 			throws ActionException {
 		if (!RegexValidateUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
-					"userId illegal");
+					"以字母开头的字母+数字+下划线，6-20位");
 		}
 		User user = authUserService.findUserById(userId);
 		if (user == null) {
@@ -186,7 +186,7 @@ public class SysMgmtController extends AbstractController {
 			throws ActionException {
 		if (!RegexValidateUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
-					"userId illegal");
+					"以字母开头的字母+数字+下划线，6-20位");
 		}
 		User user = authUserService.findUserById(userId);
 		if (user == null) {
@@ -248,7 +248,7 @@ public class SysMgmtController extends AbstractController {
 			throws ActionException {
 		if (!RegexValidateUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
-					"userId illegal");
+					"以字母开头的字母+数字+下划线，6-20位");
 		}
 		if (StringUtils.isBlank(config)) {
 			return null;
