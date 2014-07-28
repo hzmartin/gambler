@@ -73,7 +73,8 @@
 	</form>
 </div>
 <script>
-	$('#job_add_btn').click(function() {
+	$('#job_add_btn').click(function(event) {
+		event.preventDefault();
 		$('#tip').text('');
 		$.ajax({
 			cache : false,
@@ -95,6 +96,7 @@
 	});
 	
 	$("#job_load_btn").click(function(event) {
+		event.preventDefault();
 		$('#tip').text('');
 		$.ajax({
 			cache : false,
