@@ -18,6 +18,7 @@
 <link href="<%= request.getContextPath() %>/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
 <link href="<%= request.getContextPath() %>/assets/css/docs.css" rel="stylesheet">
 <!-- Custom styles for this template -->
+<link href="<%= request.getContextPath() %>/css/base.css" rel="stylesheet">
 <link href="<%= request.getContextPath() %>/css/sticky-footer-navbar.css" rel="stylesheet">
 <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/jquery.fileupload.css">
 <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/js/datepicker/css/datepicker.css">
