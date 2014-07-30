@@ -46,4 +46,14 @@ public interface AuthDao {
 	int delUserPermissions(long uid);
 
 	int delUserRoles(long uid);
+	
+	int addPermission(Permission permission);
+	
+	int delPermission(long pid);
+	
+	int updatePermission(Permission permission);
+	
+	int delAllUserPermission(long pid);
+	
+	int delAllRolePermission(long pid);
 }

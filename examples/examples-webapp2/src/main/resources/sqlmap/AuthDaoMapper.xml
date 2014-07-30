@@ -69,4 +69,17 @@
     <delete id="delUserPermissions" parameterType="long">delete from gb_user_permission where uid = #{uid}</delete>
     <delete id="delUserRoles" parameterType="long">delete from gb_user_role where uid = #{uid}</delete>
 
+	<insert id="addPermission" parameterType="Permission">insert into gb_permission(pid, name, ptype, remark) VALUES (#{pid}, #{name}, #{ptype}, #{remark})</insert>
+	<delete id="delPermission" parameterType="long">delete from gb_permission where pid = #{pid}</delete>
+	<delete id="delAllUserPermission" parameterType="long">delete from gb_user_permission where pid = #{pid}</delete>
+	<delete id="delAllRolePermission" parameterType="long">delete from gb_role_permission where pid = #{pid}</delete>
+	<update id="updatePermission" parameterType="Permission">
+		update gb_permission
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="name != null">name=#{name},</if>
+			<if test="ptype != null">ptype=#{ptype},</if>
+			<if test="remark != null">remark=#{remark},</if>
+		</trim>
+		where pid = #{pid}
+	</update>
 </mapper>

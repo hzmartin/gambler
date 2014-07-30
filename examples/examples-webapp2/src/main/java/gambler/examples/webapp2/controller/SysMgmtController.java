@@ -282,4 +282,79 @@ public class SysMgmtController extends AbstractController {
 		}
 		return null;
 	}
+
+	@RequestMapping(value = "/addPermission")
+	@ResponseBody
+	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	public Object addPermission(
+			final HttpServletRequest request,
+			@LogRequestParam(name = "pid") @RequestParam(required = true) long pid,
+			@LogRequestParam(name = "name") @RequestParam(required = true) String name,
+			@LogRequestParam(name = "ptype") @RequestParam(required = true) int ptype,
+			@LogRequestParam(name = "remark") @RequestParam(required = false) String remark)
+			throws ActionException {
+		Permission perm = AuthConstants.getPermission(pid);
+		if (perm != null) {
+			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
+					"permission " + pid + " already exist!");
+		} else {
+			perm = new Permission();
+			perm.setPid(pid);
+			perm.setName(name);
+			perm.setPtype(ptype);
+			perm.setRemark(remark);
+			int affectCount = authUserService.addPermission(perm);
+			AuthConstants.reloadAllPermissions();
+			AuthConstants.reloadAllRolePermissions();
+			return affectCount;
+		}
+
+	}
+
+	@RequestMapping(value = "/updatePermission")
+	@ResponseBody
+	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	public Object updatePermission(
+			final HttpServletRequest request,
+			@LogRequestParam(name = "pid") @RequestParam(required = true) long pid,
+			@LogRequestParam(name = "name") @RequestParam(required = true) String name,
+			@LogRequestParam(name = "ptype") @RequestParam(required = true) int ptype,
+			@LogRequestParam(name = "remark") @RequestParam(required = false) String remark)
+			throws ActionException {
+		Permission perm = AuthConstants.getPermission(pid);
+		if (perm == null) {
+			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
+					"permission " + pid + " doesn't exist!");
+		} else {
+			perm.setPid(pid);
+			perm.setName(name);
+			perm.setPtype(ptype);
+			perm.setRemark(remark);
+			int affectCount = authUserService.updatePermission(perm);
+			AuthConstants.reloadAllPermissions();
+			AuthConstants.reloadAllRolePermissions();
+			return affectCount;
+		}
+
+	}
+
+	@RequestMapping(value = "/delPermission")
+	@ResponseBody
+	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	public Object delPermission(
+			final HttpServletRequest request,
+			@LogRequestParam(name = "pid") @RequestParam(required = true) long pid)
+			throws ActionException {
+		Permission perm = AuthConstants.getPermission(pid);
+		if (perm == null) {
+			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
+					"permission " + pid + " doesn't exist!");
+		} else {
+			int affectCount = authUserService.delPermission(pid);
+			AuthConstants.reloadAllPermissions();
+			AuthConstants.reloadAllRolePermissions();
+			return affectCount;
+		}
+
+	}
 }

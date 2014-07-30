@@ -42,7 +42,7 @@ public class AuthUserService extends AbstractService {
 	private static final String SESSION_USER_KEY = "sgambler";
 
 	@Autowired
-	private AuthDao userDao;
+	private AuthDao authDao;
 
 	/**
 	 * check session and cookie
@@ -73,7 +73,7 @@ public class AuthUserService extends AbstractService {
 
 	private AccountDto verifyLogin(final HttpServletRequest request,
 			String userId, String password) {
-		User user = userDao.find(userId);
+		User user = authDao.find(userId);
 		if (user == null) {
 			return null;
 		}
@@ -81,7 +81,7 @@ public class AuthUserService extends AbstractService {
 			return null;
 		}
 		user.setLastLogin(new Timestamp(System.currentTimeMillis()));
-		userDao.update(user);
+		authDao.update(user);
 
 		AccountDto account = new AccountDto(user);
 		HttpSession session = request.getSession();
@@ -90,7 +90,7 @@ public class AuthUserService extends AbstractService {
 	}
 
 	public void switchUser(final HttpServletRequest request, String userId) throws ActionException {
-		User user = userDao.find(userId);
+		User user = authDao.find(userId);
 		if (user == null) {
 			throw new ActionException(ResponseStatus.USER_NOT_EXSIST);
 		}
@@ -204,55 +204,55 @@ public class AuthUserService extends AbstractService {
 	@LogMethod
 	@Transactional
 	public int saveAsSystemUser(User user) {
-		int count = userDao.save(user);
+		int count = authDao.save(user);
 		if (count == 1 && user.getIssuper() == 0) {
-			User dbUser = userDao.find(user.getUserId());
+			User dbUser = authDao.find(user.getUserId());
 			UserRole userRole = new UserRole();
 			userRole.setUid(dbUser.getUid());
 			userRole.setRid(AuthConstants.SYSTEM_USER_ROLE);
-			userDao.createUserRole(userRole);
+			authDao.createUserRole(userRole);
 		}
 		return count;
 	}
 
 	public User findUserById(String userId) {
-		return userDao.find(userId);
+		return authDao.find(userId);
 	}
 
 	public int updateUser(User user) {
-		return userDao.update(user);
+		return authDao.update(user);
 	}
 
 	@Transactional
 	public int deleteUser(String userId) {
-		User user = userDao.find(userId);
-		userDao.delUserPermissions(user.getUid());
-		userDao.delUserRoles(user.getUid());
-		return userDao.delete(userId);
+		User user = authDao.find(userId);
+		authDao.delUserPermissions(user.getUid());
+		authDao.delUserRoles(user.getUid());
+		return authDao.delete(userId);
 	}
 
 	public List<UserPermission> getUserPermissions(String userId) {
-		User user = userDao.find(userId);
-		return userDao.getUserPermissions(user.getUid());
+		User user = authDao.find(userId);
+		return authDao.getUserPermissions(user.getUid());
 	}
 
 	public List<UserRole> getUserRoles(String userId) {
-		User user = userDao.find(userId);
-		return userDao.getUserRoles(user.getUid());
+		User user = authDao.find(userId);
+		return authDao.getUserRoles(user.getUid());
 	}
 
 	public int createUserPermission(long uid, long pid) {
 		UserPermission up = new UserPermission();
 		up.setUid(uid);
 		up.setPid(pid);
-		return userDao.createUserPermission(up);
+		return authDao.createUserPermission(up);
 	}
 
 	public int delUserPermission(long uid, long pid) {
 		UserPermission up = new UserPermission();
 		up.setUid(uid);
 		up.setPid(pid);
-		return userDao.delUserPermission(up);
+		return authDao.delUserPermission(up);
 	}
 
 	public boolean checkUserPermission(String userId, long... pids) {
@@ -269,7 +269,7 @@ public class AuthUserService extends AbstractService {
 			UserPermission up = new UserPermission();
 			up.setUid(user.getUid());
 			up.setPid(pid);
-			UserPermission userPermission = userDao.getUserPermission(up);
+			UserPermission userPermission = authDao.getUserPermission(up);
 			if (userPermission == null) {
 				needCheckRolePermId.add(pid);
 			}
@@ -277,7 +277,7 @@ public class AuthUserService extends AbstractService {
 
 		// userperm check fail, need to check role perm
 		if (CollectionUtils.isNotEmpty(needCheckRolePermId)) {
-			List<UserRole> userRoles = userDao.getUserRoles(user.getUid());
+			List<UserRole> userRoles = authDao.getUserRoles(user.getUid());
 			for (long pid : needCheckRolePermId) {
 				boolean authorized = false;
 				for (UserRole userRole : userRoles) {
@@ -300,23 +300,41 @@ public class AuthUserService extends AbstractService {
 	}
 
 	public List<Permission> getAllPermissions() {
-		return userDao.getAllPermissions();
+		return authDao.getAllPermissions();
 	}
 
 	public List<RolePermission> getAllRolePermissions() {
-		return userDao.getAllRolePermissions();
+		return authDao.getAllRolePermissions();
 	}
 
 	public int updatePassword(User user) {
-		return userDao.updatePassword(user);
+		return authDao.updatePassword(user);
 	}
 
 	public int updateUserActiveFlag(User user) {
-		return userDao.updateUserActiveFlag(user);
+		return authDao.updateUserActiveFlag(user);
 	}
 
 	public int updateUserSuperFlag(User user) {
-		return userDao.updateUserSuperFlag(user);
+		return authDao.updateUserSuperFlag(user);
+	}
+	
+	public int addPermission(Permission permission)
+	{
+		return authDao.addPermission(permission);
 	}
 
+	@Transactional
+	public int delPermission(long pid)
+	{
+		authDao.delAllUserPermission(pid);
+		authDao.delAllRolePermission(pid);
+		return authDao.delPermission(pid);
+	}
+
+	public int updatePermission(Permission permission)
+	{
+		return authDao.updatePermission(permission);
+	}
+	
 }
