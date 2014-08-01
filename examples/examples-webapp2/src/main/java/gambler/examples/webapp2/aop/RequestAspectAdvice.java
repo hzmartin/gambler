@@ -3,6 +3,7 @@ package gambler.examples.webapp2.aop;
 import gambler.commons.advmap.XMLMap;
 import gambler.examples.webapp2.annotation.AuthRequired;
 import gambler.examples.webapp2.annotation.LogRequestParam;
+import gambler.examples.webapp2.annotation.SkipRespObjectWrap;
 import gambler.examples.webapp2.dto.AccountDto;
 import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
@@ -128,6 +129,9 @@ public class RequestAspectAdvice {
 					JSONObject object = JSONObject.fromObject(serverResponse);
 					execLogStr.append(", result=" + object.toString());
 					logger.info(execLogStr.toString());
+					if(method.isAnnotationPresent(SkipRespObjectWrap.class)){
+						return serverResponse.getCode();
+					}
 					return serverResponse;
 				} else {
 					if (serverResponse.getCode().equals(
@@ -144,7 +148,7 @@ public class RequestAspectAdvice {
 		}
 		AccountDto loginUser = authUserService.getLoginUser(request);
 		execLogStr.append(", login as " + loginUser);
-		if (method.isAnnotationPresent(ResponseBody.class)) {
+		if (method.isAnnotationPresent(ResponseBody.class) && !method.isAnnotationPresent(SkipRespObjectWrap.class)) {
 			try {
 				Object result = pjp.proceed();
 				serverResponse.setData(result);
