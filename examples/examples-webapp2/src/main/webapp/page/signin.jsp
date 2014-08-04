@@ -78,7 +78,7 @@
 		});
 
 		$("#remme").click(function() {
-			$(this).prop("checked", !$(this).attr("checked"));
+			$(this).attr("checked", !$(this).attr("checked"));
 		});
 	</script>
 	<!-- Placed at the end of the document so the pages load faster -->
