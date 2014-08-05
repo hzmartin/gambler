@@ -97,6 +97,10 @@ public class RequestAspectAdvice {
 							+ ") must be HttpServletRequest");
 		}
 		HttpServletRequest request = (HttpServletRequest) pjp.getArgs()[0];
+		String xff = request.getHeader("X-Forwarded-For");
+		String remoteAddr = request.getRemoteAddr();
+		String remoteHost = request.getRemoteHost();
+		execLogStr.append(", xff=" + xff + ", remoteAddr=" + remoteAddr + ", remoteHost=" + remoteHost);
 		String target = request.getRequestURI();
 		ServerResponse serverResponse = new ServerResponse();
 		AuthRequired authRequired = method
