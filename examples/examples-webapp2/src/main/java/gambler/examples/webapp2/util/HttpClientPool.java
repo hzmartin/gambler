@@ -93,8 +93,9 @@ public class HttpClientPool {
 				return content;
 			}
 
-			throw new UnexpectedException(get.getURI()
-					+ " request fail, http response code=" + sl.getStatusCode());
+			throw new UnexpectedException(String.format(
+					"request %s fail, status_code=%d, content=%s",
+					get.getURI(), sl.getStatusCode(), content));
 		} finally {
 			get.releaseConnection();
 		}
@@ -117,8 +118,9 @@ public class HttpClientPool {
 				return content;
 			}
 
-			throw new UnexpectedException(get.getURI()
-					+ " request fail, http response code=" + sl.getStatusCode());
+			throw new UnexpectedException(String.format(
+					"request %s fail, status_code=%d, content=%s",
+					get.getURI(), sl.getStatusCode(), content));
 
 		} finally {
 			get.releaseConnection();
@@ -146,8 +148,9 @@ public class HttpClientPool {
 				return content;
 			}
 
-			throw new UnexpectedException(post.getURI()
-					+ " http response code=" + sl.getStatusCode());
+			throw new UnexpectedException(String.format(
+					"request %s fail, status_code=%d, content=%s",
+					post.getURI(), sl.getStatusCode(), content));
 		} finally {
 			post.releaseConnection();
 		}
@@ -180,8 +183,9 @@ public class HttpClientPool {
 			if (sl.getStatusCode() == HttpStatus.SC_OK) {
 				return content;
 			}
-			throw new UnexpectedException(post.getURI()
-					+ " request fail, http response code=" + sl.getStatusCode());
+			throw new UnexpectedException(String.format(
+					"request %s fail, status_code=%d, content=%s",
+					post.getURI(), sl.getStatusCode(), content));
 		} finally {
 			post.releaseConnection();
 		}
@@ -209,8 +213,9 @@ public class HttpClientPool {
 				return content;
 			}
 
-			throw new UnexpectedException(post.getURI()
-					+ " request fail, http response code=" + sl.getStatusCode());
+			throw new UnexpectedException(String.format(
+					"request %s fail, status_code=%d, content=%s",
+					post.getURI(), sl.getStatusCode(), content));
 		} finally {
 			post.releaseConnection();
 		}
