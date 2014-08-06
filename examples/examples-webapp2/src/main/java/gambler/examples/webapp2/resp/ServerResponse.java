@@ -26,8 +26,11 @@ public class ServerResponse {
 		return msg;
 	}
 
+	/**
+	 * set msg if it's not blank
+	 */
 	public void setMsg(String msg) {
-		if (!StringUtils.isBlank(msg)) {
+		if (StringUtils.isNotBlank(msg)) {
 			this.msg = msg;
 		}
 	}
@@ -40,6 +43,9 @@ public class ServerResponse {
 		this.data = data;
 	}
 
+	/**
+	 * set status and format msg
+	 */
 	public final void setResponseStatus(ResponseStatus status, Object... args) {
 		this.code = status.getCode();
 		if (args == null || args.length == 0) {

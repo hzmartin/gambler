@@ -163,7 +163,7 @@ public class RequestAspectAdvice {
 			} catch (Exception e) {
 				serverResponse.setResponseStatus(ResponseStatus.SERVER_BUSY);
 				serverResponse.setMsg(e.getMessage());
-				logger.error(execLogStr, e);
+				logger.error(e.getMessage(), e);
 			}
 			JSONObject object = JSONObject.fromObject(serverResponse);
 			execLogStr.append(", result=" + object.toString());

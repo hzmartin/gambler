@@ -22,7 +22,7 @@ public enum ResponseStatus {
 
 	JOB_NOT_EXIST("JOB_NOT_EXIST", "job(name=%s, group=%s) doesn't exist"),
 
-	UNKNOWN_ERROR("UNKNOWN_ERROR", "unknown error"),
+	UNEXPECTED_ERROR("UNEXPECTED_ERROR", "unexpected error"),
 	
 	SERVER_BUSY("SERVER_BUSY", "server busy, please try again later!"),
 

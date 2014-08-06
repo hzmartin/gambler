@@ -5,10 +5,11 @@ import gambler.examples.webapp2.resp.ServerResponse;
 
 public class ActionException extends Exception {
 
-	private ResponseStatus status = ResponseStatus.UNKNOWN_ERROR;
-	
+	private ResponseStatus status = ResponseStatus.UNEXPECTED_ERROR;
+
 	/**
 	 * status message args
+	 * 
 	 * @see ServerResponse#setResponseStatus(ResponseStatus, Object...)
 	 */
 	private Object[] args;
@@ -16,23 +17,20 @@ public class ActionException extends Exception {
 	public ActionException(String detailMessage) {
 		super(detailMessage);
 	}
-	
+
 	public ActionException(ResponseStatus status) {
 		this.status = status;
 	}
 
+	/**
+	 * @param detailMessage - return as <code>msg</code> if it's not blank
+	 */
 	public ActionException(ResponseStatus status, String detailMessage) {
 		super(detailMessage);
 		this.status = status;
 	}
-	
-	public ActionException(ResponseStatus status, Object[] args) {
-		this.status = status;
-		this.args = args;
-	}
 
-	public ActionException(ResponseStatus status, Object[] args, String detailMessage) {
-		super(detailMessage);
+	public ActionException(ResponseStatus status, Object[] args) {
 		this.status = status;
 		this.args = args;
 	}
