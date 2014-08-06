@@ -30,7 +30,8 @@
 		<table class="table table-hover" id="perm-list">
 			<thead>
 				<tr>
-					<td>&nbsp;</td>
+					<td>&nbsp;Pid</td>
+					<td>Type</td>
 					<td>Permission</td>
 					<td>Remark</td>
 				</tr>
@@ -89,7 +90,9 @@
 																		'#perm-list tbody')
 																		.append(
 																				'<tr><td>'
-																						+ col1cell
+																						+ col1cell +value.pid
+																						+ '</td><td>'
+																						+ value.ptype
 																						+ '</td><td>'
 																						+ value.name
 																						+ '</td><td>'

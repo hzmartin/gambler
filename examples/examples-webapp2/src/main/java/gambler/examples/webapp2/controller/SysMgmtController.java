@@ -203,6 +203,7 @@ public class SysMgmtController extends AbstractController {
 			PermissionDto pvo = new PermissionDto();
 			pvo.setPid(perm.getPid());
 			pvo.setName(perm.getName());
+			pvo.setPtype(perm.getPtype());
 			pvo.setRemark(perm.getRemark());
 			for (UserPermission userPerm : userPerms) {
 				if (userPerm.getPid() == perm.getPid()) {
