@@ -31,6 +31,14 @@ public class AuthConstants {
 
 		long PERM_UPDATE_USERPERM = 104L;// 更新用户权限信息
 
+		long PERM_CREATE_UPDATE_ROLE = 105L;//创建和更新系统角色
+
+		long PERM_DEL_ROLE = 106;//删除系统角色
+
+		long PERM_ASSIGN_ROLE = 107;//分配系统角色
+
+		long PERM_ASSIGN_ROLE_PERM = 108;//分配角色权限
+
 	}
 
 	public static interface PERM_SCHEDULER {

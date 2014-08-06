@@ -178,7 +178,7 @@ public class SysMgmtController extends AbstractController {
 		}
 
 	}
-
+	
 	@RequestMapping(value = "/getUserPermission")
 	@ResponseBody
 	@AuthRequired(permission = { AuthConstants.PERM_SYSTEM.PERM_LIST_USERPERM })
@@ -365,7 +365,7 @@ public class SysMgmtController extends AbstractController {
 
 	@RequestMapping(value = "/addRole")
 	@ResponseBody
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SYSTEM.PERM_CREATE_UPDATE_ROLE })
 	public Object addRole(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "rid") @RequestParam(required = true) long rid,
@@ -391,7 +391,7 @@ public class SysMgmtController extends AbstractController {
 
 	@RequestMapping(value = "/updateRole")
 	@ResponseBody
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SYSTEM.PERM_CREATE_UPDATE_ROLE })
 	public Object updateRole(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "rid") @RequestParam(required = true) long rid,
@@ -417,7 +417,7 @@ public class SysMgmtController extends AbstractController {
 
 	@RequestMapping(value = "/delRole")
 	@ResponseBody
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SYSTEM.PERM_DEL_ROLE })
 	public Object delRole(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "rid") @RequestParam(required = true) long rid)
@@ -441,7 +441,7 @@ public class SysMgmtController extends AbstractController {
 
 	@RequestMapping(value = "/createUserRole")
 	@ResponseBody
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SYSTEM.PERM_ASSIGN_ROLE })
 	public Object createUserRole(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId,
@@ -464,7 +464,7 @@ public class SysMgmtController extends AbstractController {
 
 	@RequestMapping(value = "/delUserRole")
 	@ResponseBody
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SYSTEM.PERM_ASSIGN_ROLE })
 	public Object delUserRole(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId,
@@ -490,7 +490,7 @@ public class SysMgmtController extends AbstractController {
 	 */
 	@RequestMapping(value = "/createRolePermission")
 	@ResponseBody
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SYSTEM.PERM_ASSIGN_ROLE_PERM })
 	public Object createRolePermission(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "pids") @RequestParam(required = true) String pids,
@@ -512,7 +512,7 @@ public class SysMgmtController extends AbstractController {
 	 */
 	@RequestMapping(value = "/delRolePermission")
 	@ResponseBody
-	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	@AuthRequired(permission = { AuthConstants.PERM_SYSTEM.PERM_ASSIGN_ROLE_PERM })
 	public Object delRolePermission(
 			final HttpServletRequest request,
 			@LogRequestParam(name = "rid") @RequestParam(required = true) long rid)
