@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -231,6 +232,13 @@ public class AuthUserService extends AbstractService {
 		userRole.setRid(rid);
 		return authDao.createUserRole(userRole);
 	}
+	
+	public int delUserRole(long uid, long rid) {
+		UserRole userRole = new UserRole();
+		userRole.setUid(uid);
+		userRole.setRid(rid);
+		return authDao.delUserRole(userRole);
+	}
 
 	@Transactional
 	public int deleteUser(String userId) {
@@ -240,24 +248,22 @@ public class AuthUserService extends AbstractService {
 		return authDao.delete(userId);
 	}
 
-	public List<UserPermission> getUserPermissions(String userId) {
-		User user = authDao.find(userId);
-		return authDao.getUserPermissions(user.getUid());
-	}
-	
-	public boolean checkUserRole(String userId, Long rid){
-		List<UserRole> userRoles = getUserRoles(userId, rid);
-		return (userRoles != null && userRoles.size() == 1);
-	}
-	
-	public List<UserRole> getUserRoles(String userId) {
-		return getUserRoles(userId, null);
+	public List<UserPermission> getUserPermissions(long uid) {
+		return authDao.getUserPermissions(uid);
 	}
 
-	public List<UserRole> getUserRoles(String userId, Long rid) {
-		User user = authDao.find(userId);
+	public boolean checkUserRole(long uid, Long rid) {
+		List<UserRole> userRoles = getUserRoles(uid, rid);
+		return (userRoles != null && userRoles.size() == 1);
+	}
+
+	public List<UserRole> getUserRoles(long uid) {
+		return getUserRoles(uid, null);
+	}
+
+	public List<UserRole> getUserRoles(long uid, Long rid) {
 		UserRole ur = new UserRole();
-		ur.setUid(user.getUid());
+		ur.setUid(uid);
 		ur.setRid(rid);
 		return authDao.getUserRole(ur);
 	}
@@ -276,8 +282,7 @@ public class AuthUserService extends AbstractService {
 		return authDao.delUserPermission(up);
 	}
 
-	public boolean checkUserPermission(String userId, long... pids) {
-		User user = findUserById(userId);
+	public boolean checkUserPermission(User user, long... pids) {
 		if (user.getIsactive() == 0) {
 			return false;
 		}
@@ -294,9 +299,9 @@ public class AuthUserService extends AbstractService {
 				continue;
 			}
 
-			UserPermission userRolePermission = authDao
+			List<UserPermission> userRolePermissions = authDao
 					.getUserRolePermission(up);
-			if (userRolePermission != null) {
+			if (CollectionUtils.isNotEmpty(userRolePermissions)) {
 				continue;
 			}
 
@@ -356,17 +361,32 @@ public class AuthUserService extends AbstractService {
 	}
 
 	public int delRole(long rid) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("rid", rid);
+		authDao.delAllRolePermission(params);
 		return authDao.delRole(rid);
 	}
 
 	@Transactional
-	public void createRolePermissions(long rid, long... pids) {
+	public void createRolePermissions(long rid, long[] pids) {
 		for (long pid : pids) {
+			boolean authorized = AuthConstants.checkRolePermission(rid, pid);
+			if (authorized) {
+				logger.warn("role " + rid + " has already contains permission "
+						+ pid);
+				continue;
+			}
 			RolePermission rp = new RolePermission();
 			rp.setRid(rid);
 			rp.setPid(pid);
 			authDao.createRolePermission(rp);
 		}
+	}
+
+	public int delRolePermissions(long rid) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("rid", rid);
+		return authDao.delAllRolePermission(params);
 	}
 
 }

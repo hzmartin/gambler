@@ -4,6 +4,7 @@ import gambler.commons.advmap.XMLMap;
 import gambler.examples.webapp2.annotation.AuthRequired;
 import gambler.examples.webapp2.annotation.LogRequestParam;
 import gambler.examples.webapp2.annotation.SkipRespObjectWrap;
+import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.dto.AccountDto;
 import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
@@ -102,8 +103,7 @@ public class RequestAspectAdvice {
 		execLogStr.append(", xff=" + xff + ", remoteAddr=" + remoteAddr);
 		String target = request.getRequestURI();
 		ServerResponse serverResponse = new ServerResponse();
-		AuthRequired authRequired = method
-				.getAnnotation(AuthRequired.class);
+		AuthRequired authRequired = method.getAnnotation(AuthRequired.class);
 		if (authRequired != null
 				&& sysconf.getBoolean("switch.enableAuthentication",
 						Boolean.TRUE)) {
@@ -119,8 +119,9 @@ public class RequestAspectAdvice {
 						.setResponseStatus(ResponseStatus.USER_NOT_LOGGED);
 			} else if (permRequired) {
 				// check userperm
+				User user = authUserService.findUserById(loginUser.getUserId());
 				boolean hasPermission = authUserService.checkUserPermission(
-						loginUser.getUserId(), requiredPerms);
+						user, requiredPerms);
 				if (!hasPermission) {
 					serverResponse
 							.setResponseStatus(ResponseStatus.NO_PERMISSION);
@@ -132,7 +133,7 @@ public class RequestAspectAdvice {
 					JSONObject object = JSONObject.fromObject(serverResponse);
 					execLogStr.append(", result=" + object.toString());
 					logger.info(execLogStr.toString());
-					if(method.isAnnotationPresent(SkipRespObjectWrap.class)){
+					if (method.isAnnotationPresent(SkipRespObjectWrap.class)) {
 						return serverResponse.getCode();
 					}
 					return serverResponse;
@@ -151,7 +152,8 @@ public class RequestAspectAdvice {
 		}
 		AccountDto loginUser = authUserService.getLoginUser(request);
 		execLogStr.append(", login as " + loginUser);
-		if (method.isAnnotationPresent(ResponseBody.class) && !method.isAnnotationPresent(SkipRespObjectWrap.class)) {
+		if (method.isAnnotationPresent(ResponseBody.class)
+				&& !method.isAnnotationPresent(SkipRespObjectWrap.class)) {
 			try {
 				Object result = pjp.proceed();
 				serverResponse.setData(result);

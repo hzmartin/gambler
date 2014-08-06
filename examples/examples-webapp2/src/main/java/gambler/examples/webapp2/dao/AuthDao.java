@@ -41,7 +41,7 @@ public interface AuthDao {
 
 	UserPermission getUserPermission(UserPermission up);
 
-	UserPermission getUserRolePermission(UserPermission up);
+	List<UserPermission> getUserRolePermission(UserPermission up);
 	
 	int createUserRole(UserRole ur);
 
@@ -69,6 +69,8 @@ public interface AuthDao {
 	
 	int updateRole(Role role);
 
-	void createRolePermission(RolePermission rp);
+	int createRolePermission(RolePermission rp);
+
+	int delUserRole(UserRole userRole);
 
 }

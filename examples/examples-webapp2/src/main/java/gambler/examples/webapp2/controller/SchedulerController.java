@@ -3,6 +3,7 @@ package gambler.examples.webapp2.controller;
 import gambler.examples.webapp2.annotation.AuthRequired;
 import gambler.examples.webapp2.annotation.LogRequestParam;
 import gambler.examples.webapp2.constant.AuthConstants;
+import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.dto.AccountDto;
 import gambler.examples.webapp2.dto.JobDefinitionDto;
 import gambler.examples.webapp2.dto.JobDto;
@@ -61,13 +62,14 @@ public class SchedulerController extends AbstractController {
 				.getDefinitionMap();
 		Map<String, JobDefinitionDto> authorizedMap = new TreeMap<String, JobDefinitionDto>();
 		AccountDto loginUser = authUserService.getLoginUser(request);
+		User user = authUserService.findUserById(loginUser.getUserId());
 		for (Map.Entry<String, JobDefinitionDto> entry : definitionMap
 				.entrySet()) {
 			String jobName = entry.getKey();
 			JobDefinitionDto jobDef = entry.getValue();
 			if (jobDef.getPid() != null) {
 				boolean authorized = authUserService.checkUserPermission(
-						loginUser.getUserId(), jobDef.getPid());
+						user, jobDef.getPid());
 				if (!authorized) {
 					continue;
 				}
@@ -86,8 +88,9 @@ public class SchedulerController extends AbstractController {
 		AccountDto loginUser = authUserService.getLoginUser(request);
 		JobDefinitionDto jobDef = definitionService.getDefinition(jobName);
 		if (jobDef.getPid() != null) {
+			User user = authUserService.findUserById(loginUser.getUserId());
 			boolean authorized = authUserService.checkUserPermission(
-					loginUser.getUserId(), jobDef.getPid());
+					user, jobDef.getPid());
 			if (!authorized) {
 				return null;
 			}

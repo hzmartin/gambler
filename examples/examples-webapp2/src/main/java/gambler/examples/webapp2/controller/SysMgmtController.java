@@ -195,9 +195,8 @@ public class SysMgmtController extends AbstractController {
 			throw new ActionException(ResponseStatus.USER_NOT_EXSIST);
 		}
 		List<UserPermission> userPerms = authUserService
-				.getUserPermissions(user.getUserId());
-		List<UserRole> userRoles = authUserService.getUserRoles(user
-				.getUserId());
+				.getUserPermissions(user.getUid());
+		List<UserRole> userRoles = authUserService.getUserRoles(user.getUid());
 		List<PermissionDto> result = new ArrayList<PermissionDto>();
 		Collection<Permission> allPerms = AuthConstants.getAllPermissions();
 		for (Permission perm : allPerms) {
@@ -263,14 +262,22 @@ public class SysMgmtController extends AbstractController {
 		@SuppressWarnings("unchecked")
 		Set<String> keySet = map.keySet();
 		for (String key : keySet) {
+			boolean haveThisPerm = authUserService.checkUserPermission(user,
+					Long.parseLong(key));
 			if (map.getBoolean(key)) {
 				// grant
+				if (haveThisPerm) {
+					continue;
+				}
 				int createCount = authUserService.createUserPermission(
 						user.getUid(), Long.parseLong(key));
 				logger.info(loginUser + " grant user permission " + key
 						+ "! affected count=" + createCount);
 			} else {
 				// revoke
+				if (!haveThisPerm) {
+					continue;
+				}
 				int delCount = authUserService.delUserPermission(user.getUid(),
 						Long.parseLong(key));
 				logger.info(loginUser + " revoke user permission " + key
@@ -415,6 +422,10 @@ public class SysMgmtController extends AbstractController {
 			final HttpServletRequest request,
 			@LogRequestParam(name = "rid") @RequestParam(required = true) long rid)
 			throws ActionException {
+		if (rid == AuthConstants.SYSTEM_USER_ROLE) {
+			throw new ActionException(ResponseStatus.NO_PERMISSION,
+					"can't delete built-in role");
+		}
 		Role role = AuthConstants.getRole(rid);
 		if (role == null) {
 			logger.warn("role " + rid + " doesn't exist!");
@@ -440,19 +451,42 @@ public class SysMgmtController extends AbstractController {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"以字母开头的字母+数字+下划线，6-20位");
 		}
-		boolean checkRet = authUserService.checkUserRole(userId, rid);
+		User user = authUserService.findUserById(userId);
+		boolean checkRet = authUserService.checkUserRole(user.getUid(), rid);
 		if (checkRet) {
 			logger.warn("role " + rid + " has already assigned to user "
 					+ userId);
 			return 0;
 		}
-		User user = authUserService.findUserById(userId);
 		return authUserService.createUserRole(user.getUid(), rid);
 
 	}
 
+	@RequestMapping(value = "/delUserRole")
+	@ResponseBody
+	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	public Object delUserRole(
+			final HttpServletRequest request,
+			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId,
+			@LogRequestParam(name = "rid") @RequestParam(required = true) long rid)
+			throws ActionException {
+		if (!RegexValidateUtil.isValidUserId(userId)) {
+			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
+					"以字母开头的字母+数字+下划线，6-20位");
+		}
+		User user = authUserService.findUserById(userId);
+		boolean checkRet = authUserService.checkUserRole(user.getUid(), rid);
+		if (!checkRet) {
+			logger.warn("user " + userId + " doesn't have role " + rid);
+			return 0;
+		}
+		return authUserService.delUserRole(user.getUid(), rid);
+
+	}
+
 	/**
-	 * @param pids - separated by comma
+	 * @param pids
+	 *            - separated by comma
 	 */
 	@RequestMapping(value = "/createRolePermission")
 	@ResponseBody
@@ -463,16 +497,29 @@ public class SysMgmtController extends AbstractController {
 			@LogRequestParam(name = "rid") @RequestParam(required = true) long rid)
 			throws ActionException {
 		String[] pidStrs = pids.split(",");
-		for (String pidStr : pidStrs) {
-			Long pid = Long.parseLong(pidStr);
-			boolean authorized = AuthConstants.checkRolePermission(rid, pid);
-			if (authorized) {
-				logger.warn("role " + rid + " has already contains permission "
-						+ pid);
-			}
-			authUserService.createRolePermissions(rid, pid);
+		long[] pidLongs = new long[pidStrs.length];
+		for (int i = 0; i < pidStrs.length; i++) {
+			pidLongs[i] = Long.parseLong(pidStrs[i]);
 		}
+		authUserService.createRolePermissions(rid, pidLongs);
+		AuthConstants.reloadAllRolePermissions();
 		return null;
+	}
+
+	/**
+	 * @param pids
+	 *            - separated by comma
+	 */
+	@RequestMapping(value = "/delRolePermission")
+	@ResponseBody
+	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	public Object delRolePermission(
+			final HttpServletRequest request,
+			@LogRequestParam(name = "rid") @RequestParam(required = true) long rid)
+			throws ActionException {
+		int affectedCount = authUserService.delRolePermissions(rid);
+		AuthConstants.reloadAllRolePermissions();
+		return affectedCount;
 	}
 
 }

@@ -57,24 +57,29 @@ public class AuthConstants {
 	private static Map<Long, Role> roleMap = new HashMap<Long, Role>();
 
 	public static void reloadAllPermissions() {
+		Map<Long, Permission> permMap = new HashMap<Long, Permission>();
 		AuthUserService authService = SpringContextHolder
 				.getBean("authUserService");
 		List<Permission> perms = authService.getAllPermissions();
 		for (Permission p : perms) {
 			permMap.put(p.getPid(), p);
 		}
+		AuthConstants.permMap = permMap;
 	}
 
 	public static void reloadAllRoles() {
+		Map<Long, Role> roleMap = new HashMap<Long, Role>();
 		AuthUserService authService = SpringContextHolder
 				.getBean("authUserService");
 		List<Role> rs = authService.getAllRoles();
 		for (Role r : rs) {
 			roleMap.put(r.getRid(), r);
 		}
+		AuthConstants.roleMap = roleMap;
 	}
 
 	public static void reloadAllRolePermissions() {
+		Map<Long, List<Permission>> rolePermsMap = new HashMap<Long, List<Permission>>();
 		AuthUserService authService = SpringContextHolder
 				.getBean("authUserService");
 		List<RolePermission> allRolePermissions = authService
@@ -90,6 +95,7 @@ public class AuthConstants {
 				perms.add(permission);
 			}
 		}
+		AuthConstants.rolePermsMap = rolePermsMap;
 	}
 
 	public static final boolean checkRolePermission(long rid, long pid) {

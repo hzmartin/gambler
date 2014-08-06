@@ -61,7 +61,7 @@
     <select id="getAllRoles" resultType="Role">select * from gb_role</select>
     
     <select id="getUserRole" parameterType="UserRole" resultType="UserRole">
-    	select * from gb_user_role where 
+    	select * from gb_user_role 
     	<where>
 			<if test="uid != null">and uid=#{uid}</if>
 			<if test="rid != null">and rid=#{rid}</if>
@@ -77,6 +77,7 @@
     <delete id="delUserPermission" parameterType="UserPermission">delete from gb_user_permission where uid = #{uid} and pid = #{pid}</delete>
     <delete id="delUserPermissions" parameterType="long">delete from gb_user_permission where uid = #{uid}</delete>
     <delete id="delUserRoles" parameterType="long">delete from gb_user_role where uid = #{uid}</delete>
+    <delete id="delUserRole" parameterType="UserRole">delete from gb_user_role where uid = #{uid} and rid=#{rid}</delete>
 
 	<insert id="addPermission" parameterType="Permission">insert into gb_permission(pid, name, ptype, remark) VALUES (#{pid}, #{name}, #{ptype}, #{remark})</insert>
 	<delete id="delPermission" parameterType="long">delete from gb_permission where pid = #{pid}</delete>
@@ -93,16 +94,16 @@
 	
 	<delete id="delAllRolePermission" parameterType="map">
 		delete from gb_role_permission
-			<where>
-				<if test="rid != null">and rid=#{rid}</if>
-				<if test="pid != null">and pid=#{pid}</if>
-			</where>
+		<where>
+			<if test="rid != null">and rid=#{rid}</if>
+			<if test="pid != null">and pid=#{pid}</if>
+		</where>
 	</delete>
 	
-	<insert id="addRole" parameterType="Role">insert into gb_role(rid, name, remark) VALUES (#{pid}, #{name}, #{remark})</insert>
+	<insert id="addRole" parameterType="Role">insert into gb_role(rid, name, remark) VALUES (#{rid}, #{name}, #{remark})</insert>
 	<delete id="delRole" parameterType="long">delete from gb_role where rid = #{rid}</delete>
 	<update id="updateRole" parameterType="Role">
-		update gb_role_permission
+		update gb_role
 		<trim prefix="SET" suffixOverrides=",">
 			<if test="name != null">name=#{name},</if>
 			<if test="remark != null">remark=#{remark},</if>

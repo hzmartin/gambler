@@ -6,6 +6,7 @@ import java.util.List;
 import gambler.examples.webapp2.annotation.AuthRequired;
 import gambler.examples.webapp2.constant.AuthConstants;
 import gambler.examples.webapp2.controller.AbstractController;
+import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.dto.AccountDto;
 import gambler.examples.webapp2.dto.NaviItemDto;
 
@@ -41,6 +42,7 @@ public class MiscViewController extends AbstractController {
 		ModelAndView result1 = new ModelAndView("index");
 		result1.getModel().put("msmode", sysconf.getString("msmode"));
 		AccountDto loginUser = authUserService.getLoginUser(request);
+		User user = authUserService.findUserById(loginUser.getUserId());
 		if (loginUser != null) {
 			List<NaviItemDto> menus = new ArrayList<NaviItemDto>();
 			int count = sysconf.getInteger("mainnav.count", 0);
@@ -54,7 +56,7 @@ public class MiscViewController extends AbstractController {
 				if (pid != null) {
 					// check nav item perm
 					boolean hasThisPerm = authUserService.checkUserPermission(
-							loginUser.getUserId(), pid);
+							user, pid);
 					if (hasThisPerm) {
 						// passed
 						menus.add(new NaviItemDto(name, url));
