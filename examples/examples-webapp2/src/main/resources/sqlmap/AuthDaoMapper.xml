@@ -56,14 +56,23 @@
     
     <delete id="delete" parameterType="string">delete from gb_user where user_id = #{user_id}</delete>
     
-    <select id="getAllPermissions" resultType="Permission">select * from gb_permission order by pid</select>
+    <select id="getAllPermissions" resultType="Permission">select * from gb_permission order by ptype, pid</select>
     <select id="getAllRolePermissions" resultType="RolePermission">select * from gb_role_permission</select>
+    <select id="getAllRoles" resultType="Role">select * from gb_role</select>
     
-    <select id="getUserRoles" parameterType="long" resultType="UserRole">select * from gb_user_role where uid=#{uid}</select>
+    <select id="getUserRole" parameterType="UserRole" resultType="UserRole">
+    	select * from gb_user_role where 
+    	<where>
+			<if test="uid != null">and uid=#{uid}</if>
+			<if test="rid != null">and rid=#{rid}</if>
+		</where>
+	</select>
     <select id="getUserPermissions" parameterType="long" resultType="UserPermission">select * from gb_user_permission where uid=#{uid}</select>
     <select id="getUserPermission" parameterType="UserPermission" resultType="UserPermission">select * from gb_user_permission where uid=#{uid} and pid=#{pid}</select>
+    <select id="getUserRolePermission" parameterType="UserPermission"  resultType="UserPermission">select a.uid, b.pid from gb_user_role a, gb_role_permission b where uid = #{uid} and a.rid = b.rid and b.pid = #{pid}</select>
     
     <insert id="createUserRole" parameterType="UserRole">insert into gb_user_role (uid, rid) values (#{uid}, #{rid})</insert>
+    <insert id="createRolePermission" parameterType="RolePermission">insert into gb_role_permission (rid, pid) VALUES (#{rid}, #{pid})</insert>
     <insert id="createUserPermission" parameterType="UserPermission">insert into gb_user_permission (uid, pid) values (#{uid}, #{pid})</insert>
     <delete id="delUserPermission" parameterType="UserPermission">delete from gb_user_permission where uid = #{uid} and pid = #{pid}</delete>
     <delete id="delUserPermissions" parameterType="long">delete from gb_user_permission where uid = #{uid}</delete>
@@ -72,7 +81,6 @@
 	<insert id="addPermission" parameterType="Permission">insert into gb_permission(pid, name, ptype, remark) VALUES (#{pid}, #{name}, #{ptype}, #{remark})</insert>
 	<delete id="delPermission" parameterType="long">delete from gb_permission where pid = #{pid}</delete>
 	<delete id="delAllUserPermission" parameterType="long">delete from gb_user_permission where pid = #{pid}</delete>
-	<delete id="delAllRolePermission" parameterType="long">delete from gb_role_permission where pid = #{pid}</delete>
 	<update id="updatePermission" parameterType="Permission">
 		update gb_permission
 		<trim prefix="SET" suffixOverrides=",">
@@ -81,5 +89,24 @@
 			<if test="remark != null">remark=#{remark},</if>
 		</trim>
 		where pid = #{pid}
+	</update>
+	
+	<delete id="delAllRolePermission" parameterType="map">
+		delete from gb_role_permission
+			<where>
+				<if test="rid != null">and rid=#{rid}</if>
+				<if test="pid != null">and pid=#{pid}</if>
+			</where>
+	</delete>
+	
+	<insert id="addRole" parameterType="Role">insert into gb_role(rid, name, remark) VALUES (#{pid}, #{name}, #{remark})</insert>
+	<delete id="delRole" parameterType="long">delete from gb_role where rid = #{rid}</delete>
+	<update id="updateRole" parameterType="Role">
+		update gb_role_permission
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="name != null">name=#{name},</if>
+			<if test="remark != null">remark=#{remark},</if>
+		</trim>
+		where rid = #{rid}
 	</update>
 </mapper>

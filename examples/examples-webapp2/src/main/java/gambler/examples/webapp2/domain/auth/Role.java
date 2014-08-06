@@ -19,7 +19,7 @@ public class Role implements Serializable {
 
     private String name;
 
-    private String description;
+    private String remark;
 
     public Role() {
     }
@@ -44,16 +44,16 @@ public class Role implements Serializable {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    
+    public String getRemark() {
+		return remark;
+	}
 
-    @Override
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

@@ -1,12 +1,14 @@
 package gambler.examples.webapp2.dao;
 
 import gambler.examples.webapp2.domain.auth.Permission;
+import gambler.examples.webapp2.domain.auth.Role;
 import gambler.examples.webapp2.domain.auth.RolePermission;
 import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.domain.auth.UserPermission;
 import gambler.examples.webapp2.domain.auth.UserRole;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -28,8 +30,10 @@ public interface AuthDao {
 	int delete(String userId);
 
 	List<Permission> getAllPermissions();
+	
+	List<Role> getAllRoles();
 
-	List<UserRole> getUserRoles(long uid);
+	List<UserRole> getUserRole(UserRole ur);
 
 	List<RolePermission> getAllRolePermissions();
 
@@ -37,6 +41,8 @@ public interface AuthDao {
 
 	UserPermission getUserPermission(UserPermission up);
 
+	UserPermission getUserRolePermission(UserPermission up);
+	
 	int createUserRole(UserRole ur);
 
 	int createUserPermission(UserPermission up);
@@ -55,5 +61,14 @@ public interface AuthDao {
 	
 	int delAllUserPermission(long pid);
 	
-	int delAllRolePermission(long pid);
+	int delAllRolePermission(Map<String, Object> params);
+
+	int addRole(Role role);
+	
+	int delRole(long rid);
+	
+	int updateRole(Role role);
+
+	void createRolePermission(RolePermission rp);
+
 }

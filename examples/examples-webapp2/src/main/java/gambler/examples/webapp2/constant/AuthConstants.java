@@ -1,12 +1,18 @@
 package gambler.examples.webapp2.constant;
 
 import gambler.examples.webapp2.domain.auth.Permission;
+import gambler.examples.webapp2.domain.auth.Role;
 import gambler.examples.webapp2.domain.auth.RolePermission;
 import gambler.examples.webapp2.service.AuthUserService;
 import gambler.examples.webapp2.util.SpringContextHolder;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections.CollectionUtils;
 
 public class AuthConstants {
 
@@ -15,9 +21,8 @@ public class AuthConstants {
 
 	public static interface PERM_SYSTEM {
 
-
 		long PERM_LIST_USER = 100L; // 查看系统用户
-		
+
 		long PERM_CREATE_UPDATE_USER = 101L; // 创建和更新系统用户
 
 		long PERM_DEL_USER = 102L; // 删除系统用户
@@ -45,45 +50,78 @@ public class AuthConstants {
 
 	public static final long SYSTEM_USER_ROLE = 0;// 系统普通用户：拥有系统默认权限配置
 
-	private static List<Permission> permissions = new ArrayList<Permission>();
-	
-	private static List<RolePermission> rolePerms = new ArrayList<RolePermission>();
+	private static Map<Long, Permission> permMap = new HashMap<Long, Permission>();
+
+	private static Map<Long, List<Permission>> rolePermsMap = new HashMap<Long, List<Permission>>();
+
+	private static Map<Long, Role> roleMap = new HashMap<Long, Role>();
 
 	public static void reloadAllPermissions() {
 		AuthUserService authService = SpringContextHolder
 				.getBean("authUserService");
-		permissions = authService.getAllPermissions();
+		List<Permission> perms = authService.getAllPermissions();
+		for (Permission p : perms) {
+			permMap.put(p.getPid(), p);
+		}
+	}
+
+	public static void reloadAllRoles() {
+		AuthUserService authService = SpringContextHolder
+				.getBean("authUserService");
+		List<Role> rs = authService.getAllRoles();
+		for (Role r : rs) {
+			roleMap.put(r.getRid(), r);
+		}
 	}
 
 	public static void reloadAllRolePermissions() {
 		AuthUserService authService = SpringContextHolder
 				.getBean("authUserService");
-		rolePerms = authService.getAllRolePermissions();
+		List<RolePermission> allRolePermissions = authService
+				.getAllRolePermissions();
+		for (RolePermission p : allRolePermissions) {
+			List<Permission> perms = rolePermsMap.get(p.getRid());
+			if (perms == null) {
+				perms = new ArrayList<Permission>();
+				rolePermsMap.put(p.getRid(), perms);
+			}
+			Permission permission = getPermission(p.getPid());
+			if (permission != null) {
+				perms.add(permission);
+			}
+		}
 	}
 
-	public static final List<Permission> getAllPermissions() {
-		return permissions;
+	public static final boolean checkRolePermission(long rid, long pid) {
+		List<Permission> rolePermission = getRolePermissions(rid);
+		if (CollectionUtils.isEmpty(rolePermission)) {
+			return false;
+		}
+		for (Permission permission : rolePermission) {
+			if (pid == permission.getPid()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static final Collection<Role> getAllRoles() {
+		return roleMap.values();
+	}
+
+	public static final Collection<Permission> getAllPermissions() {
+		return permMap.values();
 	}
 
 	public static final Permission getPermission(long pid) {
-		for (Permission p : permissions) {
-			if (p.getPid() == pid) {
-				return p;
-			}
-		}
-		return null;
+		return permMap.get(pid);
 	}
 
 	public static final List<Permission> getRolePermissions(long rid) {
-		List<Permission> perms = new ArrayList<Permission>();
-		for (RolePermission p : rolePerms) {
-			if (p.getRid() == rid) {
-				Permission permission = getPermission(p.getPid());
-				if (permission != null) {
-					perms.add(permission);
-				}
-			}
-		}
-		return perms;
+		return rolePermsMap.get(rid);
+	}
+
+	public static final Role getRole(long rid) {
+		return roleMap.get(rid);
 	}
 }

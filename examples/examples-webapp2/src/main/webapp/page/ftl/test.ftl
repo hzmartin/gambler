@@ -1,1 +1,1 @@
-hello你好
+hello, this is a test freemarker page

@@ -9,7 +9,7 @@
 				Schedule System<c:if test="${msmode ne ''}"><span class="badge"><c:out value="${msmode}" /></span></c:if>
 			</h1>
 			<p>
-				Feedback: <a href="mailto:hzwangqihui@gmail.com">hzwangqihui@gmail.com</a>
+				Feedback: <a href="mailto:hzwangqihui@gmail.com">hzwangqihui@gmail.com</a> or <a target="_blank" href="http://weibo.com/fhwangjiahui">@PossibleHZ</a>
 			</p>
 		</div>
 	</div>

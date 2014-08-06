@@ -24,6 +24,7 @@ CREATE TABLE gb_permission (
   remark VARCHAR(128) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (pid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限表';
+CREATE INDEX ptype_idx ON gb_permission (ptype);
 
 DROP TABLE gb_role;
 CREATE TABLE gb_role (
@@ -81,21 +82,21 @@ CREATE INDEX al_target_key_idx ON gb_admin_log (target_obj_key);
 CREATE INDEX al_operator_id_idx ON gb_admin_log (operator_id);
 
 
-INSERT INTO gb_permission (pid, name, remark) VALUES (100, '查看系统用户', '系统管理');
-INSERT INTO gb_permission (pid, name, remark) VALUES (101, '创建和更新系统用户', '系统管理');
-INSERT INTO gb_permission (pid, name, remark) VALUES (102, '删除系统用户', '系统管理');
-INSERT INTO gb_permission (pid, name, remark) VALUES (103, '查看用户权限信息', '系统管理');
-INSERT INTO gb_permission (pid, name, remark) VALUES (104, '更新用户权限信息', '系统管理');
+INSERT INTO gb_permission (pid, ptype, name, remark) VALUES (100, 1, '查看系统用户', '系统管理');
+INSERT INTO gb_permission (pid, ptype, name, remark) VALUES (101, 1, '创建和更新系统用户', '系统管理');
+INSERT INTO gb_permission (pid, ptype, name, remark) VALUES (102, 1, '删除系统用户', '系统管理');
+INSERT INTO gb_permission (pid, ptype, name, remark) VALUES (103, 1, '查看用户权限信息', '系统管理');
+INSERT INTO gb_permission (pid, ptype, name, remark) VALUES (104, 1, '更新用户权限信息', '系统管理');
 
-INSERT INTO gb_permission (pid, name, remark) VALUES (400, '查看调度器信息', '调度器');
-INSERT INTO gb_permission (pid, name, remark) VALUES (401, '查看任务信息', '调度器');
-INSERT INTO gb_permission (pid, name, remark) VALUES (402, '查看触发器信息', '调度器');
-INSERT INTO gb_permission (pid, name, remark) VALUES (403, '增加任务', '调度器');
-INSERT INTO gb_permission (pid, name, remark) VALUES (404, '执行任务', '调度器');
-INSERT INTO gb_permission (pid, name, remark) VALUES (405, '删除任务', '调度器');
+INSERT INTO gb_permission (pid, ptype, name, remark) VALUES (400, 2, '查看调度器信息', '调度器');
+INSERT INTO gb_permission (pid, ptype, name, remark) VALUES (401, 2, '查看任务信息', '调度器');
+INSERT INTO gb_permission (pid, ptype, name, remark) VALUES (402, 2, '查看触发器信息', '调度器');
+INSERT INTO gb_permission (pid, ptype, name, remark) VALUES (403, 2, '增加任务', '调度器');
+INSERT INTO gb_permission (pid, ptype, name, remark) VALUES (404, 2, '执行任务', '调度器');
+INSERT INTO gb_permission (pid, ptype, name, remark) VALUES (405, 2, '删除任务', '调度器');
 
-INSERT INTO gb_permission (pid, name, remark) VALUES (1000, '进入主页', 'MISC');
-INSERT INTO gb_permission (pid, name, remark) VALUES (1001, '测试', 'MISC');
+INSERT INTO gb_permission (pid, ptype, name, remark) VALUES (1000, 0, '进入主页', 'MISC');
+INSERT INTO gb_permission (pid, ptype, name, remark) VALUES (1001, 0, '测试', 'MISC');
 
 INSERT INTO gb_role (rid, name, remark) VALUES (0, '系统普通用户', '系统普通用户：拥有系统默认权限配置');
 

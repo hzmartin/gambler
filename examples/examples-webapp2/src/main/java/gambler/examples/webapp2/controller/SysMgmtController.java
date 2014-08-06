@@ -4,6 +4,7 @@ import gambler.examples.webapp2.annotation.AuthRequired;
 import gambler.examples.webapp2.annotation.LogRequestParam;
 import gambler.examples.webapp2.constant.AuthConstants;
 import gambler.examples.webapp2.domain.auth.Permission;
+import gambler.examples.webapp2.domain.auth.Role;
 import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.domain.auth.UserPermission;
 import gambler.examples.webapp2.domain.auth.UserRole;
@@ -16,6 +17,7 @@ import gambler.examples.webapp2.resp.ResponseStatus;
 import gambler.examples.webapp2.util.RegexValidateUtil;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -197,7 +199,7 @@ public class SysMgmtController extends AbstractController {
 		List<UserRole> userRoles = authUserService.getUserRoles(user
 				.getUserId());
 		List<PermissionDto> result = new ArrayList<PermissionDto>();
-		List<Permission> allPerms = AuthConstants.getAllPermissions();
+		Collection<Permission> allPerms = AuthConstants.getAllPermissions();
 		for (Permission perm : allPerms) {
 			PermissionDto pvo = new PermissionDto();
 			pvo.setPid(perm.getPid());
@@ -210,14 +212,9 @@ public class SysMgmtController extends AbstractController {
 				}
 			}
 			for (UserRole userRole : userRoles) {
-				List<Permission> rolePermissions = AuthConstants
-						.getRolePermissions(userRole.getRid());
-				for (Permission permission : rolePermissions) {
-					if (permission.getPid() == perm.getPid()) {
-						pvo.setRoleHave(true);
-						break;
-					}
-				}
+				boolean roleHave = AuthConstants.checkRolePermission(
+						userRole.getRid(), perm.getPid());
+				pvo.setRoleHave(roleHave);
 				if (pvo.isRoleHave()) {
 					break;
 				}
@@ -326,6 +323,7 @@ public class SysMgmtController extends AbstractController {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"permission " + pid + " doesn't exist!");
 		} else {
+			perm = new Permission();
 			perm.setPid(pid);
 			perm.setName(name);
 			perm.setPtype(ptype);
@@ -347,8 +345,8 @@ public class SysMgmtController extends AbstractController {
 			throws ActionException {
 		Permission perm = AuthConstants.getPermission(pid);
 		if (perm == null) {
-			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
-					"permission " + pid + " doesn't exist!");
+			logger.warn("permission " + pid + " doesn't exist!");
+			return 0;
 		} else {
 			int affectCount = authUserService.delPermission(pid);
 			AuthConstants.reloadAllPermissions();
@@ -357,4 +355,124 @@ public class SysMgmtController extends AbstractController {
 		}
 
 	}
+
+	@RequestMapping(value = "/addRole")
+	@ResponseBody
+	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	public Object addRole(
+			final HttpServletRequest request,
+			@LogRequestParam(name = "rid") @RequestParam(required = true) long rid,
+			@LogRequestParam(name = "name") @RequestParam(required = true) String name,
+			@LogRequestParam(name = "remark") @RequestParam(required = false) String remark)
+			throws ActionException {
+		Role role = AuthConstants.getRole(rid);
+		if (role != null) {
+			throw new ActionException(ResponseStatus.PARAM_ILLEGAL, "role "
+					+ rid + " already exist!");
+		} else {
+			role = new Role();
+			role.setRid(rid);
+			role.setName(name);
+			role.setRemark(remark);
+			int affectCount = authUserService.addRole(role);
+			AuthConstants.reloadAllRoles();
+			AuthConstants.reloadAllRolePermissions();
+			return affectCount;
+		}
+
+	}
+
+	@RequestMapping(value = "/updateRole")
+	@ResponseBody
+	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	public Object updateRole(
+			final HttpServletRequest request,
+			@LogRequestParam(name = "rid") @RequestParam(required = true) long rid,
+			@LogRequestParam(name = "name") @RequestParam(required = true) String name,
+			@LogRequestParam(name = "remark") @RequestParam(required = false) String remark)
+			throws ActionException {
+		Role role = AuthConstants.getRole(rid);
+		if (role == null) {
+			throw new ActionException(ResponseStatus.PARAM_ILLEGAL, "role "
+					+ rid + " doesn't exist!");
+		} else {
+			role = new Role();
+			role.setRid(rid);
+			role.setName(name);
+			role.setRemark(remark);
+			int affectCount = authUserService.updateRole(role);
+			AuthConstants.reloadAllRoles();
+			AuthConstants.reloadAllRolePermissions();
+			return affectCount;
+		}
+
+	}
+
+	@RequestMapping(value = "/delRole")
+	@ResponseBody
+	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	public Object delRole(
+			final HttpServletRequest request,
+			@LogRequestParam(name = "rid") @RequestParam(required = true) long rid)
+			throws ActionException {
+		Role role = AuthConstants.getRole(rid);
+		if (role == null) {
+			logger.warn("role " + rid + " doesn't exist!");
+			return 0;
+		} else {
+			int affectCount = authUserService.delRole(rid);
+			AuthConstants.reloadAllRoles();
+			AuthConstants.reloadAllRolePermissions();
+			return affectCount;
+		}
+
+	}
+
+	@RequestMapping(value = "/createUserRole")
+	@ResponseBody
+	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	public Object createUserRole(
+			final HttpServletRequest request,
+			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId,
+			@LogRequestParam(name = "rid") @RequestParam(required = true) long rid)
+			throws ActionException {
+		if (!RegexValidateUtil.isValidUserId(userId)) {
+			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
+					"以字母开头的字母+数字+下划线，6-20位");
+		}
+		boolean checkRet = authUserService.checkUserRole(userId, rid);
+		if (checkRet) {
+			logger.warn("role " + rid + " has already assigned to user "
+					+ userId);
+			return 0;
+		}
+		User user = authUserService.findUserById(userId);
+		return authUserService.createUserRole(user.getUid(), rid);
+
+	}
+
+	/**
+	 * @param pids - separated by comma
+	 */
+	@RequestMapping(value = "/createRolePermission")
+	@ResponseBody
+	@AuthRequired(permission = { AuthConstants.PERM_SUPER })
+	public Object createRolePermission(
+			final HttpServletRequest request,
+			@LogRequestParam(name = "pids") @RequestParam(required = true) String pids,
+			@LogRequestParam(name = "rid") @RequestParam(required = true) long rid)
+			throws ActionException {
+		String[] pidStrs = pids.split(",");
+		for (String pidStr : pidStrs) {
+			Long pid = Long.parseLong(pidStr);
+			boolean authorized = AuthConstants.checkRolePermission(rid, pid);
+			if (authorized) {
+				logger.warn("role " + rid + " has already contains permission "
+						+ pid);
+			}
+			authUserService.createRolePermissions(rid, pid);
+		}
+		return null;
+	}
+
 }

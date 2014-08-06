@@ -17,6 +17,7 @@ public class SystemContextListener implements ServletContextListener {
 		log.info("Start loading configuration.");
 		AuthConstants.reloadAllPermissions();
 		AuthConstants.reloadAllRolePermissions();
+		AuthConstants.reloadAllRoles();
 		log.info("Loading configuration complete.");
 	}
 

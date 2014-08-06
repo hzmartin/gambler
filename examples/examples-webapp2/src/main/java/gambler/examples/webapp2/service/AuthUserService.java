@@ -4,6 +4,7 @@ import gambler.examples.webapp2.annotation.LogMethod;
 import gambler.examples.webapp2.constant.AuthConstants;
 import gambler.examples.webapp2.dao.AuthDao;
 import gambler.examples.webapp2.domain.auth.Permission;
+import gambler.examples.webapp2.domain.auth.Role;
 import gambler.examples.webapp2.domain.auth.RolePermission;
 import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.domain.auth.UserPermission;
@@ -13,9 +14,10 @@ import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +90,8 @@ public class AuthUserService extends AbstractService {
 		return account;
 	}
 
-	public void switchUser(final HttpServletRequest request, String userId) throws ActionException {
+	public void switchUser(final HttpServletRequest request, String userId)
+			throws ActionException {
 		User user = authDao.find(userId);
 		if (user == null) {
 			throw new ActionException(ResponseStatus.USER_NOT_EXSIST);
@@ -223,6 +225,13 @@ public class AuthUserService extends AbstractService {
 		return authDao.update(user);
 	}
 
+	public int createUserRole(long uid, long rid) {
+		UserRole userRole = new UserRole();
+		userRole.setUid(uid);
+		userRole.setRid(rid);
+		return authDao.createUserRole(userRole);
+	}
+
 	@Transactional
 	public int deleteUser(String userId) {
 		User user = authDao.find(userId);
@@ -235,10 +244,22 @@ public class AuthUserService extends AbstractService {
 		User user = authDao.find(userId);
 		return authDao.getUserPermissions(user.getUid());
 	}
-
+	
+	public boolean checkUserRole(String userId, Long rid){
+		List<UserRole> userRoles = getUserRoles(userId, rid);
+		return (userRoles != null && userRoles.size() == 1);
+	}
+	
 	public List<UserRole> getUserRoles(String userId) {
+		return getUserRoles(userId, null);
+	}
+
+	public List<UserRole> getUserRoles(String userId, Long rid) {
 		User user = authDao.find(userId);
-		return authDao.getUserRoles(user.getUid());
+		UserRole ur = new UserRole();
+		ur.setUid(user.getUid());
+		ur.setRid(rid);
+		return authDao.getUserRole(ur);
 	}
 
 	public int createUserPermission(long uid, long pid) {
@@ -264,36 +285,22 @@ public class AuthUserService extends AbstractService {
 			return true;
 		}
 
-		List<Long> needCheckRolePermId = new ArrayList<Long>();
 		for (long pid : pids) {
 			UserPermission up = new UserPermission();
 			up.setUid(user.getUid());
 			up.setPid(pid);
 			UserPermission userPermission = authDao.getUserPermission(up);
-			if (userPermission == null) {
-				needCheckRolePermId.add(pid);
+			if (userPermission != null) {
+				continue;
 			}
-		}
 
-		// userperm check fail, need to check role perm
-		if (CollectionUtils.isNotEmpty(needCheckRolePermId)) {
-			List<UserRole> userRoles = authDao.getUserRoles(user.getUid());
-			for (long pid : needCheckRolePermId) {
-				boolean authorized = false;
-				for (UserRole userRole : userRoles) {
-					List<Permission> rolePermission = AuthConstants
-							.getRolePermissions(userRole.getRid());
-					for (Permission permission : rolePermission) {
-						if (pid == permission.getPid()) {
-							authorized = true;
-						}
-					}
-				}
-				if (!authorized) {
-					// no permission
-					return false;
-				}
+			UserPermission userRolePermission = authDao
+					.getUserRolePermission(up);
+			if (userRolePermission != null) {
+				continue;
 			}
+
+			return false;
 		}
 
 		return true;
@@ -318,23 +325,48 @@ public class AuthUserService extends AbstractService {
 	public int updateUserSuperFlag(User user) {
 		return authDao.updateUserSuperFlag(user);
 	}
-	
-	public int addPermission(Permission permission)
-	{
+
+	public int addPermission(Permission permission) {
 		return authDao.addPermission(permission);
 	}
 
 	@Transactional
-	public int delPermission(long pid)
-	{
+	public int delPermission(long pid) {
 		authDao.delAllUserPermission(pid);
-		authDao.delAllRolePermission(pid);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("pid", pid);
+		authDao.delAllRolePermission(params);
 		return authDao.delPermission(pid);
 	}
 
-	public int updatePermission(Permission permission)
-	{
+	public int updatePermission(Permission permission) {
 		return authDao.updatePermission(permission);
 	}
-	
+
+	public List<Role> getAllRoles() {
+		return authDao.getAllRoles();
+	}
+
+	public int addRole(Role role) {
+		return authDao.addRole(role);
+	}
+
+	public int updateRole(Role role) {
+		return authDao.updateRole(role);
+	}
+
+	public int delRole(long rid) {
+		return authDao.delRole(rid);
+	}
+
+	@Transactional
+	public void createRolePermissions(long rid, long... pids) {
+		for (long pid : pids) {
+			RolePermission rp = new RolePermission();
+			rp.setRid(rid);
+			rp.setPid(pid);
+			authDao.createRolePermission(rp);
+		}
+	}
+
 }
