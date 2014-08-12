@@ -49,6 +49,9 @@ public class RequestAspectAdvice {
 	@Resource
 	protected AuthUserService authUserService;
 
+	private static final String lineSeparator = System.getProperty(
+			"line.separator", "\n");
+
 	@Autowired
 	private XMLMap sysconf;
 
@@ -58,9 +61,13 @@ public class RequestAspectAdvice {
 		Method method = joinPointObject.getMethod();
 		// =============start input param log build=====================
 		StringBuilder execLogStr = new StringBuilder();
+		execLogStr
+				.append("======================================================="
+						+ lineSeparator);
 		execLogStr.append("Process request:  "
 				+ pjp.getTarget().getClass().getName() + "#"
-				+ pjp.getSignature().getName() + "(");
+				+ pjp.getSignature().getName() + lineSeparator);
+		execLogStr.append("\tParamters" + lineSeparator);
 		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
 		int argsLen = pjp.getArgs().length;
 		if (parameterAnnotations.length == argsLen) {
@@ -74,13 +81,10 @@ public class RequestAspectAdvice {
 						if (StringUtils.isBlank(name)) {
 							name = "param[" + paramIndex + "/" + argsLen + "]";
 						}
-						execLogStr.append(name + "=" + theArg + ",");
+						execLogStr.append("\t\t" + name + "=" + theArg
+								+ lineSeparator);
 					}
 				}
-			}
-			int lastCommaIndex = execLogStr.lastIndexOf(",");
-			if (lastCommaIndex != -1) {
-				execLogStr.deleteCharAt(lastCommaIndex);
 			}
 		} else {
 			logger.error(String.format(
@@ -88,7 +92,6 @@ public class RequestAspectAdvice {
 							.getTarget().getClass().getName(), pjp
 							.getSignature().getName()));
 		}
-		execLogStr.append(")");
 		// =============end input param log build=====================
 
 		if (!(pjp.getArgs()[0] instanceof HttpServletRequest)) {
@@ -100,7 +103,8 @@ public class RequestAspectAdvice {
 		HttpServletRequest request = (HttpServletRequest) pjp.getArgs()[0];
 		String xff = request.getHeader("X-Forwarded-For");
 		String remoteAddr = request.getRemoteAddr();
-		execLogStr.append(", xff=" + xff + ", remoteAddr=" + remoteAddr);
+		execLogStr.append("\txff=" + xff + ", remoteAddr=" + remoteAddr
+				+ lineSeparator);
 		String target = request.getRequestURI();
 		ServerResponse serverResponse = new ServerResponse();
 		AuthRequired authRequired = method.getAnnotation(AuthRequired.class);
@@ -130,8 +134,8 @@ public class RequestAspectAdvice {
 			if (!ResponseStatus.OK.getCode().equals(serverResponse.getCode())) {
 				execLogStr.append(", login as " + loginUser);
 				if (method.isAnnotationPresent(ResponseBody.class)) {
-					JSONObject object = JSONObject.fromObject(serverResponse);
-					execLogStr.append(", result=" + object.toString());
+					execLogStr.append(", result="
+							+ previewServerResponseStr(serverResponse));
 					logger.info(execLogStr.toString());
 					if (method.isAnnotationPresent(SkipRespObjectWrap.class)) {
 						return serverResponse.getCode();
@@ -151,7 +155,8 @@ public class RequestAspectAdvice {
 			}
 		}
 		AccountDto loginUser = authUserService.getLoginUser(request);
-		execLogStr.append(", login as " + loginUser);
+		execLogStr.append("\tlogin as " + loginUser + lineSeparator);
+		long execStartTime = System.currentTimeMillis();
 		if (method.isAnnotationPresent(ResponseBody.class)
 				&& !method.isAnnotationPresent(SkipRespObjectWrap.class)) {
 			try {
@@ -165,8 +170,11 @@ public class RequestAspectAdvice {
 				serverResponse.setMsg(e.getMessage());
 				logger.error(e.getMessage(), e);
 			}
-			JSONObject object = JSONObject.fromObject(serverResponse);
-			execLogStr.append(", result=" + object.toString());
+			String resultStr = previewServerResponseStr(serverResponse);
+			long execTime = System.currentTimeMillis() - execStartTime;
+			execLogStr.append("\texec time=" + execTime + " mills"
+					+ lineSeparator);
+			execLogStr.append("\tresult=" + resultStr + lineSeparator);
 			logger.info(execLogStr.toString());
 			return serverResponse;
 		} else {
@@ -174,6 +182,20 @@ public class RequestAspectAdvice {
 			return result;
 		}
 
+	}
+
+	private final String previewServerResponseStr(ServerResponse serverResponse) {
+		String resultStr = JSONObject.fromObject(serverResponse).toString();
+		int maxResultLogLength = sysconf.getInteger("max_length_of_result_log",
+				1000);
+		if (maxResultLogLength != -1) {
+			boolean tooLong = resultStr.length() > maxResultLogLength;
+			resultStr = StringUtils.substring(resultStr, 0, maxResultLogLength);
+			if (tooLong) {
+				resultStr = resultStr + " ... ";
+			}
+		}
+		return resultStr;
 	}
 
 }
