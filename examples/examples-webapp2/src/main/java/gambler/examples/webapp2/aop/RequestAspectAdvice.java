@@ -59,15 +59,17 @@ public class RequestAspectAdvice {
 	public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
 		MethodSignature joinPointObject = (MethodSignature) pjp.getSignature();
 		Method method = joinPointObject.getMethod();
+		String fullMethodSign = pjp.getTarget().getClass().getName() + "#"
+				+ pjp.getSignature().getName();
+		logger.info("===============Start process request: " + fullMethodSign
+				+ "============");
 		// =============start input param log build=====================
-		StringBuilder execLogStr = new StringBuilder();
-		execLogStr
-				.append("======================================================="
+		StringBuilder execEndLog = new StringBuilder();
+		execEndLog
+				.append("=========================END=============================="
 						+ lineSeparator);
-		execLogStr.append("Process request:  "
-				+ pjp.getTarget().getClass().getName() + "#"
-				+ pjp.getSignature().getName() + lineSeparator);
-		execLogStr.append("\tParamters:" + lineSeparator);
+		execEndLog.append("Request:  " + fullMethodSign + lineSeparator);
+		execEndLog.append("\tParamters:" + lineSeparator);
 		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
 		int argsLen = pjp.getArgs().length;
 		if (parameterAnnotations.length == argsLen) {
@@ -81,7 +83,7 @@ public class RequestAspectAdvice {
 						if (StringUtils.isBlank(name)) {
 							name = "param[" + paramIndex + "/" + argsLen + "]";
 						}
-						execLogStr.append("\t\t" + name + "=" + theArg
+						execEndLog.append("\t\t" + name + "=" + theArg
 								+ lineSeparator);
 					}
 				}
@@ -92,7 +94,7 @@ public class RequestAspectAdvice {
 							.getTarget().getClass().getName(), pjp
 							.getSignature().getName()));
 		}
-		execLogStr.append("\t\t---" + lineSeparator);
+		execEndLog.append("\t\t---" + lineSeparator);
 		// =============end input param log build=====================
 
 		if (!(pjp.getArgs()[0] instanceof HttpServletRequest)) {
@@ -104,7 +106,7 @@ public class RequestAspectAdvice {
 		HttpServletRequest request = (HttpServletRequest) pjp.getArgs()[0];
 		String xff = request.getHeader("X-Forwarded-For");
 		String remoteAddr = request.getRemoteAddr();
-		execLogStr.append("\txff=" + xff + ", remoteAddr=" + remoteAddr
+		execEndLog.append("\txff=" + xff + ", remoteAddr=" + remoteAddr
 				+ lineSeparator);
 		String target = request.getRequestURI();
 		ServerResponse serverResponse = new ServerResponse();
@@ -133,11 +135,11 @@ public class RequestAspectAdvice {
 				}
 			}
 			if (!ResponseStatus.OK.getCode().equals(serverResponse.getCode())) {
-				execLogStr.append(", login as " + loginUser);
+				execEndLog.append(", login as " + loginUser);
 				if (method.isAnnotationPresent(ResponseBody.class)) {
-					execLogStr.append(", result="
+					execEndLog.append(", result="
 							+ previewServerResponseStr(serverResponse));
-					logger.info(execLogStr.toString());
+					logger.info(execEndLog.toString());
 					if (method.isAnnotationPresent(SkipRespObjectWrap.class)) {
 						return serverResponse.getCode();
 					}
@@ -156,7 +158,7 @@ public class RequestAspectAdvice {
 			}
 		}
 		AccountDto loginUser = authUserService.getLoginUser(request);
-		execLogStr.append("\tlogin as " + loginUser + lineSeparator);
+		execEndLog.append("\tlogin as " + loginUser + lineSeparator);
 		long execStartTime = System.currentTimeMillis();
 		if (method.isAnnotationPresent(ResponseBody.class)
 				&& !method.isAnnotationPresent(SkipRespObjectWrap.class)) {
@@ -173,10 +175,10 @@ public class RequestAspectAdvice {
 			}
 			String resultStr = previewServerResponseStr(serverResponse);
 			long execTime = System.currentTimeMillis() - execStartTime;
-			execLogStr.append("\texec time=" + execTime + " mills"
+			execEndLog.append("\texec time=" + execTime + " mills"
 					+ lineSeparator);
-			execLogStr.append("\tresult=" + resultStr + lineSeparator);
-			logger.info(execLogStr.toString());
+			execEndLog.append("\tresult=" + resultStr + lineSeparator);
+			logger.info(execEndLog.toString());
 			return serverResponse;
 		} else {
 			Object result = pjp.proceed();
@@ -187,8 +189,8 @@ public class RequestAspectAdvice {
 
 	private final String previewServerResponseStr(ServerResponse serverResponse) {
 		String resultStr = JSONObject.fromObject(serverResponse).toString();
-		int maxResultLogLength = sysconf.getInteger("max_length_of_response_log",
-				1000);
+		int maxResultLogLength = sysconf.getInteger(
+				"max_length_of_response_log", 1000);
 		if (maxResultLogLength != -1) {
 			boolean tooLong = resultStr.length() > maxResultLogLength;
 			resultStr = StringUtils.substring(resultStr, 0, maxResultLogLength);
