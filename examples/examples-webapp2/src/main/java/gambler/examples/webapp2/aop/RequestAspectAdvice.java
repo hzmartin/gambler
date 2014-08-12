@@ -67,7 +67,7 @@ public class RequestAspectAdvice {
 		execLogStr.append("Process request:  "
 				+ pjp.getTarget().getClass().getName() + "#"
 				+ pjp.getSignature().getName() + lineSeparator);
-		execLogStr.append("\tParamters" + lineSeparator);
+		execLogStr.append("\tParamters:" + lineSeparator);
 		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
 		int argsLen = pjp.getArgs().length;
 		if (parameterAnnotations.length == argsLen) {
@@ -92,6 +92,7 @@ public class RequestAspectAdvice {
 							.getTarget().getClass().getName(), pjp
 							.getSignature().getName()));
 		}
+		execLogStr.append("\t\t---" + lineSeparator);
 		// =============end input param log build=====================
 
 		if (!(pjp.getArgs()[0] instanceof HttpServletRequest)) {
@@ -186,7 +187,7 @@ public class RequestAspectAdvice {
 
 	private final String previewServerResponseStr(ServerResponse serverResponse) {
 		String resultStr = JSONObject.fromObject(serverResponse).toString();
-		int maxResultLogLength = sysconf.getInteger("max_length_of_result_log",
+		int maxResultLogLength = sysconf.getInteger("max_length_of_response_log",
 				1000);
 		if (maxResultLogLength != -1) {
 			boolean tooLong = resultStr.length() > maxResultLogLength;
