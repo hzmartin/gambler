@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class AbstractService {
 
 	protected static final Logger logger = Logger
-			.getLogger(AuthUserService.class);
+			.getLogger(AbstractService.class);
 
 	@Autowired
 	protected XMLMap sysconf;
