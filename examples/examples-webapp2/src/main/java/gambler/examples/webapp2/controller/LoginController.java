@@ -1,6 +1,7 @@
 package gambler.examples.webapp2.controller;
 
 import gambler.examples.webapp2.annotation.AuthRequired;
+import gambler.examples.webapp2.annotation.LogRequestParam;
 import gambler.examples.webapp2.constant.AuthConstants;
 import gambler.examples.webapp2.domain.auth.User;
 import gambler.examples.webapp2.dto.AccountDto;
@@ -23,7 +24,7 @@ public class LoginController extends AbstractController {
 	@ResponseBody
 	public Object login(final HttpServletRequest request,
 			final HttpServletResponse response,
-			@RequestParam(required = true) String userId,
+			@LogRequestParam(name="userId") @RequestParam(required = true) String userId,
 			@RequestParam(required = true) String password,
 			@RequestParam(required = false) boolean remme)
 			throws ActionException {
