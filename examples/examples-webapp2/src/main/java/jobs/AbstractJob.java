@@ -1,9 +1,3 @@
-/**
- * @(#)AbstractQuartzJob.java, 2014-3-25.
- *
- * Copyright 2014 Netease, Inc. All rights reserved.
- * NETEASE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
- */
 package jobs;
 
 import gambler.commons.advmap.XMLMap;
@@ -18,7 +12,7 @@ import org.quartz.UnableToInterruptJobException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
- * @author Administrator
+ * @author Martin
  */
 public abstract class AbstractJob extends QuartzJobBean implements
 		InterruptableJob {
