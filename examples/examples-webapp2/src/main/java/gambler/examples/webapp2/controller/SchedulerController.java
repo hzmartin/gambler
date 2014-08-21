@@ -68,8 +68,8 @@ public class SchedulerController extends AbstractController {
 			String jobName = entry.getKey();
 			JobDefinitionDto jobDef = entry.getValue();
 			if (jobDef.getPid() != null) {
-				boolean authorized = authUserService.checkUserPermission(
-						user, jobDef.getPid());
+				boolean authorized = authUserService.checkUserPermission(user,
+						jobDef.getPid());
 				if (!authorized) {
 					continue;
 				}
@@ -89,8 +89,8 @@ public class SchedulerController extends AbstractController {
 		JobDefinitionDto jobDef = definitionService.getDefinition(jobName);
 		if (jobDef.getPid() != null) {
 			User user = authUserService.findUserById(loginUser.getUserId());
-			boolean authorized = authUserService.checkUserPermission(
-					user, jobDef.getPid());
+			boolean authorized = authUserService.checkUserPermission(user,
+					jobDef.getPid());
 			if (!authorized) {
 				return null;
 			}
@@ -294,18 +294,16 @@ public class SchedulerController extends AbstractController {
 		Date start = null;
 		Date end = null;
 		if (StringUtils.isNotBlank(startTime)) {
-			try {
-				start = TimeTagUtil.parseDate(startTime);
-			} catch (ParseException e) {
+			start = TimeTagUtil.parseDate(startTime);
+			if (start == null) {
 				throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 						"start time format error");
 			}
 		}
 
 		if (StringUtils.isNotBlank(endTime)) {
-			try {
-				end = TimeTagUtil.parseDate(endTime);
-			} catch (ParseException e) {
+			end = TimeTagUtil.parseDate(endTime);
+			if (end == null) {
 				throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 						"end time format error");
 			}
@@ -387,18 +385,16 @@ public class SchedulerController extends AbstractController {
 		Date start = null;
 		Date end = null;
 		if (startTime != null) {
-			try {
-				start = TimeTagUtil.parseDate(startTime);
-			} catch (ParseException e) {
+			start = TimeTagUtil.parseDate(startTime);
+			if (start == null) {
 				throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 						"start time format error");
 			}
 		}
 
 		if (endTime != null) {
-			try {
-				end = TimeTagUtil.parseDate(endTime);
-			} catch (ParseException e) {
+			end = TimeTagUtil.parseDate(endTime);
+			if (end == null) {
 				throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 						"end time format error");
 			}
