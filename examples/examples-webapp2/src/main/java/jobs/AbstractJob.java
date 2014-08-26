@@ -8,6 +8,9 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.quartz.InterruptableJob;
+import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 import org.quartz.UnableToInterruptJobException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
@@ -55,5 +58,21 @@ public abstract class AbstractJob extends QuartzJobBean implements
 	public void interrupt() throws UnableToInterruptJobException {
 		jobInterrupted = true;
 	}
+	
+	@Override
+    protected void executeInternal(JobExecutionContext jobexecutioncontext)
+        throws JobExecutionException {
+        JobDetail jobDetail = jobexecutioncontext.getJobDetail();
+        log.info("execute job(" + jobDetail.getFullName() + ") start... ");
+        try {
+            process(jobexecutioncontext);
+        } catch (Exception e) {
+            throw new JobExecutionException(e.getMessage(), e);
+        } finally {
+            log.info("execute job(" + jobDetail.getFullName() + ") end!");
+        }
+    }
+
+    protected abstract void process(JobExecutionContext jobexecutioncontext) throws Exception;
 
 }
