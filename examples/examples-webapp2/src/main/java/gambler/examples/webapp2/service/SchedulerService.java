@@ -1,12 +1,12 @@
 package gambler.examples.webapp2.service;
 
+import gambler.commons.util.time.TimeUtils;
 import gambler.examples.webapp2.dto.JobDto;
 import gambler.examples.webapp2.dto.JobExecutionContextDto;
 import gambler.examples.webapp2.dto.SchedulerDto;
 import gambler.examples.webapp2.dto.TriggerDto;
 import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
-import gambler.examples.webapp2.util.TimeTagUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,13 +77,13 @@ public class SchedulerService {
 		tDto.setDescription(trigger.getDescription());
 		tDto.setJobName(trigger.getJobName());
 		tDto.setJobGroup(trigger.getJobGroup());
-		tDto.setPreviousFireTime(TimeTagUtil.format_yyyyMMdd_HH_mm_ss(trigger
+		tDto.setPreviousFireTime(TimeUtils.defaultFormat(trigger
 				.getPreviousFireTime()));
-		tDto.setNextFireTime(TimeTagUtil.format_yyyyMMdd_HH_mm_ss(trigger
+		tDto.setNextFireTime(TimeUtils.defaultFormat(trigger
 				.getNextFireTime()));
-		tDto.setStartTime(TimeTagUtil.format_yyyyMMdd_HH_mm_ss(trigger
+		tDto.setStartTime(TimeUtils.defaultFormat(trigger
 				.getStartTime()));
-		tDto.setEndTime(TimeTagUtil.format_yyyyMMdd_HH_mm_ss(trigger
+		tDto.setEndTime(TimeUtils.defaultFormat(trigger
 				.getEndTime()));
 		tDto.setType(trigger.getClass().getSimpleName());
 		tDto.setState(state);
@@ -141,11 +141,11 @@ public class SchedulerService {
 					tDto.setName(trigger.getName());
 					tDto.setGroup(trigger.getGroup());
 					tDto.setDescription(trigger.getDescription());
-					tDto.setPreviousFireTime(TimeTagUtil
-							.format_yyyyMMdd_HH_mm_ss(trigger
+					tDto.setPreviousFireTime(TimeUtils
+							.defaultFormat(trigger
 									.getPreviousFireTime()));
-					tDto.setNextFireTime(TimeTagUtil
-							.format_yyyyMMdd_HH_mm_ss(trigger.getNextFireTime()));
+					tDto.setNextFireTime(TimeUtils
+							.defaultFormat(trigger.getNextFireTime()));
 					tDto.setMisfireInstruction(trigger.getMisfireInstruction());
 					int state = scheduler.getTriggerState(trigger.getName(),
 							trigger.getGroup());
@@ -182,14 +182,14 @@ public class SchedulerService {
 			contextDto.setTriggerName(trigger.getName());
 			contextDto.setTriggerGroup(trigger.getGroup());
 			contextDto.setTriggerDescription(trigger.getDescription());
-			contextDto.setFireTime(TimeTagUtil.format_yyyyMMdd_HH_mm_ss(context
+			contextDto.setFireTime(TimeUtils.defaultFormat(context
 					.getFireTime()));
-			contextDto.setNextFireTime(TimeTagUtil
-					.format_yyyyMMdd_HH_mm_ss(context.getNextFireTime()));
-			contextDto.setPreviousFireTime(TimeTagUtil
-					.format_yyyyMMdd_HH_mm_ss(context.getPreviousFireTime()));
-			contextDto.setScheduledFireTime(TimeTagUtil
-					.format_yyyyMMdd_HH_mm_ss(context.getScheduledFireTime()));
+			contextDto.setNextFireTime(TimeUtils
+					.defaultFormat(context.getNextFireTime()));
+			contextDto.setPreviousFireTime(TimeUtils
+					.defaultFormat(context.getPreviousFireTime()));
+			contextDto.setScheduledFireTime(TimeUtils
+					.defaultFormat(context.getScheduledFireTime()));
 			contextDtoList.add(contextDto);
 
 		}

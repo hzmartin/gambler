@@ -1,8 +1,8 @@
 package jobs;
 
 import gambler.commons.advmap.XMLMap;
+import gambler.commons.util.time.TimeUtils;
 import gambler.examples.webapp2.util.SpringContextHolder;
-import gambler.examples.webapp2.util.TimeTagUtil;
 
 import java.util.Date;
 
@@ -42,7 +42,7 @@ public abstract class AbstractJob extends QuartzJobBean implements
 	}
 
 	public long getJobPendingInterval() {
-		return TimeTagUtil.ONE_MINUTE
+		return TimeUtils.ONE_MINUTE
 				* sysconf.getInteger("jobPendingInterval", 5);// mins
 	}
 

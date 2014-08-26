@@ -1,5 +1,6 @@
 package gambler.examples.webapp2.controller;
 
+import gambler.commons.util.time.TimeUtils;
 import gambler.examples.webapp2.annotation.AuthRequired;
 import gambler.examples.webapp2.annotation.LogRequestParam;
 import gambler.examples.webapp2.constant.AuthConstants;
@@ -13,7 +14,6 @@ import gambler.examples.webapp2.exception.ActionException;
 import gambler.examples.webapp2.resp.ResponseStatus;
 import gambler.examples.webapp2.service.DefinitionService;
 import gambler.examples.webapp2.service.SchedulerService;
-import gambler.examples.webapp2.util.TimeTagUtil;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -294,7 +294,7 @@ public class SchedulerController extends AbstractController {
 		Date start = null;
 		Date end = null;
 		if (StringUtils.isNotBlank(startTime)) {
-			start = TimeTagUtil.parseDate(startTime);
+			start = TimeUtils.parseDate(startTime);
 			if (start == null) {
 				throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 						"start time format error");
@@ -302,7 +302,7 @@ public class SchedulerController extends AbstractController {
 		}
 
 		if (StringUtils.isNotBlank(endTime)) {
-			end = TimeTagUtil.parseDate(endTime);
+			end = TimeUtils.parseDate(endTime);
 			if (end == null) {
 				throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 						"end time format error");
@@ -324,10 +324,9 @@ public class SchedulerController extends AbstractController {
 		if (StringUtils.isBlank(triggerGroup)) {
 			triggerGroup = null;
 		}
-		return TimeTagUtil.format_yyyyMMdd_HH_mm_ss(schedulerService
-				.scheduleJob(jobName, jobGroup, triggerName, triggerGroup,
-						start, end, repeatCount, repeatInterval, description,
-						misfireInstruction));
+		return TimeUtils.defaultFormat(schedulerService.scheduleJob(
+				jobName, jobGroup, triggerName, triggerGroup, start, end,
+				repeatCount, repeatInterval, description, misfireInstruction));
 	}
 
 	@RequestMapping(value = "/scheduleCronJob")
@@ -357,7 +356,7 @@ public class SchedulerController extends AbstractController {
 		if (StringUtils.isBlank(triggerGroup)) {
 			triggerGroup = null;
 		}
-		return TimeTagUtil.format_yyyyMMdd_HH_mm_ss(schedulerService
+		return TimeUtils.defaultFormat(schedulerService
 				.scheduleCronJob(jobName, jobGroup, triggerName, triggerGroup,
 						cronExpression, description, misfireInstruction));
 	}
@@ -385,7 +384,7 @@ public class SchedulerController extends AbstractController {
 		Date start = null;
 		Date end = null;
 		if (startTime != null) {
-			start = TimeTagUtil.parseDate(startTime);
+			start = TimeUtils.parseDate(startTime);
 			if (start == null) {
 				throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 						"start time format error");
@@ -393,7 +392,7 @@ public class SchedulerController extends AbstractController {
 		}
 
 		if (endTime != null) {
-			end = TimeTagUtil.parseDate(endTime);
+			end = TimeUtils.parseDate(endTime);
 			if (end == null) {
 				throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 						"end time format error");
@@ -409,10 +408,9 @@ public class SchedulerController extends AbstractController {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"repeat interval must be >= 0");
 		}
-		return TimeTagUtil.format_yyyyMMdd_HH_mm_ss(schedulerService
-				.rescheduleJob(triggerName, triggerGroup, start, end,
-						repeatCount, repeatInterval, description,
-						misfireInstruction));
+		return TimeUtils.defaultFormat(schedulerService.rescheduleJob(
+				triggerName, triggerGroup, start, end, repeatCount,
+				repeatInterval, description, misfireInstruction));
 	}
 
 	@RequestMapping(value = "/rescheduleCronJob")
@@ -438,7 +436,7 @@ public class SchedulerController extends AbstractController {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"cron expression illegal");
 		}
-		return TimeTagUtil.format_yyyyMMdd_HH_mm_ss(schedulerService
+		return TimeUtils.defaultFormat(schedulerService
 				.rescheduleCronJob(triggerName, triggerGroup, cronExpression,
 						description, misfireInstruction));
 	}
