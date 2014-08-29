@@ -1,11 +1,15 @@
 package gambler.examples.webapp2.listener;
 
+import gambler.commons.advmap.XMLMap;
+import gambler.examples.webapp2.service.MailService;
+import gambler.examples.webapp2.util.SpringContextHolder;
+
 import org.apache.log4j.Logger;
 import org.quartz.SchedulerException;
 import org.quartz.listeners.SchedulerListenerSupport;
 
 public class SimpleSchedulerListener extends SchedulerListenerSupport {
-	
+
 	private final Logger logger = Logger.getLogger(getClass());
 
 	@Override
@@ -16,6 +20,19 @@ public class SimpleSchedulerListener extends SchedulerListenerSupport {
 	@Override
 	public void schedulerStarted() {
 		logger.info("scheduler started!");
+
+		try {
+			XMLMap sysconf = SpringContextHolder.getBean("sysconf");
+			if (sysconf.getBoolean("switch.mailService", false)) {
+				MailService service = SpringContextHolder
+						.getBean("mailService");
+				service.sendHtmlMail(
+						new String[] { "hzwangqh@corp.netease.com" }, null,
+						"hello", "UTF-8", "THE SCHEDULER HAS STARTED!");
+			}
+		} catch (Exception e) {
+			logger.error("mail notify error!", e);
+		}
 	}
 
 	@Override
@@ -28,5 +45,4 @@ public class SimpleSchedulerListener extends SchedulerListenerSupport {
 		logger.warn("scheduler has been shutdown!");
 	}
 
-	
 }
