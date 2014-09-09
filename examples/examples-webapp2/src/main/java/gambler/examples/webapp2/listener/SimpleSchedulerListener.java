@@ -27,7 +27,7 @@ public class SimpleSchedulerListener extends SchedulerListenerSupport {
 				MailService service = SpringContextHolder
 						.getBean("mailService");
 				service.sendHtmlMail(
-						new String[] { "hzwangqh@corp.netease.com" }, null,
+						new String[] { "wqihui@yeah.net" }, null,
 						"hello", "UTF-8", "THE SCHEDULER HAS STARTED!");
 			}
 		} catch (Exception e) {
