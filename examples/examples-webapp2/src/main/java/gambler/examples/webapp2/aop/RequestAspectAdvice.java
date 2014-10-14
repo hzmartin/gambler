@@ -61,15 +61,9 @@ public class RequestAspectAdvice {
 		Method method = joinPointObject.getMethod();
 		String fullMethodSign = pjp.getTarget().getClass().getName() + "#"
 				+ pjp.getSignature().getName();
-		logger.info("===============Start process request: " + fullMethodSign
-				+ "============");
 		// =============start input param log build=====================
 		StringBuilder execEndLog = new StringBuilder();
-		execEndLog
-				.append("=========================END=============================="
-						+ lineSeparator);
-		execEndLog.append("Request:  " + fullMethodSign + lineSeparator);
-		execEndLog.append("\tParamters:" + lineSeparator);
+		execEndLog.append("Request " + fullMethodSign + "(");
 		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
 		int argsLen = pjp.getArgs().length;
 		if (parameterAnnotations.length == argsLen) {
@@ -83,8 +77,7 @@ public class RequestAspectAdvice {
 						if (StringUtils.isBlank(name)) {
 							name = "param[" + paramIndex + "/" + argsLen + "]";
 						}
-						execEndLog.append("\t\t" + name + "=" + theArg
-								+ lineSeparator);
+						execEndLog.append(name + "=" + theArg + ",");
 					}
 				}
 			}
@@ -94,7 +87,10 @@ public class RequestAspectAdvice {
 							.getTarget().getClass().getName(), pjp
 							.getSignature().getName()));
 		}
-		execEndLog.append("\t\t---" + lineSeparator);
+		if (execEndLog.lastIndexOf(",", execEndLog.length() - 1) != -1) {
+            execEndLog = execEndLog.deleteCharAt(execEndLog.length() - 1);
+        }
+        execEndLog.append(")");
 		// =============end input param log build=====================
 
 		if (!(pjp.getArgs()[0] instanceof HttpServletRequest)) {
@@ -106,8 +102,6 @@ public class RequestAspectAdvice {
 		HttpServletRequest request = (HttpServletRequest) pjp.getArgs()[0];
 		String xff = request.getHeader("X-Forwarded-For");
 		String remoteAddr = request.getRemoteAddr();
-		execEndLog.append("\txff=" + xff + ", remoteAddr=" + remoteAddr
-				+ lineSeparator);
 		String target = request.getRequestURI();
 		ServerResponse serverResponse = new ServerResponse();
 		AuthRequired authRequired = method.getAnnotation(AuthRequired.class);
@@ -135,11 +129,10 @@ public class RequestAspectAdvice {
 				}
 			}
 			if (!ResponseStatus.OK.getCode().equals(serverResponse.getCode())) {
-				execEndLog.append(", login as " + loginUser);
 				if (method.isAnnotationPresent(ResponseBody.class)) {
-					execEndLog.append(", result="
-							+ previewServerResponseStr(serverResponse));
-					logger.info(execEndLog.toString());
+					execEndLog.append("\tlogin as " + loginUser + "\tresult="
+	                        + previewServerResponseStr(serverResponse) + lineSeparator);
+	                    logger.info(execEndLog.toString());
 					if (method.isAnnotationPresent(SkipRespObjectWrap.class)) {
 						return serverResponse.getCode();
 					}
@@ -158,8 +151,9 @@ public class RequestAspectAdvice {
 			}
 		}
 		AccountDto loginUser = authUserService.getLoginUser(request);
-		execEndLog.append("\tlogin as " + loginUser + lineSeparator);
-		long execStartTime = System.currentTimeMillis();
+		execEndLog.append("\tlogin as " + loginUser);
+        execEndLog.append("\txff=" + xff + ", remoteAddr=" + remoteAddr);
+        long execStartTime = System.currentTimeMillis();
 		if (method.isAnnotationPresent(ResponseBody.class)
 				&& !method.isAnnotationPresent(SkipRespObjectWrap.class)) {
 			try {
@@ -171,13 +165,14 @@ public class RequestAspectAdvice {
 			} catch (Exception e) {
 				serverResponse.setResponseStatus(ResponseStatus.SERVER_BUSY);
 				serverResponse.setMsg(e.getMessage());
-				logger.error(e.getMessage(), e);
+				logger.error("server error: " + e.getMessage(), e);
+			} finally{
+				long execTime = System.currentTimeMillis() - execStartTime;
+                execEndLog.append("\texec " + execTime + " mills");
 			}
 			String resultStr = previewServerResponseStr(serverResponse);
-			long execTime = System.currentTimeMillis() - execStartTime;
-			execEndLog.append("\texec time=" + execTime + " mills"
-					+ lineSeparator);
-			execEndLog.append("\tresult=" + resultStr + lineSeparator);
+			execEndLog.append(lineSeparator + "\tresult=" + resultStr
+	                + lineSeparator);
 			logger.info(execEndLog.toString());
 			return serverResponse;
 		} else {
