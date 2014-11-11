@@ -3,6 +3,7 @@ package gambler.examples.webapp2.controller;
 import gambler.examples.webapp2.annotation.AuthRequired;
 import gambler.examples.webapp2.annotation.LogRequestParam;
 import gambler.examples.webapp2.constant.AuthConstants;
+import gambler.examples.webapp2.datasource.DataSourceContextHolder;
 import gambler.examples.webapp2.domain.auth.Permission;
 import gambler.examples.webapp2.domain.auth.Role;
 import gambler.examples.webapp2.domain.auth.User;
@@ -42,7 +43,8 @@ public class SysMgmtController extends AbstractController {
 			final HttpServletRequest request,
 			@LogRequestParam(name = "userId") @RequestParam(required = true) String userId,
 			@RequestParam(required = true) String password,
-			@LogRequestParam(name = "nick") @RequestParam(required = false) String nick)
+			@LogRequestParam(name = "nick") @RequestParam(required = false) String nick,
+			@LogRequestParam(name = "datasource") @RequestParam(required = false) String datasource)
 			throws ActionException, AccessForbiddenException {
 		if (!sysconf.getBoolean("switch.enableCreateSuper", false)) {
 			throw new AccessForbiddenException("switch.enableCreateSuper off");
@@ -50,6 +52,9 @@ public class SysMgmtController extends AbstractController {
 		if (!RegexValidateUtil.isValidUserId(userId)) {
 			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
 					"以字母开头的字母+数字+下划线，6-20位");
+		}
+		if(StringUtils.isNotBlank(datasource)){
+			DataSourceContextHolder.selectDataSource(datasource);
 		}
 		User dbUser = authUserService.findUserById(userId);
 		if (dbUser != null) {

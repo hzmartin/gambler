@@ -51,6 +51,28 @@
 				<gb.datasource.maxConnectionAge>1800</gb.datasource.maxConnectionAge>
 				<gb.datasource.maxIdleTime>1000</gb.datasource.maxIdleTime>
 				<gb.datasource.maxStatements>0</gb.datasource.maxStatements>
+				
+				<gb.datasource2.url>jdbc:derby:e:/tmp/gamblerdb</gb.datasource2.url>
+				<gb.datasource2.userName></gb.datasource2.userName>
+				<gb.datasource2.password></gb.datasource2.password>
+				<gb.datasource2.driverClassName>org.apache.derby.jdbc.EmbeddedDriver</gb.datasource2.driverClassName>
+				<gb.datasource2.initialSize>5</gb.datasource2.initialSize>
+				<gb.datasource2.maxActive>60</gb.datasource2.maxActive>
+				<gb.datasource2.maxIdle>5</gb.datasource2.maxIdle>
+				<gb.datasource2.removeAbandoned>true</gb.datasource2.removeAbandoned>
+				<gb.datasource2.removeAbandonedTimeout>60</gb.datasource2.removeAbandonedTimeout>
+				<gb.datasource2.logAbandoned>true</gb.datasource2.logAbandoned>
+				<gb.datasource2.maxWait>60</gb.datasource2.maxWait>
+				<gb.datasource2.minPoolSize>5</gb.datasource2.minPoolSize>
+				<gb.datasource2.maxPoolSize>20</gb.datasource2.maxPoolSize>
+				<gb.datasource2.acquireIncrement>5</gb.datasource2.acquireIncrement>
+				<gb.datasource2.acquireRetryAttempts>1</gb.datasource2.acquireRetryAttempts>
+				<gb.datasource2.idleConnectionTestPeriod>600</gb.datasource2.idleConnectionTestPeriod>
+				<gb.datasource2.checkoutTimeout>300000</gb.datasource2.checkoutTimeout>
+				<gb.datasource2.maxConnectionAge>1800</gb.datasource2.maxConnectionAge>
+				<gb.datasource2.maxIdleTime>1000</gb.datasource2.maxIdleTime>
+				<gb.datasource2.maxStatements>0</gb.datasource2.maxStatements>
+				
 				<gb.switch.enableCreateSuper>true</gb.switch.enableCreateSuper>
 				<gb.switch.enableAuthentication>true</gb.switch.enableAuthentication>
 				<org.quartz.threadPool.threadCount>3</org.quartz.threadPool.threadCount>
@@ -405,6 +427,7 @@
 					<include>log4j.xml</include>
 					<include>quartz.properties</include>
 					<include>datasource.properties</include>
+					<include>datasource2.properties</include>
 					<include>conf_sys.xml</include>
 				</includes>
 			</resource>
@@ -415,6 +438,7 @@
 					<exclude>log4j.xml</exclude>
 					<exclude>quartz.properties</exclude>
 					<exclude>datasource.properties</exclude>
+					<exclude>datasource2.properties</exclude>
 					<exclude>conf_sys.xml</exclude>
 				</excludes>
 			</resource>
