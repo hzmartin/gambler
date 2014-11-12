@@ -46,8 +46,10 @@ public class DataSourceAspectAdvice {
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			DataSourceContextHolder.clearDataSourceSelection();
-			logger.info("clear datasource selection");
+			if (StringUtils.isNotBlank(DataSourceContextHolder.getDataSourceName())) {
+				DataSourceContextHolder.clearDataSourceSelection();
+				logger.info("clear datasource selection");
+			}
 		}
 
 	}
