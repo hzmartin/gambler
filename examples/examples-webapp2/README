@@ -6,3 +6,6 @@ User Guide
 4. invoke /sysmgmt/createSuper.do
 5. add job class which implements org.quartz.jobs.Job
 6. schedule the job
+
+
+PS: super user(root/root)
