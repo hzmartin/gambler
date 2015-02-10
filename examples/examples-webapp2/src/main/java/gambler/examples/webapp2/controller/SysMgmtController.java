@@ -46,28 +46,31 @@ public class SysMgmtController extends AbstractController {
 			@LogRequestParam(name = "nick") @RequestParam(required = false) String nick,
 			@LogRequestParam(name = "datasource") @RequestParam(required = false) String datasource)
 			throws ActionException, AccessForbiddenException {
-		if (!sysconf.getBoolean("switch.enableCreateSuper", false)) {
-			throw new AccessForbiddenException("switch.enableCreateSuper off");
+		try {
+			if (!sysconf.getBoolean("switch.enableCreateSuper", false)) {
+				throw new AccessForbiddenException(
+						"switch.enableCreateSuper off");
+			}
+
+			if (StringUtils.isNotBlank(datasource)) {
+				DataSourceContextHolder.selectDataSource(datasource);
+			}
+			User dbUser = authUserService.findUserById(userId);
+			if (dbUser != null) {
+				throw new ActionException(ResponseStatus.USER_ALREADY_EXSIST,
+						new Object[] { userId });
+			}
+			User user = new User();
+			user.setUserId(userId);
+			user.setIssuper(1);
+			user.setIsactive(1);
+			user.setNick(nick);
+			user.setPassword(authUserService
+					.getSaltedPassword(password, userId));
+			return authUserService.saveAsSystemUser(user);
+		} finally {
+			DataSourceContextHolder.clearDataSourceSelection();
 		}
-		if (!RegexValidateUtil.isValidUserId(userId)) {
-			throw new ActionException(ResponseStatus.PARAM_ILLEGAL,
-					"以字母开头的字母+数字+下划线，6-20位");
-		}
-		if(StringUtils.isNotBlank(datasource)){
-			DataSourceContextHolder.selectDataSource(datasource);
-		}
-		User dbUser = authUserService.findUserById(userId);
-		if (dbUser != null) {
-			throw new ActionException(ResponseStatus.USER_ALREADY_EXSIST,
-					new Object[] { userId });
-		}
-		User user = new User();
-		user.setUserId(userId);
-		user.setIssuper(1);
-		user.setIsactive(1);
-		user.setNick(nick);
-		user.setPassword(authUserService.getSaltedPassword(password, userId));
-		return authUserService.saveAsSystemUser(user);
 	}
 
 	@RequestMapping(value = "/updatePassword")
@@ -183,7 +186,7 @@ public class SysMgmtController extends AbstractController {
 		}
 
 	}
-	
+
 	@RequestMapping(value = "/getUserPermission")
 	@ResponseBody
 	@AuthRequired(permission = { AuthConstants.PERM_SYSTEM.PERM_LIST_USERPERM })

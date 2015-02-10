@@ -32,7 +32,7 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<div class="checkbox">
-					<label> <input type="checkbox" id="job_durability">
+					<label> <input type="checkbox" id="job_durability" checked="checked">
 						durability
 					</label>
 				</div>

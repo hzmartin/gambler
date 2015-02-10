@@ -11,7 +11,7 @@
 	<name>Example Spring Webapp</name>
 	<description>Related Technologies: Spring MVC, mybatis etc.,</description>
 	<properties>
-		<spring.version>3.1.4.RELEASE</spring.version>
+		<spring.version>3.2.5.RELEASE</spring.version>
 		<gb.switch.enableCreateSuper>false</gb.switch.enableCreateSuper>
 		<gb.switch.enableAuthentication>true</gb.switch.enableAuthentication>
 		<gb.siteurl></gb.siteurl>
@@ -31,10 +31,10 @@
 				<gb.log4j.path>logs/example.log</gb.log4j.path>
 				<gb.log4j.level>DEBUG</gb.log4j.level>
 				<gb.log4j.appender>CONSOLE</gb.log4j.appender>
-				<gb.datasource.url><![CDATA[jdbc:mysql://127.0.0.1:3306/example?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true]]></gb.datasource.url>
-				<gb.datasource.userName>root</gb.datasource.userName>
-				<gb.datasource.password>ENC(ceKlIg2ES5Fb2cR3xTm9xQ==)</gb.datasource.password>
-				<gb.datasource.driverClassName>com.mysql.jdbc.Driver</gb.datasource.driverClassName>
+				<gb.datasource.url><![CDATA[jdbc:derby:gamblerdb]]></gb.datasource.url>
+				<gb.datasource.userName></gb.datasource.userName>
+				<gb.datasource.password></gb.datasource.password>
+				<gb.datasource.driverClassName>org.apache.derby.jdbc.EmbeddedDriver</gb.datasource.driverClassName>
 				<gb.datasource.initialSize>5</gb.datasource.initialSize>
 				<gb.datasource.maxActive>60</gb.datasource.maxActive>
 				<gb.datasource.maxIdle>5</gb.datasource.maxIdle>
@@ -51,27 +51,6 @@
 				<gb.datasource.maxConnectionAge>1800</gb.datasource.maxConnectionAge>
 				<gb.datasource.maxIdleTime>1000</gb.datasource.maxIdleTime>
 				<gb.datasource.maxStatements>0</gb.datasource.maxStatements>
-				
-				<gb.datasource2.url>jdbc:derby:e:/tmp/gamblerdb</gb.datasource2.url>
-				<gb.datasource2.userName></gb.datasource2.userName>
-				<gb.datasource2.password></gb.datasource2.password>
-				<gb.datasource2.driverClassName>org.apache.derby.jdbc.EmbeddedDriver</gb.datasource2.driverClassName>
-				<gb.datasource2.initialSize>5</gb.datasource2.initialSize>
-				<gb.datasource2.maxActive>60</gb.datasource2.maxActive>
-				<gb.datasource2.maxIdle>5</gb.datasource2.maxIdle>
-				<gb.datasource2.removeAbandoned>true</gb.datasource2.removeAbandoned>
-				<gb.datasource2.removeAbandonedTimeout>60</gb.datasource2.removeAbandonedTimeout>
-				<gb.datasource2.logAbandoned>true</gb.datasource2.logAbandoned>
-				<gb.datasource2.maxWait>60</gb.datasource2.maxWait>
-				<gb.datasource2.minPoolSize>5</gb.datasource2.minPoolSize>
-				<gb.datasource2.maxPoolSize>20</gb.datasource2.maxPoolSize>
-				<gb.datasource2.acquireIncrement>5</gb.datasource2.acquireIncrement>
-				<gb.datasource2.acquireRetryAttempts>1</gb.datasource2.acquireRetryAttempts>
-				<gb.datasource2.idleConnectionTestPeriod>600</gb.datasource2.idleConnectionTestPeriod>
-				<gb.datasource2.checkoutTimeout>300000</gb.datasource2.checkoutTimeout>
-				<gb.datasource2.maxConnectionAge>1800</gb.datasource2.maxConnectionAge>
-				<gb.datasource2.maxIdleTime>1000</gb.datasource2.maxIdleTime>
-				<gb.datasource2.maxStatements>0</gb.datasource2.maxStatements>
 				
 				<gb.switch.enableCreateSuper>true</gb.switch.enableCreateSuper>
 				<gb.switch.enableAuthentication>true</gb.switch.enableAuthentication>
@@ -278,11 +257,6 @@
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis</groupId>
