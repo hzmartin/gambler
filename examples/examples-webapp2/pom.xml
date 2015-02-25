@@ -18,7 +18,7 @@
 	</properties>
 	<profiles>
 		<profile>
-			<id>officedev</id>
+			<id>dev</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 				<property>
