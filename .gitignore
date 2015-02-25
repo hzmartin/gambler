@@ -213,6 +213,4 @@ pip-log.txt
 *.mo
 
 #Mr Developer
-log/
-logs/
-/examples/examples-webapp2/nbactions.xml
+nbactions.xml
