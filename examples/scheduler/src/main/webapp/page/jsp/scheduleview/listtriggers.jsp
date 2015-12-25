@@ -70,7 +70,7 @@
 																		+ '</td><td><button type="button" class="btn btn-primary trigger_view">View</button></tr>');
 											});
 							bind_action_handler();
-                                                        $('#trigger_list').dataTable({"paging":true, "order":[[6,"asc"]],"stateSave":true});
+                                                        $('#trigger_list').dataTable({"paging":true, "order":[[8,"asc"]],"stateSave":true});
 						}
 					}
 				});
