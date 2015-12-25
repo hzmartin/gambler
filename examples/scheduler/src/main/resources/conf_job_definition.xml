@@ -1,0 +1,21 @@
+<map>
+    <prop namespace="job_definition">
+        <key name="count">10</key>
+        <key name="job_name" order="1">hello</key>
+        <key name="job_class"  order="1">jobs.HelloWorldJob</key>
+        <key name="job_perm" order="1">1001</key>
+        <key name="job_description"  order="1">hello</key>
+        
+        <key name="job_name" order="2">native</key>
+        <key name="job_class"  order="2">org.quartz.jobs.NativeJob</key>
+        <key name="job_perm" order="2">500</key>
+        <key name="job_description"  order="2">Job for running Native executables</key>
+        <key name="job_param_count" order="2">2</key>
+        <key name="job_param_name_of_native" order="1">command</key>
+        <key name="job_param_description_of_native" order="1">actual executable name with for path</key>
+        <key name="job_param_required_of_native" order="1">true</key>
+        <key name="job_param_name_of_native" order="2">parameters</key>
+        <key name="job_param_description_of_native" order="2">parameters string</key>
+        <key name="job_param_required_of_native" order="2">false</key>
+    </prop>
+</map>

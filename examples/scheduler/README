@@ -1,0 +1,11 @@
+User Guide
+
+1. init quartz table by sql scripts under dbTables directory
+2. init scheduler table by sql scripts under scripts directory
+3. deploy the war package
+4. invoke /sysmgmt/createSuper.do
+5. add job class which implements org.quartz.jobs.Job
+6. schedule the job
+
+
+PS: super user(root/root)

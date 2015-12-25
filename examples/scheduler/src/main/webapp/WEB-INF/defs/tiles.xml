@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN" "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<definition name="base" template="/WEB-INF/templates/layout.jsp">
+		<put-attribute name="title" value="Scheduler" />
+		<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
+	</definition>
+	<definition name="index" extends="base">
+		<put-attribute name="title" value="Scheduler" />
+		<put-attribute name="content" value="/page/index.jsp" />
+	</definition>
+	<definition name="signin" template="/page/signin.jsp">
+		<put-attribute name="title" value="Login" />
+	</definition>
+	<definition name="404" template="/page/404.jsp">
+		<put-attribute name="title" value="Scheduler - 404 File Not Found" />
+	</definition>
+	<definition name="500" template="/page/500.jsp">
+		<put-attribute name="title" value="Scheduler - Server Busy" />
+	</definition>
+	<definition name="403" template="/page/403.jsp">
+		<put-attribute name="title" value="Scheduler - Forbidden" />
+	</definition>
+	
+</tiles-definitions> 

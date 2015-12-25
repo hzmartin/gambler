@@ -12,6 +12,6 @@
   <groupId>gambler.examples</groupId>
   <modules>
     <module>examples-webapp</module>
-    <module>examples-webapp2</module>
+    <module>scheduler</module>
   </modules>
 </project>
