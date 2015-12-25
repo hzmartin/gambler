@@ -1,1 +1,0 @@
-http://svn.terracotta.org/svn/quartz/webapp/trunk
