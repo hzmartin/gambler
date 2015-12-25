@@ -17,6 +17,8 @@
 <!-- Bootstrap core CSS -->
 <link href="<%= request.getContextPath() %>/bootstrap3/css/bootstrap.min.css" rel="stylesheet">
 <link href="<%= request.getContextPath() %>/assets/css/docs.css" rel="stylesheet">
+<link href="<%= request.getContextPath() %>/assets/css/jquery.dataTables.css" rel="stylesheet">
+<link href="<%= request.getContextPath() %>/assets/css/jquery.dataTables_themeroller.css" rel="stylesheet">
 <!-- Custom styles for this template -->
 <link href="<%= request.getContextPath() %>/css/base.css" rel="stylesheet">
 <link href="<%= request.getContextPath() %>/css/sticky-footer-navbar.css" rel="stylesheet">
@@ -27,6 +29,7 @@
 <!--  Java Scripts  -->
 <script src="<%= request.getContextPath() %>/assets/js/jquery.js"></script>
 <script src="<%= request.getContextPath() %>/assets/js/jquery.md5.js"></script>
+<script src="<%= request.getContextPath() %>/assets/js/jquery.dataTables.min.js"></script>
 <script src="<%= request.getContextPath() %>/bootstrap3/js/bootstrap.min.js"></script>
 <script src="<%= request.getContextPath() %>/assets/js/datepicker/js/bootstrap-datepicker.js"></script>
 <script src="<%= request.getContextPath() %>/assets/js/vendor/jquery.ui.widget.js"></script>

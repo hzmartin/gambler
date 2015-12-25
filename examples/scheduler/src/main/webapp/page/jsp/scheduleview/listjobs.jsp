@@ -50,6 +50,7 @@
 																		+ '&nbsp;<button type="button" class="btn btn-danger job_del">Delete</button></td></tr>');
 											});
 							bind_action_handler();
+                                                        $('#job_list').dataTable({"paging":true, "order":[[0,"asc"]],"stateSave":true});
 						}
 					}
 				});

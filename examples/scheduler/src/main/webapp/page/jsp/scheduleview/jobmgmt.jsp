@@ -59,8 +59,7 @@
 														+ value.nextFireTime
 														+ '</td></tr>');
 							});
-							
-
+                                                        
 							$('#executingjob_list tbody tr td span.job_interrupt').click(function() {
 								var jobName = $(this).parent().parent().attr("jobname");
 								var jobGroup = $(this).parent().parent().attr("jobgroup");
@@ -79,6 +78,7 @@
 									}
 								});
 							});
+                                                        $('#executingjob_list').dataTable({"paging":true, "order":[[4,"asc"]],"stateSave":true});
 						}
 					}
 				});

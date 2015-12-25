@@ -9,7 +9,7 @@
 	<artifactId>scheduler</artifactId>
 	<packaging>war</packaging>
 	<name>Example Scheduler</name>
-	<description>Related Technologies: Spring MVC, mybatis etc.,</description>
+	<description></description>
 	<properties>
 		<spring.version>3.2.5.RELEASE</spring.version>
 		<gb.switch.enableCreateSuper>false</gb.switch.enableCreateSuper>
@@ -383,7 +383,7 @@
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>6.1.5</version>
 				<configuration>
-					<contextPath>/gambler</contextPath>
+					<contextPath>/scheduler</contextPath>
 					<connectors>
 						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
 							<port>8080</port>
