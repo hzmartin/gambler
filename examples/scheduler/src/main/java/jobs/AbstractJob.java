@@ -2,7 +2,7 @@ package jobs;
 
 import gambler.commons.advmap.XMLMap;
 import gambler.commons.util.time.TimeUtils;
-import gambler.examples.webapp2.util.SpringContextHolder;
+import gambler.examples.scheduler.util.SpringContextHolder;
 
 import java.util.Date;
 

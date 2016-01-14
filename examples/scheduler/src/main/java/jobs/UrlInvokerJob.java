@@ -1,7 +1,7 @@
 package jobs;
 
-import gambler.examples.webapp2.exception.UnexpectedException;
-import gambler.examples.webapp2.util.HttpClientPool;
+import gambler.examples.scheduler.exception.UnexpectedException;
+import gambler.examples.scheduler.util.HttpClientPool;
 
 import java.util.ArrayList;
 import java.util.List;

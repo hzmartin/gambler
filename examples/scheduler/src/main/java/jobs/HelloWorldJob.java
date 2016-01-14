@@ -1,8 +1,8 @@
 package jobs;
 
-import gambler.examples.webapp2.domain.auth.User;
-import gambler.examples.webapp2.service.AuthUserService;
-import gambler.examples.webapp2.util.SpringContextHolder;
+import gambler.examples.scheduler.domain.auth.User;
+import gambler.examples.scheduler.service.AuthUserService;
+import gambler.examples.scheduler.util.SpringContextHolder;
 
 import org.apache.log4j.Logger;
 import org.quartz.InterruptableJob;

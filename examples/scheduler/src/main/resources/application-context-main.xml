@@ -92,7 +92,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
         <property name="processPropertyPlaceHolders" value="true"/>
         <property name="annotationClass"
             value="org.springframework.stereotype.Repository"/>
-        <property name="basePackage" value="gambler.examples.webapp2.dao"/>
+        <property name="basePackage" value="gambler.examples.scheduler.dao"/>
     </bean>
     
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -106,12 +106,12 @@ http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <context:component-scan base-package="gambler.examples.webapp2.service">
+    <context:component-scan base-package="gambler.examples.scheduler.service">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
 	</context:component-scan>
     
 	<!-- SpringContextHolder定义 -->
-    <bean class="gambler.examples.webapp2.util.SpringContextHolder" lazy-init="false" />
+    <bean class="gambler.examples.scheduler.util.SpringContextHolder" lazy-init="false" />
     
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host">

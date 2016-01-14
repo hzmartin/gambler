@@ -13,13 +13,13 @@ http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
 http://www.springframework.org/schema/aop
 http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
            
-    <bean id="simpleSchedulerListener" class="gambler.examples.webapp2.listener.SimpleSchedulerListener"/>
+    <bean id="simpleSchedulerListener" class="gambler.examples.scheduler.listener.SimpleSchedulerListener"/>
     
-    <bean id="simpleJobListener" class="gambler.examples.webapp2.listener.SimpleJobListener">
+    <bean id="simpleJobListener" class="gambler.examples.scheduler.listener.SimpleJobListener">
     	<property name="name" value ="simpleJobListener" />
     </bean>
     
-    <bean id="simpleTriggerListener" class="gambler.examples.webapp2.listener.SimpleTriggerListener">
+    <bean id="simpleTriggerListener" class="gambler.examples.scheduler.listener.SimpleTriggerListener">
     	<property name="name" value ="simpleTriggerListener" />
     </bean>
     

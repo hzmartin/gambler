@@ -31,7 +31,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	</listener>
 	
 	<listener>
-		<listener-class>gambler.examples.webapp2.context.SystemContextListener</listener-class>
+		<listener-class>gambler.examples.scheduler.context.SystemContextListener</listener-class>
 	</listener>
 	
 	<!-- encoding filter -->
