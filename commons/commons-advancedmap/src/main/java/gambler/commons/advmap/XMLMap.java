@@ -14,25 +14,25 @@ import org.xml.sax.SAXException;
  * data.<br/>
  * ex:<br/>
  * Sample xml file:<br/>
- * <properties><br/>
- * <property namespace="namespace1" locale="en_US"><br/>
- * <key name="keyname1"><br/>
+ * &lt;properties&gt;<br/>
+ * &lt;property namespace="namespace1" locale="en_US"&gt;<br/>
+ * &lt;key name="keyname1"&gt;<br/>
  * value1<br/>
- * </key><br/>
- * <key name="keyname2">value2</key><br/>
- * </property><br/>
- * <property namespace="namespace2"><br/>
- * <key name="keyname1"> value1 </key><br/>
- * <key name="keyname2"><br/>
- * value2</key><br/>
- * </property><br/>
- * <property><br/>
- * <key name="keyname1"><br/>
+ * &lt;/key&gt;<br/>
+ * &lt;key name="keyname2"&gt;value2&lt;/key&gt;<br/>
+ * &lt;/property&gt;<br/>
+ * &lt;property namespace="namespace2"&gt;<br/>
+ * &lt;key name="keyname1"&gt; value1 &lt;/key&gt;<br/>
+ * &lt;key name="keyname2"&gt;<br/>
+ * value2&lt;/key&gt;<br/>
+ * &lt;/property&gt;<br/>
+ * &lt;property&gt;<br/>
+ * &lt;key name="keyname1"&gt;<br/>
  * ${namespace2.keyname1}<br/>
- * </key><br/>
- * <key name="keyname2">value2</key><br/>
- * </property><br/>
- * </properties><br/>
+ * &lt;/key&gt;<br/>
+ * &lt;key name="keyname2"&gt;value2&lt;/key&gt;<br/>
+ * &lt;/property&gt;<br/>
+ * &lt;/properties&gt;<br/>
  * <br/>
  * Result Properties:<br/>
  * (namespace1.keyname1.en_US=value1)<br/>
