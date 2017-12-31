@@ -35,7 +35,7 @@ public class PasswordCommand extends AbstractCommand implements ICommand {
 					type = params[4];
 				}
 				int count = passwordService.saveOrUpdate(uid, site, type, password);
-				System.out.println(String.format("password saved[%s, %s, %s]: %s", uid, site, type, count));
+				System.out.println(String.format("password[%s, %s, %s]  saved, affected count: %s", uid, site, type, count));
 			} catch (IOException ex) {
 				throw new ServiceException(ex);
 			}
@@ -49,9 +49,9 @@ public class PasswordCommand extends AbstractCommand implements ICommand {
 				}
 				EncryptedPassword password = passwordService.get(uid, site, type);
 				if (password == null) {
-					System.out.println(String.format("password [%s, %s, %s] missing", uid, site, type));
+					System.out.println(String.format("password[%s, %s, %s] missing", uid, site, type));
 				} else {
-					System.out.println(String.format("password [%s, %s, %s]: %s", uid, site, type,
+					System.out.println(String.format("password[%s, %s, %s]: %s", uid, site, type,
 							passwordService.decrypt(password.getPasswd())));
 				}
 			} catch (IOException ex) {
@@ -61,7 +61,7 @@ public class PasswordCommand extends AbstractCommand implements ICommand {
 			try {
 				List<EncryptedPassword> all = passwordService.getAll();
 				for (EncryptedPassword e : all) {
-					System.out.println(String.format("password [%s, %s, %s]: %s", e.getUid(), e.getSite(), e.getType(),
+					System.out.println(String.format("password[%s, %s, %s]: %s", e.getUid(), e.getSite(), e.getType(),
 							passwordService.decrypt(e.getPasswd())));
 				}
 			} catch (IOException ex) {
@@ -76,7 +76,7 @@ public class PasswordCommand extends AbstractCommand implements ICommand {
 					type = params[3];
 				}
 				int count = passwordService.delete(uid, site, type);
-				System.out.println(String.format("password deleted[%s, %s, %s]: %s", uid, site, type, count));
+				System.out.println(String.format("password[%s, %s, %s] deleted, affected count: %s", uid, site, type, count));
 
 			} catch (IOException ex) {
 				throw new ServiceException(ex);
