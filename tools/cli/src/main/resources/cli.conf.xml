@@ -1,13 +1,14 @@
 <map>
 	<prop namespace="password">
 		<key name="algorithm">PBEWithMD5AndDES</key>
-		<key name="password">gambler-martin</key>
+		<key name="envName">GAMBLER_PASSWD</key>
 	</prop>
 	<prop namespace="cli">
 		<key name="maxHistorySize">100</key>
+		<key name="debug">on</key>
 	</prop>
-        <prop namespace="cmd">
-            <!-- make sure the unique name for each command -->
-            <key name="password">gambler.tools.cli.cmd.PasswordCommand</key>
-        </prop>
+    <prop namespace="cmd">
+        <!-- make sure the unique name for each command -->
+        <key name="password">gambler.tools.cli.cmd.PasswordCommand</key>
+    </prop>
 </map>

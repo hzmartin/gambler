@@ -1,5 +1,6 @@
 package gambler.commons.util.jasypt;
 
+import org.apache.commons.lang.StringUtils;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 
 /**
@@ -31,7 +32,12 @@ public class GBEnvironmentStringPBEConfig extends EnvironmentStringPBEConfig{
     @Override
     public void setPasswordEnvName(String passwordEnvName) {
         String password = System.getenv(passwordEnvName);
-        setPassword(password);
+		if (StringUtils.isEmpty(password)) {
+			System.out.println("WARN: ENV PASSWORD set missing, default encrypt password will be used!");
+		} else {
+			System.out.println("ENV PASSWORD: " + password);
+	        setPassword(password);
+		}
     }
 
     /**

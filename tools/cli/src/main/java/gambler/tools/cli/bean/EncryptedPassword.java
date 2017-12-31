@@ -10,6 +10,11 @@ package gambler.tools.cli.bean;
  * @author wangqihui
  */
 public class EncryptedPassword {
+	
+	public static final String TYPE_DEFAULT = "-";
+	public static final String TYPE_LOGIN = "login";
+	public static final String TYPE_QUERY= "query";
+	public static final String TYPE_PAY = "pay";
     
     private Integer id;
     

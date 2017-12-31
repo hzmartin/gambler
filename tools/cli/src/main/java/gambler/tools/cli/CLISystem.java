@@ -1,5 +1,13 @@
 package gambler.tools.cli;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import gambler.commons.advmap.AdvancedKey;
 import gambler.commons.advmap.XMLMap;
 import gambler.commons.util.io.FileProcessor;
@@ -13,16 +21,6 @@ import gambler.tools.cli.cmd.SysConfigCommand;
 import gambler.tools.cli.cmd.SystemCommand;
 import gambler.tools.cli.cmd.TimeTagCommand;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-
 /**
  * Class CLISystem
  * 
@@ -35,8 +33,6 @@ import org.apache.log4j.Logger;
  */
 public final class CLISystem implements IConfigrableConstants {
 
-	private static final Logger logger = Logger.getLogger(CLISystem.class);
-
 	@SuppressWarnings("rawtypes")
 	private static final Map<String, Class> commandMap = new HashMap<String, Class>();
 
@@ -47,7 +43,7 @@ public final class CLISystem implements IConfigrableConstants {
 	private ICommand prevCommand = null;
 
 	public static final XMLMap SYSCONFIG = new XMLMap("Gambler CLI Config", 0,
-			"cli.conf.xml", "cli.conf.ext.xml");
+			"cli.conf.xml");
 
 	public CLISystem() {
 		super();
@@ -104,14 +100,18 @@ public final class CLISystem implements IConfigrableConstants {
 					String cmdClass = SYSCONFIG.get(key);
 					loadExtCommand(cmdClass);
 				} catch (LoadExtCommandException ex) {
-					logger.warn(ex, ex);
 					System.out.println("WARN: load external command "
 							+ key.getNsKey() + " error!");
+					if (CLISystem.isDebugOn()) {
+						ex.printStackTrace(System.err);
+					}
 				} catch (CommandNameConflictException ex) {
-					logger.warn(ex, ex);
 					System.out.println("load external command "
 							+ key.getNsKey()
 							+ " error: command name conflicts!");
+					if (CLISystem.isDebugOn()) {
+						ex.printStackTrace(System.err);
+					}
 				}
 			}
 		}
@@ -164,8 +164,11 @@ public final class CLISystem implements IConfigrableConstants {
 				}
 			});
 			fileProcessor.processLines();
-		} catch (Exception e) {
-			logger.warn("load history commands failed！");
+		} catch (Exception ex) {
+			System.out.println("load history commands failed！");
+			if (CLISystem.isDebugOn()) {
+				ex.printStackTrace(System.err);
+			}
 		}
 
 	}
@@ -194,7 +197,10 @@ public final class CLISystem implements IConfigrableConstants {
 		try {
 			return (ICommand) commandMap.get(name.toLowerCase()).newInstance();
 		} catch (Exception e) {
-			logger.warn("create command[ " + name + "] instance error", e);
+			System.out.println("create command[ " + name + "] instance error");
+			if (CLISystem.isDebugOn()) {
+				e.printStackTrace(System.err);
+			}
 			return null;
 		}
 	}
@@ -226,5 +232,9 @@ public final class CLISystem implements IConfigrableConstants {
 
 	public ICommand getHistoryCommand(int index) {
 		return historyCommands.get(index);
+	}
+	
+	public static boolean isDebugOn() {
+		return SYSCONFIG.getString("cli.debug", "off").equalsIgnoreCase("on");
 	}
 }

@@ -10,7 +10,7 @@
     <description>Command Line Tools</description>
     <properties>
         <gb.log4j.path>logs</gb.log4j.path>
-        <gb.log4j.level>INFO</gb.log4j.level>
+        <gb.log4j.level>DEBUG</gb.log4j.level>
     </properties>
     <dependencies>
         <dependency>
@@ -24,9 +24,14 @@
             <version>1.0</version>
         </dependency>
         <dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+        <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
-            <version>10.10.1.1</version>
+            <version>10.13.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>

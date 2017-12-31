@@ -1,13 +1,13 @@
 package gambler.tools.cli;
 
-import gambler.tools.cli.cmd.CommandExecException;
-import gambler.tools.cli.cmd.CommandUsageException;
-import gambler.tools.cli.cmd.ICommand;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+
+import gambler.tools.cli.cmd.CommandExecException;
+import gambler.tools.cli.cmd.CommandUsageException;
+import gambler.tools.cli.cmd.ICommand;
 
 /**
  * Command Line Tools Main Class
@@ -65,7 +65,7 @@ public class CLI {
 				cmd.execute();
 			} catch (CommandExecException ex) {
 				System.out.println("execute comand [" + cmd + "] error!");
-				if (isDebugOn()) {
+				if (CLISystem.isDebugOn()) {
 					ex.printStackTrace(System.err);
 				}
 			} catch (CommandUsageException ex) {
@@ -74,10 +74,6 @@ public class CLI {
 
 		}
 
-	}
-
-	public static boolean isDebugOn() {
-		return CLISystem.SYSCONFIG.getBoolean("cli.debug", false);
 	}
 
 	/**

@@ -41,7 +41,7 @@
 		</layout>
 	</appender>
         
-        <logger name="org.springframework">
+    <logger name="org.springframework">
 		<level value="WARN" />
 	</logger>
 
