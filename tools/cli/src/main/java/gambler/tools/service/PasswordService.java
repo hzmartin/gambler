@@ -1,9 +1,9 @@
 package gambler.tools.service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
@@ -22,10 +22,10 @@ public class PasswordService {
 		GBEnvironmentStringPBEConfig config = new GBEnvironmentStringPBEConfig();
 		String envName = sysConfig.getString("password.envName");
 		if (StringUtils.isEmpty(envName)) {
-			System.out.println("envName missing, default encrypt password will be used!");
+			System.out.println("envName config missing, default encrypt password will be used!");
 		} else {
 			if (CLISystem.isDebugOn()) {
-				System.out.println("envName " + envName + " will be used!");
+				System.out.println("env " + envName + " will be used!");
 				String envPasswd = System.getenv(envName);
 				if (StringUtils.isEmpty(envPasswd)) {
 					System.out.println("ENV PASSWORD missing, default encrypt password will be used!");
@@ -82,6 +82,21 @@ public class PasswordService {
 		p.setSite(site);
 		SqlSession session = DBUtil.getSqlSessionFactory().openSession(true);
 		return session.selectOne("EncryptedPassword.get", p);
+	}
+
+	public List<EncryptedPassword> getAll() throws IOException {
+
+		SqlSession session = DBUtil.getSqlSessionFactory().openSession(true);
+		return session.selectList("EncryptedPassword.get");
+	}
+
+	public int delete(String uid, String site, String type) throws IOException {
+		EncryptedPassword p = new EncryptedPassword();
+		p.setUid(uid);
+		p.setType(type);
+		p.setSite(site);
+		SqlSession session = DBUtil.getSqlSessionFactory().openSession(true);
+		return session.delete("EncryptedPassword.delete", p);
 	}
 
 }
