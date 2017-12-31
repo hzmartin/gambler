@@ -22,14 +22,23 @@ public class PasswordService {
 		GBEnvironmentStringPBEConfig config = new GBEnvironmentStringPBEConfig();
 		String envName = sysConfig.getString("password.envName");
 		if (StringUtils.isEmpty(envName)) {
-			System.out.println("WARN: envName missing, default encrypt password will be used!");
+			System.out.println("envName missing, default encrypt password will be used!");
 		} else {
-			System.out.println("envName " + envName + " will be used!");
+			if (CLISystem.isDebugOn()) {
+				System.out.println("envName " + envName + " will be used!");
+				String envPasswd = System.getenv(envName);
+				if (StringUtils.isEmpty(envPasswd)) {
+					System.out.println("ENV PASSWORD missing, default encrypt password will be used!");
+				} else {
+					System.out.println("ENV PASSWORD: " + envPasswd);
+				}
+			}
+
 			config.setPasswordEnvName(envName);
 		}
 		String algorithm = sysConfig.getString("password.algorithm");
 		if (StringUtils.isEmpty(algorithm)) {
-			System.out.println("WARN: algorightm missing, PBEWithMD5AndDES will be used");
+			System.out.println("algorightm missing, PBEWithMD5AndDES will be used");
 			algorithm = "PBEWithMD5AndDES";
 		} else {
 			config.setAlgorithm(algorithm);
@@ -54,23 +63,25 @@ public class PasswordService {
 		p.setType(type);
 		p.setSite(site);
 		p.setPasswd(encrypt(password));
-		SqlSession session = DBUtil.getSqlSessionFactory().openSession(true);
-		List<EncryptedPassword> passwds = session.selectList("EncryptedPassword.get", p);
-		if (CollectionUtils.isEmpty(passwds)) {
-			return session.insert("EncryptedPassword.insert", p);
+		SqlSession session = DBUtil.getSqlSessionFactory().openSession(false);
+		EncryptedPassword storedPasswd = session.selectOne("EncryptedPassword.get", p);
+		int count = 0;
+		if (storedPasswd == null) {
+			count = session.insert("EncryptedPassword.insert", p);
 		} else {
-			return session.update("EncryptedPassword.update", p);
+			count = session.update("EncryptedPassword.update", p);
 		}
+		session.commit();
+		return count;
 	}
 
-	public void get(String uid, String site, String type) throws IOException {
+	public EncryptedPassword get(String uid, String site, String type) throws IOException {
 		EncryptedPassword p = new EncryptedPassword();
 		p.setUid(uid);
 		p.setType(type);
 		p.setSite(site);
 		SqlSession session = DBUtil.getSqlSessionFactory().openSession(true);
-		session.selectList("EncryptedPassword.get", p);
-		session.commit();
+		return session.selectOne("EncryptedPassword.get", p);
 	}
 
 }

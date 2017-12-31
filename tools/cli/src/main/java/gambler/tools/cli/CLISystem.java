@@ -100,7 +100,7 @@ public final class CLISystem implements IConfigrableConstants {
 					String cmdClass = SYSCONFIG.get(key);
 					loadExtCommand(cmdClass);
 				} catch (LoadExtCommandException ex) {
-					System.out.println("WARN: load external command "
+					System.out.println("load external command "
 							+ key.getNsKey() + " error!");
 					if (CLISystem.isDebugOn()) {
 						ex.printStackTrace(System.err);
