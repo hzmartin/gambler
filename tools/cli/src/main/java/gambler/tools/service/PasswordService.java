@@ -25,12 +25,9 @@ public class PasswordService {
 			System.out.println("envName config missing, default encrypt password will be used!");
 		} else {
 			if (CLISystem.isDebugOn()) {
-				System.out.println("env " + envName + " will be used!");
 				String envPasswd = System.getenv(envName);
 				if (StringUtils.isEmpty(envPasswd)) {
 					System.out.println("ENV PASSWORD missing, default encrypt password will be used!");
-				} else {
-					System.out.println("ENV PASSWORD: " + envPasswd);
 				}
 			}
 
