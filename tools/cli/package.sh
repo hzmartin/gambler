@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rel_path=~/cli
+rel_path=~/clirel
 rm -rf $rel_path
 mkdir $rel_path
 mvn clean package -DskipTests
