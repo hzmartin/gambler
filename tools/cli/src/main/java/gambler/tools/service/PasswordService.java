@@ -1,22 +1,18 @@
 package gambler.tools.service;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
-import gambler.commons.advmap.XMLMap;
 import gambler.commons.util.jasypt.GBEnvironmentStringPBEConfig;
 import gambler.tools.cli.CLISystem;
 import gambler.tools.cli.bean.EncryptedPassword;
 import gambler.tools.cli.util.DBUtil;
 
-public class PasswordService {
-
-	private static final XMLMap sysConfig = CLISystem.SYSCONFIG;
+public class PasswordService extends AbstractService {
 
 	private StandardPBEStringEncryptor getEncryptor() {
 		GBEnvironmentStringPBEConfig config = new GBEnvironmentStringPBEConfig();

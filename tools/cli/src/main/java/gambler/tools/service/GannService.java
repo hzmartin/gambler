@@ -1,25 +1,41 @@
 package gambler.tools.service;
 
-import java.util.Date;
 import java.util.Locale;
 
-import gambler.commons.advmap.XMLMap;
-import gambler.tools.cli.CLISystem;
+import gambler.commons.util.time.TimeUtils;
+import gambler.tools.cli.bean.Gann4;
 
-public class GannService {
+public class GannService extends AbstractService {
 
-	private static final XMLMap sysConfig = CLISystem.SYSCONFIG;
-
-	public void printGann4(double startprice, Date starttime, double pricestep, String timeunit, int size,
+	public void printGann4_SIZE13(double startprice, String starttime, double pricestep, String timeunit,
 			String output) {
-
+		TimeUtils.parseDate(starttime);
+		Gann4 GANN4 = new Gann4();
+		int[][] gann4 = GANN4.Gann4_SIZE13();
+		int celllen = 8;
+		int size = 13;
+		StringBuffer sb = new StringBuffer();
+		char fillChar = '-';
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < celllen+1; j++) {
+				sb.append(fillChar);
+			}
+		}
+		sb.append(fillChar);
+		for (int i = 0; i < size; i++) {
+			System.out.println(sb.toString());
+			for (int j = 0; j < size; j++) {
+				System.out.format("|%-" + celllen + "d", gann4[i][j]);
+			}
+			System.out.println("|");
+		}
 	}
-	
-	public static void main(String[] args){
-	}
-	
 
-	public void test() {
+	public static void main(String[] args) {
+		new GannService().printGann4_SIZE13(0, "2000-01-01", 1, "d", "o.txt");
+	}
+
+	public void formatprint() {
 		int year = 2020;
 		// 总长度，左对齐，补0，千位分隔符，小数点位数，本地化表达
 
