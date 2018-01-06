@@ -30,10 +30,10 @@ public class SecurityUtilTest {
         // 生成公私玥
         KeyPair keyPair = SecurityUtil.generateRSAKeyPair();
         //PEM格式保存秘钥
-        String pubKeyFile = "test.pem";
+        String pubKeyFile = "/tmp/test.pem";
         File pubPem = new File(pubKeyFile);
         SecurityUtil.saveKeyAsPemFormat(keyPair.getPublic(), pubPem);
-        String privKeyFile = "test.priv.key";
+        String privKeyFile = "/tmp/test.priv.key";
         File pemPriv = new File(privKeyFile);
         SecurityUtil.saveKeyAsPemFormat(keyPair.getPrivate(), pemPriv);
 
