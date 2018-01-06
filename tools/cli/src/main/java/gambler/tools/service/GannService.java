@@ -58,7 +58,7 @@ public class GannService extends AbstractService {
 	}
 
 	public void printGann4Price13(double startprice, double pricestep) {
-		printGann4Price13(startprice, pricestep, 10, 0);
+		printGann4Price13(startprice, pricestep, 8, 0);
 	}
 
 	public void printGann4Price13(double startprice, double pricestep, int celllen, int decimalscale) {
