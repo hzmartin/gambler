@@ -42,7 +42,7 @@ public class GannCommand extends AbstractCommand implements ICommand {
 
 	@Override
 	public String[] getAlias() {
-		return new String[] {};
+		return new String[] {"gann"};
 	}
 
 }

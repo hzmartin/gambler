@@ -42,8 +42,7 @@ public final class CLISystem implements IConfigrableConstants {
 
 	private ICommand prevCommand = null;
 
-	public static final XMLMap SYSCONFIG = new XMLMap("Gambler CLI Config", 0,
-			"cli.conf.xml");
+	public static final XMLMap SYSCONFIG = new XMLMap("Gambler CLI Config", 0, "cli.conf.xml");
 
 	public CLISystem() {
 		super();
@@ -64,17 +63,23 @@ public final class CLISystem implements IConfigrableConstants {
 		}
 	}
 
-	private void initCommandMap(ICommand cmd)
-			throws CommandNameConflictException {
+	private void initCommandMap(ICommand cmd) throws CommandNameConflictException {
 		if (commandMap.containsKey(cmd.getName())) {
-			throw new CommandNameConflictException("command name "
-					+ cmd.getName() + " conflicts!");
+			if (cmd.getClass().equals(commandMap.get(cmd.getName()))) {
+				// already loaded
+				return;
+			}
+			throw new CommandNameConflictException("command name " + cmd.getName() + " conflicts!");
 		}
 		commandMap.put(cmd.getName(), cmd.getClass());
 		for (String alias : cmd.getAlias()) {
 			if (commandMap.containsKey(alias)) {
-				throw new CommandNameConflictException("command("
-						+ cmd.getName() + ") alias  " + alias + " conflicts!");
+				if (cmd.getClass().equals(commandMap.get(alias))) {
+					// already loaded
+					return;
+				}
+				throw new CommandNameConflictException(
+						"command(" + cmd.getName() + ") alias  " + alias + " conflicts!");
 			}
 			commandMap.put(alias, cmd.getClass());
 		}
@@ -100,15 +105,12 @@ public final class CLISystem implements IConfigrableConstants {
 					String cmdClass = SYSCONFIG.get(key);
 					loadExtCommand(cmdClass);
 				} catch (LoadExtCommandException ex) {
-					System.out.println("load external command "
-							+ key.getNsKey() + " error!");
+					System.out.println("load external command " + key.getNsKey() + " error!");
 					if (CLISystem.isDebugOn()) {
 						ex.printStackTrace(System.err);
 					}
 				} catch (CommandNameConflictException ex) {
-					System.out.println("load external command "
-							+ key.getNsKey()
-							+ " error: command name conflicts!");
+					System.out.println("load external command " + key.getNsKey() + " error: command name conflicts!");
 					if (CLISystem.isDebugOn()) {
 						ex.printStackTrace(System.err);
 					}
@@ -117,29 +119,24 @@ public final class CLISystem implements IConfigrableConstants {
 		}
 	}
 
-	public final void loadExtCommand(String cmdClass)
-			throws LoadExtCommandException, CommandNameConflictException {
+	public final void loadExtCommand(String cmdClass) throws LoadExtCommandException, CommandNameConflictException {
 		try {
 			ICommand cmdInst = (ICommand) Class.forName(cmdClass).newInstance();
 			commandList.add(cmdInst);
 			initCommandMap(cmdInst);
 		} catch (ClassNotFoundException ex) {
-			throw new LoadExtCommandException("load external command error!",
-					ex);
+			throw new LoadExtCommandException("load external command error!", ex);
 		} catch (IllegalAccessException ex) {
-			throw new LoadExtCommandException("load external command error!",
-					ex);
+			throw new LoadExtCommandException("load external command error!", ex);
 		} catch (InstantiationException ex) {
-			throw new LoadExtCommandException("load external command error!",
-					ex);
+			throw new LoadExtCommandException("load external command error!", ex);
 		}
 	}
 
 	private void loadHistoryCommands() {
 		try {
-			File historyFile = new File(SYSCONFIG.getString(
-					CLISystem.HISTORY_COMMAND_FILE,
-					DEFAULT_HISTORY_COMMAND_FILE));
+			File historyFile = new File(
+					SYSCONFIG.getString(CLISystem.HISTORY_COMMAND_FILE, DEFAULT_HISTORY_COMMAND_FILE));
 			if (!historyFile.exists()) {
 				historyFile.getParentFile().mkdirs();
 				historyFile.createNewFile();
@@ -215,8 +212,7 @@ public final class CLISystem implements IConfigrableConstants {
 
 	public void addHistoryCommand(ICommand command) {
 		historyCommands.add(command);
-		Integer max = Integer.parseInt(CLISystem.SYSCONFIG.getString(
-				MAX_HISTORY_SIZE, "100"));
+		Integer max = Integer.parseInt(CLISystem.SYSCONFIG.getString(MAX_HISTORY_SIZE, "100"));
 		if (historyCommands.size() > max) {
 			historyCommands.remove(0);
 		}
@@ -233,7 +229,7 @@ public final class CLISystem implements IConfigrableConstants {
 	public ICommand getHistoryCommand(int index) {
 		return historyCommands.get(index);
 	}
-	
+
 	public static boolean isDebugOn() {
 		return SYSCONFIG.getString("cli.debug", "off").equalsIgnoreCase("on");
 	}

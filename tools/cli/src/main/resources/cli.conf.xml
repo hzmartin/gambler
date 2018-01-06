@@ -9,6 +9,7 @@
 	</prop>
     <prop namespace="cmd">
         <!-- make sure the unique name for each command -->
-        <key name="password">gambler.tools.cli.cmd.PasswordCommand</key>
+        <key name="1">gambler.tools.cli.cmd.PasswordCommand</key>
+        <key name="2">gambler.tools.cli.cmd.GannCommand</key>
     </prop>
 </map>
