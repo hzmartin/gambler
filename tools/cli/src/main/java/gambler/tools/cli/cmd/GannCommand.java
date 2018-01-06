@@ -19,13 +19,11 @@ public class GannCommand extends AbstractCommand implements ICommand {
 		if (isSubCommand("price4")) {
 			double startprice = Double.valueOf(params[1]);// 起始价格或者指数
 			double pricestep = Double.valueOf(params[2]);// 价格或指数步长，比如每格升100点
-			String output = params[3];
-			gann.printGann4Price13(startprice, pricestep, output);
+			gann.printGann4Price13(startprice, pricestep);
 		}if (isSubCommand("time4")) {
 			String starttime = params[1];// 起始时间
 			String timeunit = params[2];// 时间单位，可选值：d/w/m，分别代表日d/周w/月m
-			String output = params[3];
-			gann.printGann4Time13(starttime, timeunit, output);
+			gann.printGann4Time13(starttime, timeunit);
 		} else {
 			throw new CommandUsageException("command usage error!");
 		}
@@ -34,12 +32,12 @@ public class GannCommand extends AbstractCommand implements ICommand {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] { "四方图" };
+		return new String[] { "价格四方图", "时间四方图, 格式：yyyy-MM-dd，unit:d/w/m" };
 	}
 
 	@Override
 	public String[] getSyntax() {
-		return new String[] { "gann 4" };
+		return new String[] { "gann price4 /startprice/ /pricestep/", "gann time4 /starttime/ timeunit/" };
 	}
 
 	@Override

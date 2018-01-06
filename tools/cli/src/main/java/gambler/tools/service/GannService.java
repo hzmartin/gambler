@@ -8,11 +8,11 @@ import gambler.tools.cli.bean.Gann4;
 
 public class GannService extends AbstractService {
 
-	public void printGann4Time13(String starttime, String timeunit, String output) {
-		printGann4Time13(starttime, timeunit, 10, output);
+	public void printGann4Time13(String starttime, String timeunit) {
+		printGann4Time13(starttime, timeunit, 10);
 	}
 
-	public void printGann4Time13(String starttime, String timeunit, int celllen, String output) {
+	public void printGann4Time13(String starttime, String timeunit, int celllen) {
 		int size = 13;
 		String format = "|%-" + celllen + "s";
 		Date start = TimeUtils.parseDate(starttime);
@@ -57,11 +57,11 @@ public class GannService extends AbstractService {
 		}
 	}
 
-	public void printGann4Price13(double startprice, double pricestep, String output) {
-		printGann4Price13(startprice, pricestep, 10, 2, output);
+	public void printGann4Price13(double startprice, double pricestep) {
+		printGann4Price13(startprice, pricestep, 10, 2);
 	}
 
-	public void printGann4Price13(double startprice, double pricestep, int celllen, int decimalscale, String output) {
+	public void printGann4Price13(double startprice, double pricestep, int celllen, int decimalscale) {
 		int size = 13;
 		String format = "|%-" + celllen + "." + decimalscale + "f";
 		for (int i = 0; i < size; i++) {
@@ -91,10 +91,9 @@ public class GannService extends AbstractService {
 		String starttime = "2017-12-02";
 		double pricestep = 100;
 		String timeunit = "m";
-		String output = "o.txt";
 		GannService g = new GannService();
-		// g.printGann4Price13(startprice, pricestep, 6, 0, output);
-		g.printGann4Time13(starttime, timeunit, 10, output);
+		g.printGann4Price13(startprice, pricestep, 6, 0);
+		g.printGann4Time13(starttime, timeunit, 10);
 	}
 
 	public void formatprint() {
