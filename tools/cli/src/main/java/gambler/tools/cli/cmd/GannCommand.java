@@ -16,15 +16,24 @@ public class GannCommand extends AbstractCommand implements ICommand {
 
 	@Override
 	public void service(String[] params) throws CommandUsageException, ServiceException {
+		int size = 13;
 		if (isSubCommand("p4")) {
-			double startprice = Double.valueOf(params[1]);// 起始价格或者指数
-			double pricestep = Double.valueOf(params[2]);// 价格或指数步长，比如每格升100点
-			gann.printGann4Price13(startprice, pricestep);
+			int startprice = Integer.valueOf(params[1]);// 起始价格或者指数
+			int pricestep = Integer.valueOf(params[2]);// 价格或指数步长，比如每格升100点
+			if (params.length > 3) {
+				size = Integer.valueOf(params[3]);
+			}
+			gann.printGann4Price(startprice, pricestep, size);
 		} else if (isSubCommand("t4")) {
 			String starttime = params[1];// 起始时间
 			String timeunit = params[2];// 时间单位，可选值：d/w/m，分别代表日d/周w/月m
-			gann.printGann4Time13(starttime, timeunit);
-		} else {
+			if (params.length > 3) {
+				size = Integer.valueOf(params[3]);
+			}
+			gann.printGann4Time(starttime, timeunit, size);
+		} else
+
+		{
 			throw new CommandUsageException("command usage error!");
 		}
 

@@ -8,12 +8,12 @@ import gambler.tools.cli.bean.Gann4;
 
 public class GannService extends AbstractService {
 
-	public void printGann4Time13(String starttime, String timeunit) {
-		printGann4Time13(starttime, timeunit, 10);
+	public void printGann4Time(String starttime, String timeunit, int size) {
+		printGann4Time(starttime, timeunit, size, 10);
 	}
 
-	public void printGann4Time13(String starttime, String timeunit, int celllen) {
-		int size = 13;
+	public void printGann4Time(String starttime, String timeunit, int size, int celllen) {
+		int matrix[][] = Gann4.gann4matrix(size);
 		String format = "|%-" + celllen + "s";
 		Date start = TimeUtils.parseDate(starttime);
 		if ("d".equalsIgnoreCase(timeunit)) {
@@ -22,7 +22,7 @@ public class GannService extends AbstractService {
 				for (int j = 0; j < size; j++) {
 					System.out.format(format,
 							TimeUtils.format(
-									start.getTime() + (Gann4.Gann4_SIZE13[i][j] - 1) * TimeUtils.ONE_DAY_IN_MILLIS,
+									start.getTime() + (matrix[i][j] - 1) * TimeUtils.ONE_DAY_IN_MILLIS,
 									"yyyy-MM-dd"));
 				}
 				System.out.println("|");
@@ -36,7 +36,7 @@ public class GannService extends AbstractService {
 					System.out.format(format,
 							TimeUtils.format(
 									startsecs * 1000L
-											+ (Gann4.Gann4_SIZE13[i][j] - 1) * TimeUtils.ONE_DAY_IN_MILLIS * 7,
+											+ (matrix[i][j] - 1) * TimeUtils.ONE_DAY_IN_MILLIS * 7,
 									"yyyy-MM-dd"));
 				}
 				System.out.println("|");
@@ -47,7 +47,7 @@ public class GannService extends AbstractService {
 				fill(celllen, size, '-');
 				for (int j = 0; j < size; j++) {
 					System.out.format(format, TimeUtils.format(
-							TimeUtils.getFirstDayOfMonth(start, Gann4.Gann4_SIZE13[i][j] - 1) * 1000L, "yyyy-MM-dd"));
+							TimeUtils.getFirstDayOfMonth(start, matrix[i][j] - 1) * 1000L, "yyyy-MM-dd"));
 				}
 				System.out.println("|");
 			}
@@ -57,17 +57,17 @@ public class GannService extends AbstractService {
 		}
 	}
 
-	public void printGann4Price13(double startprice, double pricestep) {
-		printGann4Price13(startprice, pricestep, 8, 0);
+	public void printGann4Price(int startprice, int pricestep, int size) {
+		printGann4Price(startprice, pricestep, size, 8);
 	}
 
-	public void printGann4Price13(double startprice, double pricestep, int celllen, int decimalscale) {
-		int size = 13;
-		String format = "|%-" + celllen + "." + decimalscale + "f";
+	public void printGann4Price(int startprice, int pricestep, int size, int celllen) {
+		int matrix[][] = Gann4.gann4matrix(size);
+		String format = "|%-" + celllen + "d";
 		for (int i = 0; i < size; i++) {
 			fill(celllen, size, '-');
 			for (int j = 0; j < size; j++) {
-				System.out.format(format, startprice + (Gann4.Gann4_SIZE13[i][j] - 1) * pricestep);
+				System.out.format(format, startprice + (matrix[i][j] - 1) * pricestep);
 			}
 			System.out.println("|");
 		}
@@ -87,13 +87,14 @@ public class GannService extends AbstractService {
 
 	public static void main(String[] args) {
 		// HSI INDEX
-		double startprice = 6890;
+		int startprice = 6890;
 		String starttime = "2017-12-02";
-		double pricestep = 100;
+		int pricestep = 100;
 		String timeunit = "m";
 		GannService g = new GannService();
-		g.printGann4Price13(startprice, pricestep, 6, 0);
-		g.printGann4Time13(starttime, timeunit, 10);
+		int size = 13;
+		g.printGann4Price(startprice, pricestep, size, 6);
+		g.printGann4Time(starttime, timeunit, size, 10);
 	}
 
 	public void formatprint() {
