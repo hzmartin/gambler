@@ -1,5 +1,6 @@
 package gambler.tools.service;
 
+import java.util.Date;
 import java.util.Locale;
 
 import gambler.commons.util.time.TimeUtils;
@@ -7,32 +8,93 @@ import gambler.tools.cli.bean.Gann4;
 
 public class GannService extends AbstractService {
 
-	public void printGann4_SIZE13(double startprice, String starttime, double pricestep, String timeunit,
-			String output) {
-		TimeUtils.parseDate(starttime);
-		Gann4 GANN4 = new Gann4();
-		int[][] gann4 = GANN4.Gann4_SIZE13();
-		int celllen = 8;
+	public void printGann4Time13(String starttime, String timeunit, String output) {
+		printGann4Time13(starttime, timeunit, 10, output);
+	}
+
+	public void printGann4Time13(String starttime, String timeunit, int celllen, String output) {
 		int size = 13;
-		StringBuffer sb = new StringBuffer();
-		char fillChar = '-';
+		String format = "|%-" + celllen + "s";
+		Date start = TimeUtils.parseDate(starttime);
+		if ("d".equalsIgnoreCase(timeunit)) {
+			for (int i = 0; i < size; i++) {
+				fill(celllen, size, '-');
+				for (int j = 0; j < size; j++) {
+					System.out.format(format,
+							TimeUtils.format(
+									start.getTime() + (Gann4.Gann4_SIZE13[i][j] - 1) * TimeUtils.ONE_DAY_IN_MILLIS,
+									"yyyy-MM-dd"));
+				}
+				System.out.println("|");
+			}
+			fill(celllen, size, '-');
+		} else if ("w".equalsIgnoreCase(timeunit)) {
+			for (int i = 0; i < size; i++) {
+				fill(celllen, size, '-');
+				for (int j = 0; j < size; j++) {
+					int startsecs = TimeUtils.getMondayOfThisWeek(start);
+					System.out.format(format,
+							TimeUtils.format(
+									startsecs * 1000L
+											+ (Gann4.Gann4_SIZE13[i][j] - 1) * TimeUtils.ONE_DAY_IN_MILLIS * 7,
+									"yyyy-MM-dd"));
+				}
+				System.out.println("|");
+			}
+			fill(celllen, size, '-');
+		} else if ("m".equalsIgnoreCase(timeunit)) {
+			for (int i = 0; i < size; i++) {
+				fill(celllen, size, '-');
+				for (int j = 0; j < size; j++) {
+					System.out.format(format, TimeUtils.format(
+							TimeUtils.getFirstDayOfMonth(start, Gann4.Gann4_SIZE13[i][j] - 1) * 1000L, "yyyy-MM-dd"));
+				}
+				System.out.println("|");
+			}
+			fill(celllen, size, '-');
+		} else {
+			throw new IllegalArgumentException("illegal timeunit");
+		}
+	}
+
+	public void printGann4Price13(double startprice, double pricestep, String output) {
+		printGann4Price13(startprice, pricestep, 10, 2, output);
+	}
+
+	public void printGann4Price13(double startprice, double pricestep, int celllen, int decimalscale, String output) {
+		int size = 13;
+		String format = "|%-" + celllen + "." + decimalscale + "f";
 		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < celllen+1; j++) {
+			fill(celllen, size, '-');
+			for (int j = 0; j < size; j++) {
+				System.out.format(format, startprice + (Gann4.Gann4_SIZE13[i][j] - 1) * pricestep);
+			}
+			System.out.println("|");
+		}
+		fill(celllen, size, '-');
+	}
+
+	private void fill(int celllen, int size, char fillChar) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < celllen + 1; j++) {
 				sb.append(fillChar);
 			}
 		}
 		sb.append(fillChar);
-		for (int i = 0; i < size; i++) {
-			System.out.println(sb.toString());
-			for (int j = 0; j < size; j++) {
-				System.out.format("|%-" + celllen + "d", gann4[i][j]);
-			}
-			System.out.println("|");
-		}
+		System.out.println(sb.toString());
 	}
 
 	public static void main(String[] args) {
-		new GannService().printGann4_SIZE13(0, "2000-01-01", 1, "d", "o.txt");
+		// HSI INDEX
+		double startprice = 6890;
+		String starttime = "2017-12-02";
+		double pricestep = 100;
+		String timeunit = "m";
+		String output = "o.txt";
+		GannService g = new GannService();
+		// g.printGann4Price13(startprice, pricestep, 6, 0, output);
+		g.printGann4Time13(starttime, timeunit, 10, output);
 	}
 
 	public void formatprint() {
