@@ -21,6 +21,7 @@ public class CLI {
 	 * @param args
 	 * @throws CommandNameConflictException
 	 */
+	@SuppressWarnings("resource")
 	public static void main(String[] args) throws CommandNameConflictException {
 		// welcome and display system menu
 		System.out.println();
