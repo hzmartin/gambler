@@ -222,6 +222,10 @@ public final class CLISystem implements IConfigrableConstants {
 		return historyCommands.remove(index);
 	}
 
+	public void removeAllHistoryCommand() {
+		historyCommands.clear();
+	}
+
 	public int sizeOfHistoryCommands() {
 		return historyCommands.size();
 	}
