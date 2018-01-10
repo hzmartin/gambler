@@ -24,11 +24,12 @@ public class HistoryCommand extends AbstractCommand implements ICommand {
 		int startIndex = 0;
 		if (isSubCommand("clear")) {
 			getCLISystem().removeAllHistoryCommand();
-		} else if (isSubCommand("last")) {
-			int lastNum = Integer.parseInt(params[1]);
-			startIndex = getCLISystem().sizeOfHistoryCommands() - lastNum;
-			startIndex = (startIndex < 0) ? 0 : startIndex;
 		} else {
+			if (isSubCommand("last")) {
+				int lastNum = Integer.parseInt(params[1]);
+				startIndex = getCLISystem().sizeOfHistoryCommands() - lastNum;
+				startIndex = (startIndex < 0) ? 0 : startIndex;
+			}
 			for (int index = startIndex; index < getCLISystem().sizeOfHistoryCommands(); index++) {
 				ICommand history = getCLISystem().getHistoryCommand(index);
 				System.out.println(history);
