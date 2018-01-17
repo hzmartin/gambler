@@ -1,0 +1,10 @@
+<map>
+    <prop namespace="jobs">
+    	<key name="package">gambler.quartz.job</key>
+    	<key name="size">1</key>
+    </prop>
+    <prop namespace="jobclazz">
+        <!-- make sure the unique id for each job class name -->
+        <key name="1">FSCleanupJob</key>
+    </prop>
+</map>

@@ -12,6 +12,7 @@
 	<groupId>gambler.tools</groupId>
 	<modules>
 		<module>cli</module>
+		<module>scheduler2</module>
 	</modules>
 	<build>
 		<pluginManagement>
