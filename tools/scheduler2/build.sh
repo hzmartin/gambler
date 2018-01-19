@@ -1,7 +1,7 @@
 #!/bin/bash
 
 workdir=`pwd`
-reldir=~/apps/quartzrel
+reldir=~/apps/release/quartz
 echo "start packaging ..."
 echo "working dir: $workdir"
 echo "release dir: $reldir"
