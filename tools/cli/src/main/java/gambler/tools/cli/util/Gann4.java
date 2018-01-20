@@ -1,4 +1,4 @@
-package gambler.tools.cli.bean;
+package gambler.tools.cli.util;
 
 /**
  * 四方图

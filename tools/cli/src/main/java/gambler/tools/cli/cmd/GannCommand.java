@@ -31,9 +31,7 @@ public class GannCommand extends AbstractCommand implements ICommand {
 				size = Integer.valueOf(params[3]);
 			}
 			gann.printGann4Time(starttime, timeunit, size);
-		} else
-
-		{
+		} else {
 			throw new CommandUsageException("command usage error!");
 		}
 
@@ -41,7 +39,7 @@ public class GannCommand extends AbstractCommand implements ICommand {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] { "价格四方图", "时间四方图, 格式：yyyy-MM-dd，unit:h/d/w/m" };
+		return new String[] { "价格四方图", "时间四方图, 格式：yyyy-MM-dd，unit:d/w/m" };
 	}
 
 	@Override
