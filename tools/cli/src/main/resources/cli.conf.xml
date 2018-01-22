@@ -11,5 +11,6 @@
         <!-- make sure the unique name for each command -->
         <key name="1">gambler.tools.cli.cmd.PasswordCommand</key>
         <key name="2">gambler.tools.cli.cmd.GannCommand</key>
+        <key name="3">gambler.tools.cli.cmd.ElliottCommand</key>
     </prop>
 </map>
