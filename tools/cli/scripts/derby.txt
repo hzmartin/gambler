@@ -1,4 +1,4 @@
-connect 'jdbc:derby:/tmp/clidb;create=true';
+connect 'jdbc:derby:/Users/wangqihui/OneDrive/mydb;create=true';
 
 DROP TABLE ENCRYPTED_PASSWORD;
 

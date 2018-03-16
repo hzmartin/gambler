@@ -12,7 +12,7 @@
 	<properties>
 		<gb.log4j.path>logs</gb.log4j.path>
 		<gb.log4j.level>DEBUG</gb.log4j.level>
-		<gb.datasource.url><![CDATA[jdbc:derby:/usr/local/mydb]]></gb.datasource.url>
+		<gb.datasource.url><![CDATA[jdbc:derby:/Users/wangqihui/OneDrive/mydb]]></gb.datasource.url>
 		<gb.datasource.userName></gb.datasource.userName>
 		<gb.datasource.password></gb.datasource.password>
 		<gb.datasource.driverClassName>org.apache.derby.jdbc.EmbeddedDriver</gb.datasource.driverClassName>
