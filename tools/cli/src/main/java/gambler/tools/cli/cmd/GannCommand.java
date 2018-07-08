@@ -44,7 +44,7 @@ public class GannCommand extends AbstractCommand implements ICommand {
 
 	@Override
 	public String[] getSyntax() {
-		return new String[] { "gann p4 /startprice/ /pricestep/ [size|13]", "gann t4 /starttime/ timeunit/ [size|13]" };
+		return new String[] { "gann p4 /startprice/ /pricestep/ [oddsize|13]", "gann t4 /starttime/ timeunit/ [oddsize|13]" };
 	}
 
 	@Override
