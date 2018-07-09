@@ -5,18 +5,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Service;
-
 import org.scoreboard.bean.YixinAccessToken;
 import org.scoreboard.constants.IConstants;
 import org.scoreboard.utils.HttpClientPool;
 import org.scoreboard.utils.SpringContextHolder;
+import org.scoreboard.utils.SysConfig;
+import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
-import com.chinatelecom.yiliao.common.framework.SysConfig;
-import com.chinatelecom.yiliao.device.DeviceEnv;
-import com.chinatelecom.yiliao.device.redis.RedisDevice;
-import com.chinatelecom.yiliao.device.redis.RedisNodeType;
 
 @Service
 public class PublicAccountService {
@@ -114,37 +110,37 @@ public class PublicAccountService {
 	}
 
 	public String getApiAccessToken() {
-		try {
-			DeviceEnv deviceEnv = SpringContextHolder.getBean("deviceEnv");
-			RedisDevice redis = deviceEnv.getRedis();
-			String val = redis.get(RedisNodeType.ACTIVITY,
-					"YX_PUBLIC_ACCOUNT_ACCESS_TOKEN",
-					SysConfig.getString("AppName") + ".access_token");
-			if (StringUtils.isNotBlank(val)) {
-				return val;
-			}
-			String url = String
-					.format("%s/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s",
-							getApiHost(), getAppId(), getAppSecret());
-			logger.debug("request access token: " + url);
-			String result = HttpClientPool.getInstance().getMethod(url);
-			logger.info("request(" + url + ") access token result: " + result);
-			YixinAccessToken accessToken = JSON.parseObject(result,
-					YixinAccessToken.class);
-			if (accessToken != null) {
-				redis.set(RedisNodeType.ACTIVITY,
-						"YX_PUBLIC_ACCOUNT_ACCESS_TOKEN",
-						SysConfig.getString("AppName") + ".access_token",
-						accessToken.getAccess_token());
-				redis.expire(RedisNodeType.ACTIVITY,
-						"YX_PUBLIC_ACCOUNT_ACCESS_TOKEN",
-						SysConfig.getString("AppName") + ".access_token",
-						accessToken.getExpires_in() - 100);
-				return accessToken.getAccess_token();
-			}
-		} catch (Exception e) {
-			logger.error("获取api access token error! " + e.getMessage());
-		}
+//		try {
+//			DeviceEnv deviceEnv = SpringContextHolder.getBean("deviceEnv");
+//			RedisDevice redis = deviceEnv.getRedis();
+//			String val = redis.get(RedisNodeType.ACTIVITY,
+//					"YX_PUBLIC_ACCOUNT_ACCESS_TOKEN",
+//					SysConfig.getString("AppName") + ".access_token");
+//			if (StringUtils.isNotBlank(val)) {
+//				return val;
+//			}
+//			String url = String
+//					.format("%s/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s",
+//							getApiHost(), getAppId(), getAppSecret());
+//			logger.debug("request access token: " + url);
+//			String result = HttpClientPool.getInstance().getMethod(url);
+//			logger.info("request(" + url + ") access token result: " + result);
+//			YixinAccessToken accessToken = JSON.parseObject(result,
+//					YixinAccessToken.class);
+//			if (accessToken != null) {
+//				redis.set(RedisNodeType.ACTIVITY,
+//						"YX_PUBLIC_ACCOUNT_ACCESS_TOKEN",
+//						SysConfig.getString("AppName") + ".access_token",
+//						accessToken.getAccess_token());
+//				redis.expire(RedisNodeType.ACTIVITY,
+//						"YX_PUBLIC_ACCOUNT_ACCESS_TOKEN",
+//						SysConfig.getString("AppName") + ".access_token",
+//						accessToken.getExpires_in() - 100);
+//				return accessToken.getAccess_token();
+//			}
+//		} catch (Exception e) {
+//			logger.error("获取api access token error! " + e.getMessage());
+//		}
 		return null;
 	}
 

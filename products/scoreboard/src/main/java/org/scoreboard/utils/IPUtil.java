@@ -5,8 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.chinatelecom.yiliao.common.util.RegexUtil;
-
 public class IPUtil {
 	public static final Logger logger = Logger.getLogger(IPUtil.class);
 
