@@ -1,6 +1,6 @@
 package org.scoreboard.utils;
 
-public class YixinNotifyRespUtil {
+public class NotifyRespUtil {
 
 	public static final String createText(String content, String yidofpa, String openid) {
 

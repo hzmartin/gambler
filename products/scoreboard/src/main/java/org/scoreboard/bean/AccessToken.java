@@ -1,6 +1,6 @@
 package org.scoreboard.bean;
 
-public class YixinAccessToken {
+public class AccessToken {
 
 	private String openid;
 

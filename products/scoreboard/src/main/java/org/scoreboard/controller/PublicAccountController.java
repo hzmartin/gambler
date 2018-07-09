@@ -14,9 +14,8 @@ import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.scoreboard.annotation.SkipOauthVerify;
 import org.scoreboard.service.PublicAccountService;
-import org.scoreboard.utils.YixinNotifyRespUtil;
+import org.scoreboard.utils.NotifyRespUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,7 +31,6 @@ public class PublicAccountController {
 	private PublicAccountService publicAccountService;
 
 	@RequestMapping(value = "/paverify", method = { RequestMethod.GET })
-	@SkipOauthVerify
 	public Object paverify(final HttpServletRequest request,
 			final HttpServletResponse response) {
 
@@ -74,7 +72,6 @@ public class PublicAccountController {
 	}
 
 	@RequestMapping(value = "/paverify", method = { RequestMethod.POST })
-	@SkipOauthVerify
 	public void yixinnotify(final HttpServletRequest request,
 			final HttpServletResponse response) {
 
@@ -128,7 +125,7 @@ public class PublicAccountController {
 				// TODO:
 			}
 			if (StringUtils.isNotBlank(respStr)) {
-				String respXml = YixinNotifyRespUtil.createText(respStr,
+				String respXml = NotifyRespUtil.createText(respStr,
 						yidofpa, openid);
 				log.debug("response xml: " + respXml);
 				try {
