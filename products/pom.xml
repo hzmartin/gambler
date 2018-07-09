@@ -9,4 +9,7 @@
   <packaging>pom</packaging>
   <name>Products</name>
   <groupId>gambler.products</groupId>
+  <modules>
+  	<module>scoreboard</module>
+  </modules>
 </project>
