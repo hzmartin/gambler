@@ -13,4 +13,17 @@
   	<module>commons-util</module>
   	<module>commons-advancedmap</module>
   </modules>
+  
+  <distributionManagement>
+        <repository>
+            <id>artifactory</id>
+            <name>Netease Repository</name>
+            <url>http://mvn.hz.netease.com/artifactory/libs-releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Netease Snaptshot Repository</name>
+            <url>http://mvn.hz.netease.com/artifactory/libs-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
