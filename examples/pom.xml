@@ -4,14 +4,13 @@
   <parent>
     <groupId>gambler</groupId>
     <artifactId>gambler</artifactId>
-    <version>1.0</version>
+    <version>1.0.2</version>
   </parent>
   <artifactId>examples</artifactId>
   <packaging>pom</packaging>
   <name>Examples</name>
   <groupId>gambler.examples</groupId>
   <modules>
-    <module>examples-webapp</module>
     <module>scheduler</module>
   </modules>
 </project>
