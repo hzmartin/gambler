@@ -3,19 +3,19 @@
         <key name="count">100</key>
         
         <key name="name" order="1">Scheduler</key>
-        <key name="url" order="1">#siteurl#/scheduler/scheduleview/schedulecontrol.do</key>
+        <key name="url" order="1">#{siteurl}/scheduler/scheduleview/schedulecontrol.do</key>
         <key name="perm" order="1">400</key>
         
         <key name="name" order="2">Jobs</key>
-        <key name="url" order="2">#siteurl#/scheduler/scheduleview/jobmgmt.do</key>
+        <key name="url" order="2">#{siteurl}/scheduler/scheduleview/jobmgmt.do</key>
         <key name="perm" order="2">401</key>
         
         <key name="name" order="10">System</key>
-        <key name="url" order="10">#siteurl#/scheduler/sysmgmtview/sysmgmt.do</key>
+        <key name="url" order="10">#{siteurl}/scheduler/sysmgmtview/sysmgmt.do</key>
         <key name="perm" order="10">100</key>
         
         <key name="name" order="100">Test</key>
-        <key name="url" order="100">#siteurl#/scheduler/view.do?name=test</key>
+        <key name="url" order="100">#{siteurl}/scheduler/view.do?name=test</key>
         <key name="perm" order="100">1001</key>
     </prop>
 </map>

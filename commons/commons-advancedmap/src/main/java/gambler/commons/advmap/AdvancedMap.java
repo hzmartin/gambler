@@ -62,12 +62,12 @@ public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
 	/**
 	 * Start symbol of variables in property's value
 	 */
-	private static String VARIABLE_START_SYMBOL = "#";
+	private static String VARIABLE_START_SYMBOL = "#{";
 
 	/**
 	 * End symbol of variables in property's value
 	 */
-	private static String VARIABLE_END_SYMBOL = "#";
+	private static String VARIABLE_END_SYMBOL = "}";
 
 	public abstract void load();
 
