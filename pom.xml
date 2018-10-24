@@ -10,7 +10,6 @@
         <module>commons</module>
         <module>examples</module>
         <module>tools</module>
-        <module>thirdparty</module>
     </modules>
     <build>
         <plugins>
