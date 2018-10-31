@@ -1,16 +1,16 @@
 package gambler.commons.advmap;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
 /**
- * Advanced map extends <code>HashMap</code><br/>
+ * Advanced map extends <code>TreeMap</code><br/>
  * 
  * It provides the variable replacement feature<br/>
  * 
@@ -50,7 +50,7 @@ import org.apache.log4j.Logger;
  * 
  * @auther Martin
  */
-public abstract class AdvancedMap extends HashMap<AdvancedKey, String> {
+public abstract class AdvancedMap extends TreeMap<AdvancedKey, String> {
 
 	/**
 	 * serialVersionUID

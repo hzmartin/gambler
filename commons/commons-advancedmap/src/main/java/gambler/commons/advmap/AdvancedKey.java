@@ -1,6 +1,5 @@
 package gambler.commons.advmap;
 
-import java.util.Comparator;
 import java.util.Locale;
 
 import org.apache.commons.lang.LocaleUtils;
@@ -30,7 +29,7 @@ import org.apache.commons.lang.StringUtils;
  */
 
 public class AdvancedKey implements java.io.Serializable,
-		Comparator<AdvancedKey> {
+		Comparable<AdvancedKey> {
 
 	/**
 	 * serialVersionUID
@@ -229,8 +228,12 @@ public class AdvancedKey implements java.io.Serializable,
 	}
 
 	@Override
-	public int compare(AdvancedKey o1, AdvancedKey o2) {
-		return o1.getOrder().compareTo(o2.getOrder());
+	public int compareTo(AdvancedKey o) {
+		int fullkeyCompare = this.toString().compareTo(o.toString());
+		if (fullkeyCompare == 0) {
+			return this.getOrder() - o.getOrder();
+		}
+		return fullkeyCompare;
 	}
 
 	/**
