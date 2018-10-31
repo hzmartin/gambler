@@ -114,31 +114,23 @@ public final class XMLMap extends AdvancedMap {
 		} else {
 			final InputStream input = Thread.currentThread().getContextClassLoader()
 					.getResourceAsStream(file.getName());
+			if (input == null) {
+				log.warn("cannot find xml file: " + file.getAbsolutePath() + ", and it's also not exist in classpath!");
+			}
 			load(input);
 		}
 
 	}
 
-	/**
-	 * Load XML file, parse it and store the properties
-	 *
-	 * @param path - xml file path
-	 * @throws IOException
-	 * @throws SAXException
-	 * @see #load(InputStream)
-	 */
-	public void load(String path) throws SAXException, IOException {
-		load(new File(path));
-	}
-
 	@Override
 	public void load() {
 		for (int i = 0; i < xmlFilePaths.length; i++) {
+			File file = new File(xmlFilePaths[i]);
 			try {
-				load(xmlFilePaths[i]);
-				log.info("xml file[" + xmlFilePaths[i] + "] loaded");
+				load(file);
+				log.info("xml file[" + file.getAbsolutePath() + "] loaded");
 			} catch (Exception e) {
-				log.error("xml file[" + xmlFilePaths[i] + "] load failed!", e);
+				log.error("xml file[" + file.getAbsolutePath() + "] load failed!", e);
 			}
 		}
 
