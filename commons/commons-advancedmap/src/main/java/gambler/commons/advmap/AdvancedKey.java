@@ -229,11 +229,7 @@ public class AdvancedKey implements java.io.Serializable,
 
 	@Override
 	public int compareTo(AdvancedKey o) {
-		int fullkeyCompare = this.toString().compareTo(o.toString());
-		if (fullkeyCompare == 0) {
-			return this.getOrder() - o.getOrder();
-		}
-		return fullkeyCompare;
+		return this.toString().compareTo(o.toString());
 	}
 
 	/**
