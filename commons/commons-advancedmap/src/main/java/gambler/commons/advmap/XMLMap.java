@@ -67,83 +67,80 @@ import org.xml.sax.SAXException;
  */
 public final class XMLMap extends AdvancedMap {
 
-    private static final Logger log = Logger.getLogger(XMLMap.class);
+	private static final Logger log = Logger.getLogger(XMLMap.class);
 
-    /**
-     * serial version uid
-     */
-    private static final long serialVersionUID = 7486290035316643518L;
+	/**
+	 * serial version uid
+	 */
+	private static final long serialVersionUID = 7486290035316643518L;
 
-    public XMLMap(String name, int refreshIntervalInSeconds) {
-    	super(name, refreshIntervalInSeconds);
-    }
+	public XMLMap(String name, int refreshIntervalInSeconds) {
+		super(name, refreshIntervalInSeconds);
+	}
 
-    public XMLMap(String name, int refreshIntervalInSeconds, String xmlFilePath) {
-        this(name, refreshIntervalInSeconds, new String[]{xmlFilePath});
-    }
+	public XMLMap(String name, int refreshIntervalInSeconds, String xmlFilePath) {
+		this(name, refreshIntervalInSeconds, new String[] { xmlFilePath });
+	}
 
-    public XMLMap(String name, int refreshIntervalInSeconds, String... xmlFilePaths) {
-    	super(name, refreshIntervalInSeconds);
-        this.xmlFilePaths = xmlFilePaths;
-        this.load();
-    }
+	public XMLMap(String name, int refreshIntervalInSeconds, String... xmlFilePaths) {
+		super(name, refreshIntervalInSeconds);
+		this.xmlFilePaths = xmlFilePaths;
+		this.load();
+	}
 
-    private String[] xmlFilePaths;
+	private String[] xmlFilePaths;
 
-    /**
-     * Load XML file, parse it and store the properties
-     *
-     * @throws SAXException - parse error
-     * @throws IOException - if IO error occurs.
-     */
-    public synchronized void load(InputStream in) throws SAXException,
-            IOException {
-        new XMLMapFileParser(in, this);
-    }
+	/**
+	 * Load XML file, parse it and store the properties
+	 *
+	 * @throws SAXException - parse error
+	 * @throws IOException  - if IO error occurs.
+	 */
+	public synchronized void load(InputStream in) throws SAXException, IOException {
+		new XMLMapFileParser(in, this);
+	}
 
-    /**
-     * Load XML file, parse it and store the properties
-     *
-     * @param file - xml file
-     * @throws IOException
-     * @throws SAXException
-     * @see #load(InputStream)
-     */
-    public void load(File file) throws SAXException, IOException {
-        if (file.exists()) {
-            load(new FileInputStream(file));
-        } else {
-            final InputStream input = Thread.currentThread().getContextClassLoader()
-                    .getResourceAsStream(file.getName());
-            if (input == null) {
-                log.warn("cannot find xml file: " + file.getAbsolutePath() + ", and it's also not exist in classpath!");
-            }
-            load(input);
-        }
+	/**
+	 * Load XML file, parse it and store the properties
+	 *
+	 * @param file - xml file
+	 * @throws IOException
+	 * @throws SAXException
+	 * @see #load(InputStream)
+	 */
+	public void load(File file) throws SAXException, IOException {
+		if (file.exists()) {
+			load(new FileInputStream(file));
+		} else {
+			final InputStream input = Thread.currentThread().getContextClassLoader()
+					.getResourceAsStream(file.getName());
+			load(input);
+		}
 
-    }
+	}
 
-    /**
-     * Load XML file, parse it and store the properties
-     *
-     * @param path - xml file path
-     * @throws IOException
-     * @throws SAXException
-     * @see #load(InputStream)
-     */
-    public void load(String path) throws SAXException, IOException {
-        load(new File(path));
-    }
+	/**
+	 * Load XML file, parse it and store the properties
+	 *
+	 * @param path - xml file path
+	 * @throws IOException
+	 * @throws SAXException
+	 * @see #load(InputStream)
+	 */
+	public void load(String path) throws SAXException, IOException {
+		load(new File(path));
+	}
 
-    @Override
-    public void load() {
-        try {
-            for (int i = 0; i < xmlFilePaths.length; i++) {
-                load(xmlFilePaths[i]);
-            }
-        } catch (Exception e) {
-            log.warn("load xml map failed!", e);
-        }
+	@Override
+	public void load() {
+		for (int i = 0; i < xmlFilePaths.length; i++) {
+			try {
+				load(xmlFilePaths[i]);
+				log.info("xml file[" + xmlFilePaths[i] + "] loaded");
+			} catch (Exception e) {
+				log.error("xml file[" + xmlFilePaths[i] + "] load failed!", e);
+			}
+		}
 
-    }
+	}
 }
