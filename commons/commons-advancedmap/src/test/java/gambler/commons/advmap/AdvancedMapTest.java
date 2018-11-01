@@ -44,6 +44,12 @@ public class AdvancedMapTest extends TestCase {
 		}
 	}
 
+	public void testIntegerArray() {
+		Integer[] integerArray = global.getIntegerArray("testIntArray");
+		assertTrue(1 == integerArray[0]);
+		assertTrue(2 == integerArray[1]);
+	}
+
 	public void testGetProperty() {
 		assertEquals("Welcome to Beijing",
 				xml1.getString("base.jenny." + Locale.getDefault()));

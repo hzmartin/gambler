@@ -13,6 +13,7 @@
 		<key name="hello" order="2">Nice</key>
 		<key name="hello" order="3">Nice Hello</key>
         <key name="mapRefreshInterval">1</key>
+        <key name="testIntArray">1,2</key>
 	</prop>
 	<prop></prop>
 

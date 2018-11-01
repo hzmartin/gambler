@@ -238,6 +238,21 @@ public abstract class AdvancedMap extends TreeMap<AdvancedKey, String> {
 			return value;
 		}
 	}
+	
+	public String[] getStringArray(String fullPathKey) {
+		return getStringArray(fullPathKey, null);
+	}
+
+	public String[] getStringArray(String fullPathKey, String defaultValue) {
+		String value = get(fullPathKey);
+		if (value == null) {
+			value = defaultValue;
+		}
+		if(value == null) {
+			return null;
+		}
+		return value.split("[,;]");
+	}
 
 	public Integer getInteger(String fullPathKey) {
 		return getInteger(fullPathKey, null);
@@ -255,6 +270,26 @@ public abstract class AdvancedMap extends TreeMap<AdvancedKey, String> {
 		}
 	}
 
+	public Integer[] getIntegerArray(String fullPathKey) {
+		return getIntegerArray(fullPathKey, null);
+	}
+
+	public Integer[] getIntegerArray(String fullPathKey, String defaultValue) {
+		String[] stringArray = getStringArray(fullPathKey, defaultValue);
+		if (stringArray == null) {
+			return null;
+		}
+		try {
+			Integer[] result = new Integer[stringArray.length];
+			for (int i = 0; i < stringArray.length; i++) {
+				result[i] = new Integer(stringArray[i]);
+			}
+			return result;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
 	public Boolean getBoolean(String fullPathKey) {
 		return getBoolean(fullPathKey, null);
 	}
@@ -286,6 +321,26 @@ public abstract class AdvancedMap extends TreeMap<AdvancedKey, String> {
 			return defaultValue;
 		}
 	}
+	
+	public Long[] getLongArray(String fullPathKey) {
+		return getLongArray(fullPathKey, null);
+	}
+
+	public Long[] getLongArray(String fullPathKey, String defaultValue) {
+		String[] stringArray = getStringArray(fullPathKey, defaultValue);
+		if (stringArray == null) {
+			return null;
+		}
+		try {
+			Long[] result = new Long[stringArray.length];
+			for (int i = 0; i < stringArray.length; i++) {
+				result[i] = new Long(stringArray[i]);
+			}
+			return result;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	public Double getDouble(String fullPathKey) {
 		return getDouble(fullPathKey, null);
@@ -302,6 +357,26 @@ public abstract class AdvancedMap extends TreeMap<AdvancedKey, String> {
 			return defaultValue;
 		}
 	}
+	
+	public Double[] getDoubleArray(String fullPathKey) {
+		return getDoubleArray(fullPathKey, null);
+	}
+
+	public Double[] getDoubleArray(String fullPathKey, String defaultValue) {
+		String[] stringArray = getStringArray(fullPathKey, defaultValue);
+		if (stringArray == null) {
+			return null;
+		}
+		try {
+			Double[] result = new Double[stringArray.length];
+			for (int i = 0; i < stringArray.length; i++) {
+				result[i] = new Double(stringArray[i]);
+			}
+			return result;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	public Float getFloat(String fullPathKey) {
 		return getFloat(fullPathKey, null);
@@ -316,6 +391,26 @@ public abstract class AdvancedMap extends TreeMap<AdvancedKey, String> {
 			return Float.valueOf(value);
 		} catch (Exception e) {
 			return defaultValue;
+		}
+	}
+	
+	public Float[] getFloatArray(String fullPathKey) {
+		return getFloatArray(fullPathKey, null);
+	}
+
+	public Float[] getFloatArray(String fullPathKey, String defaultValue) {
+		String[] stringArray = getStringArray(fullPathKey, defaultValue);
+		if (stringArray == null) {
+			return null;
+		}
+		try {
+			Float[] result = new Float[stringArray.length];
+			for (int i = 0; i < stringArray.length; i++) {
+				result[i] = new Float(stringArray[i]);
+			}
+			return result;
+		} catch (Exception e) {
+			return null;
 		}
 	}
 
