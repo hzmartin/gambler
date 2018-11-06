@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.1.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+
+	<bean id="sysconf" class="gambler.commons.advmap.XMLMap">
+		<constructor-arg index="0" value="SYSCONF"></constructor-arg>
+		<constructor-arg index="1" value="0"></constructor-arg>
+		<constructor-arg index="2">
+			<list>
+				<value>conf_sys.xml</value>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<context:property-placeholder location="classpath:datasource.properties"/>
+
+    <bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
+		<property name="driver">
+			<value>${jdbc.proxool.driver-class}</value>
+		</property>
+		<property name="driverUrl">
+			<value>${jdbc.proxool.driver-url}</value>
+		</property>
+		<property name="user">
+			<value>${jdbc.user}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc.password}</value>
+		</property>
+		<property name="alias">
+			<value>${jdbc.proxool.alias}</value>
+		</property>
+		<property name="prototypeCount">
+			<value>${jdbc.proxool.prototype-count}</value>
+		</property>
+		<property name="maximumConnectionCount">
+			<value>${jdbc.proxool.maximum-connection-count}</value>
+		</property>
+		<property name="minimumConnectionCount">
+			<value>${jdbc.proxool.minimum-connection-count}</value>
+		</property>
+		<property name="maximumActiveTime">
+			<value>${jdbc.proxool.maximum-active-time}</value>
+		</property>
+		<property name="simultaneousBuildThrottle">
+			<value>${jdbc.proxool.simultaneous-build-throttle}</value>
+		</property>
+		<property name="verbose">
+			<value>${jdbc.proxool.verbose}</value>
+		</property>
+		<property name="statistics">
+			<value>${jdbc.proxool.statistics}</value>
+		</property>
+		<property name="houseKeepingTestSql">
+			<value>${jdbc.proxool.house-keeping-test-sql}</value>
+		</property>
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="processPropertyPlaceHolders" value="true" />
+		<property name="annotationClass"
+			value="org.springframework.stereotype.Repository" />
+		<property name="basePackage" value="gambler.quartz.dao" />
+	</bean>
+
+	<bean id="dynamicDataSource"
+		class="gambler.quartz.datasource.DynamicDataSource">
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry value-ref="dataSource" key="dataSource"></entry>
+			</map>
+		</property>
+		<property name="defaultTargetDataSource"
+			ref="dataSource"></property>
+	</bean>
+
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation"
+			value="classpath:mybatis-config.xml" />
+		<property name="dataSource" ref="dynamicDataSource" />
+	</bean>
+
+	<tx:annotation-driven
+		transaction-manager="txManager" />
+
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dynamicDataSource" />
+	</bean>
+
+	<context:component-scan
+		base-package="gambler.quartz.service">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+
+	<!-- SpringContextHolder定义 -->
+	<bean id="springContextHolder"
+		class="gambler.quartz.utils.SpringContextHolder" lazy-init="false" />
+
+
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host">
+			<value>localhost</value>
+		</property>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.timeout">25000</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

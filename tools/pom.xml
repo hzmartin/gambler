@@ -12,7 +12,7 @@
 	<groupId>gambler.tools</groupId>
 	<modules>
 		<module>cli</module>
-		<module>scheduler2</module>
+		<module>quartzapp</module>
 	</modules>
 	<build>
 		<pluginManagement>

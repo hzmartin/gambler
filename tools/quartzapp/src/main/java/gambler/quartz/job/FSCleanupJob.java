@@ -1,5 +1,7 @@
 package gambler.quartz.job;
 
+import gambler.quartz.utils.TimeTagUtil;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,6 @@ import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import gambler.quartz.utils.TimeTagUtil;
 
 /**
  * 定期清理文件系统
@@ -23,6 +24,9 @@ public class FSCleanupJob extends AbstractQuartzJob {
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		final JobDetail jobDetail = context.getJobDetail();
 		JobDataMap jobDataMap = jobDetail.getJobDataMap();
+		boolean deleteDir = jobDataMap.containsKey("fscleanup.dir.delete")
+				? jobDataMap.getBoolean("fscleanup.dir.delete")
+				: false;
 		int count = jobDataMap.getIntValue("fscleanup.dir.count");
 		for (int j = 0; j < count; j++) {
 			int index = j + 1;
@@ -30,8 +34,7 @@ public class FSCleanupJob extends AbstractQuartzJob {
 
 			String extension = jobDataMap.getString("fscleanup.dir." + index + ".ext");
 			if (StringUtils.isBlank(extension)) {
-				log.info("please config ext first, for any, set fscleanup.dir." + index + ".ext"
-						+ " = * ");
+				log.info("please config ext first, for any, set fscleanup.dir." + index + ".ext" + " = * ");
 				continue;
 			}
 			List<String> exts = new ArrayList<String>();
@@ -67,7 +70,7 @@ public class FSCleanupJob extends AbstractQuartzJob {
 				}
 				if (System.currentTimeMillis() - file.lastModified() > TimeTagUtil.ONE_DAY * expireDays) {
 					if (file.isDirectory()) {
-						deleteDirRecursively(file);
+						deleteDirRecursively(file, deleteDir);
 					} else {
 						file.delete();
 						log.info(file.getAbsolutePath() + " deleted!");
@@ -81,7 +84,7 @@ public class FSCleanupJob extends AbstractQuartzJob {
 
 	}
 
-	private void deleteDirRecursively(File targetDir) {
+	private void deleteDirRecursively(File targetDir, boolean deleteDir) {
 		if (!targetDir.isDirectory()) {
 			return;
 		}
@@ -89,14 +92,16 @@ public class FSCleanupJob extends AbstractQuartzJob {
 		File[] outputs = targetDir.listFiles();
 		for (File file : outputs) {
 			if (file.isDirectory()) {
-				deleteDirRecursively(file);
+				deleteDirRecursively(file, deleteDir);
 			} else {
 				file.delete();
 				log.info(file.getAbsolutePath() + " deleted!");
 			}
 		}
-		targetDir.delete();
-		log.info(targetDir.getAbsolutePath() + " deleted!");
+		if (deleteDir) {
+			targetDir.delete();
+			log.info(targetDir.getAbsolutePath() + " deleted!");
+		}
 	}
 
 }

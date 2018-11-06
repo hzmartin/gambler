@@ -1,0 +1,9 @@
+<map>
+    <prop>
+        <key name="environment">dev</key>
+    </prop>
+    <prop namespace="job_list">
+    	<key name="size">1</key>
+    	<key name="0">fscleanup</key>
+    </prop>
+</map>

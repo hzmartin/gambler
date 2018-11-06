@@ -6,6 +6,9 @@
  */
 package gambler.quartz;
 
+import gambler.quartz.utils.ConfigUtil;
+import gambler.quartz.utils.SpringContextHolder;
+
 import java.io.InputStream;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -23,8 +26,9 @@ import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import gambler.commons.advmap.XMLMap;
 
 /**
  * 
@@ -42,37 +46,54 @@ import gambler.commons.advmap.XMLMap;
  */
 public class QuartzJobScheduler {
 
-	public static final XMLMap SYSCONFIG = new XMLMap("Gambler Scheduler Config", 0, "sysconf.xml");
+	private static final Logger log = Logger.getLogger(QuartzJobScheduler.class);
+
+	private static Scheduler scheduler = null;
+
+	static {
+		try {
+			SchedulerFactory schFactory = new StdSchedulerFactory();
+			scheduler = schFactory.getScheduler();
+		} catch (Exception e) {
+			log.error("init scheduler error", e);
+		}
+	}
 
 	public static void main(String[] args) throws Exception {
 
 		log.info("start creating scheduler ...");
-		SchedulerFactory schFactory = new StdSchedulerFactory();
-		Scheduler scheduler = schFactory.getScheduler();
 		scheduler.start();
 
-		int jobSize = SYSCONFIG.getInteger("jobs.size");
-		for (int jobId = 1; jobId <= jobSize; jobId++) {
-			scheduleJob(scheduler, jobId);
+		ApplicationContext ac = new ClassPathXmlApplicationContext("classpath:/application-context*.xml");
+		SpringContextHolder holder = (SpringContextHolder) ac.getBean("springContextHolder");
+		holder.setApplicationContext(ac);
+
+		int jobsize = ConfigUtil.getSysConf().getInteger("job_list.size", 0);
+		for (int i = 0; i < jobsize; i++) {
+			String jobId = ConfigUtil.getSysConf().getString("job_list" + "." + i);
+			if (StringUtils.isNotBlank(jobId)) {
+				scheduleJob(jobId);
+			}
 		}
+		String adminmaillist = ConfigUtil.getSysConf().getString("admin_maillist", "hzwangqh@corp.netease.com");
+		ConfigUtil.getMailService().sendSimpleMail(adminmaillist.split("[,;]"),
+				"quartzapp started @ " + ConfigUtil.getHostname(), "");
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private static void scheduleJob(Scheduler scheduler, int jobId) throws Exception {
-		String packname = SYSCONFIG.getString("jobs.package");
-		String jobName = SYSCONFIG.getString("jobclazz." + jobId);
-		log.info("start schedule job " + jobName + "(" + jobId + ")" + " ... ");
+	private static void scheduleJob(String jobId) throws Exception {
+		log.info("start schedule job " + jobId + " ... ");
 		Properties props = new Properties();
 		try {
-			String resourceUrl = "jobconf/" + jobName + ".properties";
+			String resourceUrl = "jobconf/" + jobId + ".properties";
 			InputStream resource = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceUrl);
 			if (resource != null) {
 				props.load(resource);
 			}
-
-			String effectiveClazzName = packname + "." + jobName;
+			String effectiveClazzName = props.getProperty("clazz");
 			Class theJobClass = Class.forName(effectiveClazzName);
-			JobBuilder jobBuilder = JobBuilder.newJob(theJobClass).withIdentity(jobName, "gambler");
+			String jobgroup = props.getProperty("group", "quartz");
+			JobBuilder jobBuilder = JobBuilder.newJob(theJobClass).withIdentity(jobId, jobgroup);
 			Set<Entry<Object, Object>> entrySet = props.entrySet();
 			for (Entry<Object, Object> entry : entrySet) {
 				jobBuilder = jobBuilder.usingJobData(entry.getKey().toString(), entry.getValue().toString());
@@ -93,7 +114,7 @@ public class QuartzJobScheduler {
 						+ "s interval) ... ");
 			} else if (StringUtils.isNotBlank(theJobCronConfig)) {
 
-				CronTrigger theTrigger = TriggerBuilder.newTrigger().withIdentity(jobName, "gambler")
+				CronTrigger theTrigger = TriggerBuilder.newTrigger().withIdentity(jobId, jobgroup)
 						.withSchedule(CronScheduleBuilder.cronSchedule(theJobCronConfig)).build();
 				scheduler.scheduleJob(theJob, theTrigger);
 				log.info("scheduled job " + theJobClass.getCanonicalName() + "(" + theJobCronConfig + ") ... ");
@@ -105,7 +126,5 @@ public class QuartzJobScheduler {
 		}
 
 	}
-
-	private static final Logger log = Logger.getLogger(QuartzJobScheduler.class);
 
 }
