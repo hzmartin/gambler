@@ -5,7 +5,6 @@ import gambler.quartz.service.MailService;
 
 import java.net.InetAddress;
 
-
 public class ConfigUtil {
 
 	public static String getDeployUserAccount() {
@@ -23,8 +22,12 @@ public class ConfigUtil {
 	public static XMLMap getSysConf() {
 		return SpringContextHolder.getBean("sysconf");
 	}
-	
+
 	public static MailService getMailService() {
 		return SpringContextHolder.getBean("mailService");
+	}
+
+	public static boolean isMailServiceEnabled() {
+		return getSysConf().getBoolean("MAIL_SERVICE_ENABLED", false);
 	}
 }

@@ -13,7 +13,6 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class MailService {
 
@@ -23,14 +22,19 @@ public class MailService {
 	private JavaMailSenderImpl javaMailSender;
 
 	private void setUsername() {
-		javaMailSender.setUsername(ConfigUtil.getDeployUserAccount() + "@" + ConfigUtil.getHostname());
+		javaMailSender.setUsername(ConfigUtil.getDeployUserAccount() + "@"
+				+ ConfigUtil.getHostname());
 	}
 
 	private String getUsername() {
 		return javaMailSender.getUsername();
 	}
 
-	public void sendMimeMessage(String[] tos, String subject, String text) {
+	public boolean sendMimeMessage(String[] tos, String subject, String text) {
+		boolean enabled = ConfigUtil.isMailServiceEnabled();
+		if (!enabled) {
+			return false;
+		}
 		try {
 			if (StringUtils.isBlank(getUsername())) {
 				setUsername();
@@ -45,26 +49,34 @@ public class MailService {
 				text = "";
 			}
 			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
+			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,
+					false, "utf-8");
 			mimeMessage.setContent(text, "text/html;charset=utf-8");
 			helper.setTo(tos);
 			helper.setSubject(subject);
 			helper.setFrom(javaMailSender.getUsername());
 			javaMailSender.send(mimeMessage);
+			return true;
 		} catch (Exception e) {
 			log.error("send mail fail", e);
+			return false;
 		}
 	}
 
-	public void sendSimpleMail(String to, String subject, String text) {
-		sendSimpleMail(new String[] { to }, null, subject, text);
+	public boolean sendSimpleMail(String to, String subject, String text) {
+		return sendSimpleMail(new String[] { to }, null, subject, text);
 	}
 
-	public void sendSimpleMail(String[] tos, String subject, String text) {
-		sendSimpleMail(tos, null, subject, text);
+	public boolean sendSimpleMail(String[] tos, String subject, String text) {
+		return sendSimpleMail(tos, null, subject, text);
 	}
 
-	public void sendSimpleMail(String[] tos, String[] ccs, String subject, String text) {
+	public boolean sendSimpleMail(String[] tos, String[] ccs, String subject,
+			String text) {
+		boolean enabled = ConfigUtil.isMailServiceEnabled();
+		if (!enabled) {
+			return false;
+		}
 		try {
 			if (ArrayUtils.isEmpty(tos)) {
 				throw new IllegalArgumentException("to list required!");
@@ -88,8 +100,10 @@ public class MailService {
 			mailMessage.setText(text);
 			log.info("sending... " + mailMessage.toString());
 			javaMailSender.send(mailMessage);
+			return true;
 		} catch (Exception e) {
 			log.error("send mail fail", e);
+			return false;
 		}
 	}
 }
