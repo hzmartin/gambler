@@ -7,7 +7,7 @@ echo "working dir: $workdir"
 echo "release dir: $reldir"
 
 rm -rf $reldir
-mkdir $reldir
+mkdir -p $reldir
 
 mvn clean package -DskipTests
 
