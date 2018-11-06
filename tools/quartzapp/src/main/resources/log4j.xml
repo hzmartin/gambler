@@ -11,7 +11,7 @@
 	</appender>
 
 	<appender name="LIFE_CYCLE" class="org.apache.log4j.FileAppender">
-		<param name="File" value="logs/quartzapp.log" />
+		<param name="File" value="/tmp/logs/quartzapp.log" />
 		<param name="Threshold" value="INFO" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
@@ -21,7 +21,7 @@
 
 	<appender name="ROLLING"
 		class="org.apache.log4j.RollingFileAppender">
-		<param name="File" value="logs/quartzapp.log" />
+		<param name="File" value="/tmp/logs/quartzapp.log" />
 		<param name="MaxFileSize" value="10MB" />
 		<param name="MaxBackupIndex" value="6" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -32,7 +32,7 @@
 
 	<appender name="DAILY_ROLLING"
 		class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="logs/quartzapp.log" />
+		<param name="File" value="/tmp/logs/quartzapp.log" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
@@ -46,6 +46,6 @@
 
 	<root>
 		<level value="INFO" />
-		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="ROLLING" />
 	</root>
 </log4j:configuration>
