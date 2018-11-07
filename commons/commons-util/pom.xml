@@ -8,7 +8,6 @@
 	</parent>
 	<artifactId>commons-util</artifactId>
 	<name>Commons Util</name>
-
 	<dependencies>
 	<dependency>
             <groupId>org.bouncycastle</groupId>

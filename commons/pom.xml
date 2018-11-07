@@ -11,9 +11,6 @@
 	<name>Commons Library</name>
 	<groupId>gambler.commons</groupId>
 
-	<properties>
-		<commons-advmap-version>2.0.2</commons-advmap-version>
-	</properties>
 	<modules>
 		<module>commons-util</module>
 		<module>commons-advancedmap</module>
