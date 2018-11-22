@@ -83,10 +83,10 @@ public class AdvancedMapTest extends TestCase {
 				global.getString("base.third.zh_CN"));
 	}
 
-	public void testOrder() {
-		Set<AdvancedKey> keySet = global.keySet();
-		for (AdvancedKey advancedKey : keySet) {
-			System.out.println(advancedKey);
-		}
+	public void testRevision() {
+
+		assertEquals("Nice",
+				global.getString(AdvancedKey.DEFAULT_NAMESPACE + ".hello.1"));
+		assertEquals("Nice2", global.getString(AdvancedKey.DEFAULT_NAMESPACE + ".hello.2"));
 	}
 }

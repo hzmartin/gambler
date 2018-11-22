@@ -152,7 +152,7 @@ public abstract class AdvancedMap extends TreeMap<AdvancedKey, String> {
 	/**
 	 * <p>
 	 * find the property by the given key if the target value contains
-	 * #xxx.xxx#, this method will replace it by the existing value in the
+	 * #{xxx.xxx}, this method will replace it by the existing value in the
 	 * properties once <code>varReplaceEnable</code> is true.
 	 * </p>
 	 * <p>
@@ -161,20 +161,30 @@ public abstract class AdvancedMap extends TreeMap<AdvancedKey, String> {
 	 * references, the map maybe will not follow this rule, please check your
 	 * references carefully.
 	 * </p>
+	 * <p>
+	 * if the give key is a full path key, it has five styles as following:<br/>
+	 * <ol>
+	 * <li>key</li>
+	 * <li>namespace.key</li>
+	 * <li>namespace.key.revision</li>
+	 * <li>namespace.key.locale</li>
+	 * <li>namespace.key.revision.locale</li>
+	 * </ol>
+	 * </p>
 	 * 
-	 * @param akey
+	 * @param key
 	 *            - AdvancedKey instance or full path key(exactly the style of
 	 *            <code>AdvancedKey{@link #toString()}</code>)
 	 * @return property's value
 	 */
 	@Override
-	public String get(Object akey) {
+	public String get(Object key) {
 		AdvancedKey advkey = null;
-		if (akey instanceof String) {
+		if (key instanceof String) {
 			// support full path key access
-			advkey = AdvancedKey.buildAdvancedKey(akey.toString());
-		} else if (akey instanceof AdvancedKey) {
-			advkey = (AdvancedKey) akey;
+			advkey = AdvancedKey.buildAdvancedKey(key.toString());
+		} else if (key instanceof AdvancedKey) {
+			advkey = (AdvancedKey) key;
 		}
 
 		String value = super.get(advkey);
@@ -238,7 +248,7 @@ public abstract class AdvancedMap extends TreeMap<AdvancedKey, String> {
 			return value;
 		}
 	}
-	
+
 	public String[] getStringArray(String fullPathKey) {
 		return getStringArray(fullPathKey, null);
 	}
@@ -248,7 +258,7 @@ public abstract class AdvancedMap extends TreeMap<AdvancedKey, String> {
 		if (value == null) {
 			value = defaultValue;
 		}
-		if(value == null) {
+		if (value == null) {
 			return null;
 		}
 		return value.split("[,;]");
@@ -289,7 +299,7 @@ public abstract class AdvancedMap extends TreeMap<AdvancedKey, String> {
 			return null;
 		}
 	}
-	
+
 	public Boolean getBoolean(String fullPathKey) {
 		return getBoolean(fullPathKey, null);
 	}
@@ -321,7 +331,7 @@ public abstract class AdvancedMap extends TreeMap<AdvancedKey, String> {
 			return defaultValue;
 		}
 	}
-	
+
 	public Long[] getLongArray(String fullPathKey) {
 		return getLongArray(fullPathKey, null);
 	}
@@ -357,7 +367,7 @@ public abstract class AdvancedMap extends TreeMap<AdvancedKey, String> {
 			return defaultValue;
 		}
 	}
-	
+
 	public Double[] getDoubleArray(String fullPathKey) {
 		return getDoubleArray(fullPathKey, null);
 	}
@@ -393,7 +403,7 @@ public abstract class AdvancedMap extends TreeMap<AdvancedKey, String> {
 			return defaultValue;
 		}
 	}
-	
+
 	public Float[] getFloatArray(String fullPathKey) {
 		return getFloatArray(fullPathKey, null);
 	}

@@ -7,7 +7,7 @@
 
 <!ATTLIST map namespace CDATA #IMPLIED>
 <!ATTLIST map locale CDATA #IMPLIED>
+<!ATTLIST map revision CDATA #IMPLIED>
 
 <!ATTLIST key name CDATA #REQUIRED>
-<!ATTLIST key order CDATA #IMPLIED>
 

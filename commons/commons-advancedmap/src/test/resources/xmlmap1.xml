@@ -10,10 +10,12 @@
 		<key name="third">Welcome to Beijing #{base.jack.zh_CN}</key>
 	</prop>
 	<prop>
-		<key name="hello" order="2">Nice</key>
-		<key name="hello" order="3">Nice Hello</key>
+		<key name="hello">Nice</key>
         <key name="mapRefreshInterval">1</key>
         <key name="testIntArray">1,2</key>
+	</prop>
+	<prop revision="2">
+		<key name="hello">Nice2</key>
 	</prop>
 	<prop></prop>
 

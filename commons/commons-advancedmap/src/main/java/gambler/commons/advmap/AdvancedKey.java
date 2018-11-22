@@ -12,7 +12,7 @@ import org.apache.commons.lang.StringUtils;
  * <ol>
  * <li>namespace</li>
  * <li>key</li>
- * <li>order</li>
+ * <li>revision</li>
  * <li>locale</li>
  * </ol>
  * 
@@ -20,9 +20,9 @@ import org.apache.commons.lang.StringUtils;
  * <ol>
  * <li>key</li>
  * <li>namespace.key</li>
- * <li>namespace.key.order</li>
+ * <li>namespace.key.revision</li>
  * <li>namespace.key.locale</li>
- * <li>namespace.key.order.locale</li>
+ * <li>namespace.key.revision.locale</li>
  * </ol>
  * 
  * @auther Martin
@@ -52,9 +52,9 @@ public class AdvancedKey implements java.io.Serializable,
 	public static final Locale DEFAULT_LOCALE = Locale.getDefault();
 
 	/**
-	 * default order number: 1
+	 * default revision number: 1
 	 */
-	public static final Integer DEFAULT_ORDER = 1;
+	public static final Integer DEFAULT_REVISION = 1;
 
 	/**
 	 * default namespace: gambler
@@ -65,45 +65,45 @@ public class AdvancedKey implements java.io.Serializable,
 
 	private String key;
 
-	private Integer order;
+	private Integer revision;
 
 	private Locale locale;
 
 	public AdvancedKey() {
 		this.namespace = DEFAULT_NAMESPACE;
-		this.order = DEFAULT_ORDER;
+		this.revision = DEFAULT_REVISION;
 		this.locale = DEFAULT_LOCALE;
 	}
 
 	public AdvancedKey(String key) {
-		this(DEFAULT_NAMESPACE, key, DEFAULT_ORDER, DEFAULT_LOCALE);
+		this(DEFAULT_NAMESPACE, key, DEFAULT_REVISION, DEFAULT_LOCALE);
 	}
 
 	public AdvancedKey(String namespace, String key) {
-		this(namespace, key, DEFAULT_ORDER, DEFAULT_LOCALE);
+		this(namespace, key, DEFAULT_REVISION, DEFAULT_LOCALE);
 	}
 
 	public AdvancedKey(String key, Locale locale) {
-		this(DEFAULT_NAMESPACE, key, DEFAULT_ORDER, locale);
+		this(DEFAULT_NAMESPACE, key, DEFAULT_REVISION, locale);
 	}
 
-	public AdvancedKey(String key, Integer order) {
-		this(DEFAULT_NAMESPACE, key, order, DEFAULT_LOCALE);
+	public AdvancedKey(String key, Integer revision) {
+		this(DEFAULT_NAMESPACE, key, revision, DEFAULT_LOCALE);
 	}
 
-	public AdvancedKey(String namespace, String key, Integer order) {
-		this(namespace, key, order, DEFAULT_LOCALE);
+	public AdvancedKey(String namespace, String key, Integer revision) {
+		this(namespace, key, revision, DEFAULT_LOCALE);
 	}
 
 	public AdvancedKey(String namespace, String key, Locale locale) {
-		this(namespace, key, DEFAULT_ORDER, locale);
+		this(namespace, key, DEFAULT_REVISION, locale);
 	}
 
-	public AdvancedKey(String key, Integer order, Locale locale) {
-		this(DEFAULT_NAMESPACE, key, order, locale);
+	public AdvancedKey(String key, Integer revision, Locale locale) {
+		this(DEFAULT_NAMESPACE, key, revision, locale);
 	}
 
-	public AdvancedKey(String namespace, String key, Integer order,
+	public AdvancedKey(String namespace, String key, Integer revision,
 			Locale locale) {
 		if (namespace.contains(SEPARATOR)) {
 			throw new IllegalArgumentException(
@@ -115,7 +115,7 @@ public class AdvancedKey implements java.io.Serializable,
 		}
 		this.namespace = namespace;
 		this.key = key;
-		this.order = order;
+		this.revision = revision;
 		this.locale = locale;
 	}
 
@@ -135,12 +135,12 @@ public class AdvancedKey implements java.io.Serializable,
 		this.key = key;
 	}
 
-	public Integer getOrder() {
-		return order;
+	public Integer getRevision() {
+		return revision;
 	}
 
-	public void setOrder(Integer order) {
-		this.order = order;
+	public void setRevision(Integer revision) {
+		this.revision = revision;
 	}
 
 	public Locale getLocale() {
@@ -153,11 +153,11 @@ public class AdvancedKey implements java.io.Serializable,
 
 	/**
 	 * the output is also a full path key for this advanced key.
-	 * <code>namespace + SEPARATOR + key + SEPARATOR + order + SEPARATOR + locale</code>
+	 * <code>namespace + SEPARATOR + key + SEPARATOR + revision + SEPARATOR + locale</code>
 	 */
 	@Override
 	public String toString() {
-		return buildFullPathKey(namespace, key, order, locale);
+		return buildFullPathKey(namespace, key, revision, locale);
 	}
 
 	@Override
@@ -168,7 +168,7 @@ public class AdvancedKey implements java.io.Serializable,
 		result = prime * result + ((locale == null) ? 0 : locale.hashCode());
 		result = prime * result
 				+ ((namespace == null) ? 0 : namespace.hashCode());
-		result = prime * result + ((order == null) ? 0 : order.hashCode());
+		result = prime * result + ((revision == null) ? 0 : revision.hashCode());
 		return result;
 	}
 
@@ -196,10 +196,10 @@ public class AdvancedKey implements java.io.Serializable,
 				return false;
 		} else if (!namespace.equals(other.namespace))
 			return false;
-		if (order == null) {
-			if (other.order != null)
+		if (revision == null) {
+			if (other.revision != null)
 				return false;
-		} else if (!order.equals(other.order))
+		} else if (!revision.equals(other.revision))
 			return false;
 		return true;
 	}
@@ -239,11 +239,11 @@ public class AdvancedKey implements java.io.Serializable,
 	 * @param namespace
 	 * @param key
 	 * @param locale
-	 * @param order
+	 * @param revision
 	 * @return full path key string
 	 */
 	public static final String buildFullPathKey(String namespace, String key,
-			Integer order, Locale locale) {
+			Integer revision, Locale locale) {
 
 		if (StringUtils.isBlank(key)) {
 			throw new IllegalArgumentException(
@@ -254,8 +254,8 @@ public class AdvancedKey implements java.io.Serializable,
 			namespace = AdvancedKey.DEFAULT_NAMESPACE;
 		}
 
-		if (order == null) {
-			order = AdvancedKey.DEFAULT_ORDER;
+		if (revision == null) {
+			revision = AdvancedKey.DEFAULT_REVISION;
 		}
 
 		if (locale == null) {
@@ -263,7 +263,7 @@ public class AdvancedKey implements java.io.Serializable,
 		}
 
 		return namespace + AdvancedKey.SEPARATOR + key + AdvancedKey.SEPARATOR
-				+ order + AdvancedKey.SEPARATOR + locale;
+				+ revision + AdvancedKey.SEPARATOR + locale;
 	}
 
 	/**
@@ -272,9 +272,9 @@ public class AdvancedKey implements java.io.Serializable,
 	 * <ol>
 	 * <li>key</li>
 	 * <li>namespace.key</li>
-	 * <li>namespace.key.order</li>
+	 * <li>namespace.key.revision</li>
 	 * <li>namespace.key.locale</li>
-	 * <li>namespace.key.order.locale</li>
+	 * <li>namespace.key.revision.locale</li>
 	 * </ol>
 	 * all omitted paramters will refer to default settings<br/>
 	 * 
@@ -297,7 +297,7 @@ public class AdvancedKey implements java.io.Serializable,
 			case 3:
 				resultKey = new AdvancedKey(part[0], part[1]);
 				try {
-					resultKey.setOrder(Integer.parseInt(part[2]));
+					resultKey.setRevision(Integer.parseInt(part[2]));
 				} catch (Exception e) {
 					resultKey.setLocale(LocaleUtils.toLocale(part[2]));
 				}

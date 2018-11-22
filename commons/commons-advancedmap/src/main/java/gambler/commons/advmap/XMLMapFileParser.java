@@ -48,9 +48,9 @@ public class XMLMapFileParser extends DefaultHandler {
     private static final String NAME_ATTR = "name";
 
     /**
-     * It represents attribute <i>order</i> of key tag
+     * It represents attribute <i>revision</i> of key tag
      */
-    private static final String ORDER_ATTR = "order";
+    private static final String REVISION_ATTR = "revision";
 
     /**
      * It represents attribute <i>locale</i> of key tag.
@@ -93,9 +93,9 @@ public class XMLMapFileParser extends DefaultHandler {
     private String namespace;
 
     /**
-     * It stores the value of attribute order of key tag
+     * It stores the value of attribute revision of key tag
      */
-    private Integer order;
+    private Integer revision;
 
     /**
      * It store the locale information
@@ -220,7 +220,7 @@ public class XMLMapFileParser extends DefaultHandler {
             case IN_KEY:
 
                 try {
-                    AdvancedKey gkey = new AdvancedKey(namespace, key, order,
+                    AdvancedKey gkey = new AdvancedKey(namespace, key, revision,
                             LocaleUtils.toLocale(locale));
                     if (xmlmap.keySet().contains(gkey)) {
                         log.debug("Property[" + gkey + ", " + value.toString()
@@ -233,7 +233,7 @@ public class XMLMapFileParser extends DefaultHandler {
                 } catch (Exception e) {
                     throw new SAXException("Error when put property " + namespace
                             + AdvancedKey.SEPARATOR + key + AdvancedKey.SEPARATOR
-                            + order + AdvancedKey.SEPARATOR + locale, e);
+                            + revision + AdvancedKey.SEPARATOR + locale, e);
                 }
                 state = IN_PROPERTY;
                 key = null;
@@ -266,10 +266,16 @@ public class XMLMapFileParser extends DefaultHandler {
                 break;
             case IN_DOCUMENT:
                 if (qName.equals(PROPERTY_TAG)) {
+                	//parse prop attributes
                     state = IN_PROPERTY;
                     namespace = attributes.getValue(NAMESPACE_ATTR);
                     locale = attributes.getValue(LOCALE_ATTR);
-
+                    String revAttr = attributes.getValue(REVISION_ATTR);
+                    if (revAttr == null) {
+                        revision = AdvancedKey.DEFAULT_REVISION;
+                    }else{
+                    	revision = Integer.parseInt(revAttr.toString());
+                    }
                     // default namespace/locale will be used
                     // while no namespace/locale assigned
                     if (namespace == null) {
@@ -278,6 +284,7 @@ public class XMLMapFileParser extends DefaultHandler {
                     if (locale == null) {
                         locale = AdvancedKey.DEFAULT_LOCALE.toString();
                     }
+                    
                 } else {
                     throw new SAXException("Invalid element, please replace <"
                             + qName + "> with <" + PROPERTY_TAG + ">");
@@ -285,6 +292,7 @@ public class XMLMapFileParser extends DefaultHandler {
                 break;
             case IN_PROPERTY:
                 if (qName.equals(KEY_TAG)) {
+                	//parse key attributes
                     state = IN_KEY;
                     key = attributes.getValue(NAME_ATTR);
                     if (key == null) {
@@ -293,12 +301,6 @@ public class XMLMapFileParser extends DefaultHandler {
                                 + ">");
                     }
 
-                    Object orderAttr = attributes.getValue(ORDER_ATTR);
-                    if (orderAttr == null) {
-                        order = AdvancedKey.DEFAULT_ORDER;
-                    } else {
-                        order = Integer.parseInt(orderAttr.toString());
-                    }
                 } else {
                     throw new SAXException("Invalid element, please replace <"
                             + qName + "> with <" + KEY_TAG + ">");
