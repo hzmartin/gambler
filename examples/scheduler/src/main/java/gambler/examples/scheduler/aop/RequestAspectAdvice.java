@@ -1,5 +1,27 @@
 package gambler.examples.scheduler.aop;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.ModelAndView;
+
 import gambler.commons.advmap.XMLMap;
 import gambler.examples.scheduler.annotation.AuthRequired;
 import gambler.examples.scheduler.annotation.LogRequestParam;
@@ -10,25 +32,7 @@ import gambler.examples.scheduler.exception.ActionException;
 import gambler.examples.scheduler.resp.ResponseStatus;
 import gambler.examples.scheduler.resp.ServerResponse;
 import gambler.examples.scheduler.service.AuthUserService;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import net.sf.json.JSONObject;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import gambler.examples.scheduler.util.LogBean;
 
 /**
  * 定义切面
@@ -43,106 +47,77 @@ import org.springframework.web.servlet.ModelAndView;
 @Component
 @Aspect
 public class RequestAspectAdvice {
-	private static final Logger logger = Logger
-			.getLogger(RequestAspectAdvice.class);
+	private static final Logger logger = Logger.getLogger(RequestAspectAdvice.class);
 
 	@Resource
 	protected AuthUserService authUserService;
 
-	private static final String lineSeparator = System.getProperty(
-			"line.separator", "\n");
-
 	@Autowired
 	private XMLMap sysconf;
-
+	
 	@Around("within(@org.springframework.stereotype.Controller *)")
 	public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
+		LogBean logBean = LogBean.get();
 		MethodSignature joinPointObject = (MethodSignature) pjp.getSignature();
 		Method method = joinPointObject.getMethod();
-		String fullMethodSign = pjp.getTarget().getClass().getName() + "#"
-				+ pjp.getSignature().getName();
-		// =============start input param log build=====================
-		StringBuilder execEndLog = new StringBuilder();
-		execEndLog.append("Request " + fullMethodSign + "(");
-		Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-		int argsLen = pjp.getArgs().length;
-		if (parameterAnnotations.length == argsLen) {
-			for (int paramIndex = 0; paramIndex < argsLen; paramIndex++) {
-				Annotation[] annotations = parameterAnnotations[paramIndex];
-				for (Annotation annotation : annotations) {
-					if (annotation instanceof LogRequestParam) {
-						LogRequestParam logParam = (LogRequestParam) annotation;
-						Object theArg = pjp.getArgs()[paramIndex];
-						String name = logParam.name();
-						if (StringUtils.isBlank(name)) {
-							name = "param[" + paramIndex + "/" + argsLen + "]";
-						}
-						execEndLog.append(name + "=" + theArg + ",");
-					}
+		Object[] args = pjp.getArgs();
+		Parameter[] parameters = method.getParameters();
+		Map<String, Object> params = new HashMap<String, Object>();
+		for (int i = 0; i < parameters.length; i++) {
+			if (args[i] instanceof HttpServletRequest) {
+				continue;
+			}
+			if (args[i] instanceof HttpServletResponse) {
+				continue;
+			}
+			if (parameters[i].getAnnotation(RequestBody.class) != null) {
+				logBean.setPayload(args[i]);
+				break;
+			} else {
+				LogRequestParam anno = parameters[i].getAnnotation(LogRequestParam.class);
+				if (anno != null) {
+					params.put(anno.name(), args[i]);
+				} else {
+					params.put("p" + i, args[i]);
 				}
 			}
-		} else {
-			logger.error(String.format(
-					"Inconsistent argument length while invoke %s#%s!", pjp
-							.getTarget().getClass().getName(), pjp
-							.getSignature().getName()));
 		}
-		if (execEndLog.lastIndexOf(",", execEndLog.length() - 1) != -1) {
-            execEndLog = execEndLog.deleteCharAt(execEndLog.length() - 1);
-        }
-        execEndLog.append(")");
-		// =============end input param log build=====================
+		logBean.setParams(params);
 
-		if (!(pjp.getArgs()[0] instanceof HttpServletRequest)) {
-			throw new IllegalArgumentException(
-					"Illegal Argument, the 1st paramter of Method("
-							+ pjp.getSignature().getName()
-							+ ") must be HttpServletRequest");
-		}
-		HttpServletRequest request = (HttpServletRequest) pjp.getArgs()[0];
-		String xff = request.getHeader("X-Forwarded-For");
-		String remoteAddr = request.getRemoteAddr();
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		String target = request.getRequestURI();
 		ServerResponse serverResponse = new ServerResponse();
 		AuthRequired authRequired = method.getAnnotation(AuthRequired.class);
-		if (authRequired != null
-				&& sysconf.getBoolean("switch.enableAuthentication",
-						Boolean.TRUE)) {
+		if (authRequired != null && sysconf.getBoolean("switch.enableAuthentication", Boolean.TRUE)) {
 			long[] requiredPerms = authRequired.permission();
-			boolean permRequired = requiredPerms != null
-					&& requiredPerms.length > 0;
+			boolean permRequired = requiredPerms != null && requiredPerms.length > 0;
 			// checklogin
 			boolean hasLogined = authUserService.checkLogin(request);
 			AccountDto loginUser = authUserService.getLoginUser(request);
+			if (loginUser != null) {
+				logBean.setUid(loginUser.getUserId());
+			}
 			serverResponse.setResponseStatus(ResponseStatus.OK);
 			if (!hasLogined) {
-				serverResponse
-						.setResponseStatus(ResponseStatus.USER_NOT_LOGGED);
+				serverResponse.setResponseStatus(ResponseStatus.USER_NOT_LOGGED);
 			} else if (permRequired) {
 				// check userperm
 				User user = authUserService.findUserById(loginUser.getUserId());
-				boolean hasPermission = authUserService.checkUserPermission(
-						user, requiredPerms);
+				boolean hasPermission = authUserService.checkUserPermission(user, requiredPerms);
 				if (!hasPermission) {
-					serverResponse
-							.setResponseStatus(ResponseStatus.NO_PERMISSION);
+					serverResponse.setResponseStatus(ResponseStatus.NO_PERMISSION);
 				}
 			}
 			if (!ResponseStatus.OK.getCode().equals(serverResponse.getCode())) {
 				if (method.isAnnotationPresent(ResponseBody.class)) {
-					execEndLog.append("\tlogin as " + loginUser + "\tresult="
-	                        + previewServerResponseStr(serverResponse) + lineSeparator);
-	                    logger.info(execEndLog.toString());
 					if (method.isAnnotationPresent(SkipRespObjectWrap.class)) {
 						return serverResponse.getCode();
 					}
 					return serverResponse;
 				} else {
-					if (serverResponse.getCode().equals(
-							ResponseStatus.USER_NOT_LOGGED.getCode())) {
+					if (serverResponse.getCode().equals(ResponseStatus.USER_NOT_LOGGED.getCode())) {
 						return new ModelAndView("signin", "nextUrl", target);
-					} else if (serverResponse.getCode().equals(
-							ResponseStatus.NO_PERMISSION.getCode())) {
+					} else if (serverResponse.getCode().equals(ResponseStatus.NO_PERMISSION.getCode())) {
 						return new ModelAndView("403");
 					} else {
 						return new ModelAndView("500");
@@ -150,12 +125,12 @@ public class RequestAspectAdvice {
 				}
 			}
 		}
+
 		AccountDto loginUser = authUserService.getLoginUser(request);
-		execEndLog.append("\tlogin as " + loginUser);
-        execEndLog.append("\txff=" + xff + ", remoteAddr=" + remoteAddr);
-        long execStartTime = System.currentTimeMillis();
-		if (method.isAnnotationPresent(ResponseBody.class)
-				&& !method.isAnnotationPresent(SkipRespObjectWrap.class)) {
+		if (loginUser != null) {
+			logBean.setUid(loginUser.getUserId());
+		}
+		if (method.isAnnotationPresent(ResponseBody.class) && !method.isAnnotationPresent(SkipRespObjectWrap.class)) {
 			try {
 				Object result = pjp.proceed();
 				serverResponse.setData(result);
@@ -164,36 +139,14 @@ public class RequestAspectAdvice {
 				serverResponse.setMsg(ae.getMessage());
 			} catch (Exception e) {
 				serverResponse.setResponseStatus(ResponseStatus.SERVER_BUSY);
-				serverResponse.setMsg(e.getMessage());
-				logger.error("server error: " + e.getMessage(), e);
-			} finally{
-				long execTime = System.currentTimeMillis() - execStartTime;
-                execEndLog.append("\texec " + execTime + " mills");
+				logger.error(e.getMessage(), e);
 			}
-			String resultStr = previewServerResponseStr(serverResponse);
-			execEndLog.append(lineSeparator + "\tresult=" + resultStr
-	                + lineSeparator);
-			logger.info(execEndLog.toString());
 			return serverResponse;
 		} else {
 			Object result = pjp.proceed();
 			return result;
 		}
 
-	}
-
-	private final String previewServerResponseStr(ServerResponse serverResponse) {
-		String resultStr = JSONObject.fromObject(serverResponse).toString();
-		int maxResultLogLength = sysconf.getInteger(
-				"max_length_of_response_log", 1000);
-		if (maxResultLogLength != -1) {
-			boolean tooLong = resultStr.length() > maxResultLogLength;
-			resultStr = StringUtils.substring(resultStr, 0, maxResultLogLength);
-			if (tooLong) {
-				resultStr = resultStr + " ... ";
-			}
-		}
-		return resultStr;
 	}
 
 }

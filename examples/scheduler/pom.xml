@@ -15,6 +15,11 @@
 	</properties>
 	<dependencies>
 		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.1.26</version>
+		</dependency>
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
@@ -294,44 +299,6 @@
 				<artifactId>maven-plugin-plugin</artifactId>
 				<version>2.4.3</version>
 			</plugin>
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-				<version>6.1.5</version>
-				<configuration>
-					<contextPath>/scheduler</contextPath>
-					<connectors>
-						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-							<port>8080</port>
-						</connector>
-					</connectors>
-					<scanIntervalSeconds>10</scanIntervalSeconds>
-				</configuration>
-			</plugin>
 		</plugins>
-		<resources>
-			<resource>
-				<directory>${project.basedir}/src/main/resources</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>log4j.xml</include>
-					<include>quartz.properties</include>
-					<include>datasource.properties</include>
-					<include>datasource2.properties</include>
-					<include>conf_sys.xml</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>${project.basedir}/src/main/resources</directory>
-				<filtering>false</filtering>
-				<excludes>
-					<exclude>log4j.xml</exclude>
-					<exclude>quartz.properties</exclude>
-					<exclude>datasource.properties</exclude>
-					<exclude>datasource2.properties</exclude>
-					<exclude>conf_sys.xml</exclude>
-				</excludes>
-			</resource>
-		</resources>
 	</build>
 </project>
