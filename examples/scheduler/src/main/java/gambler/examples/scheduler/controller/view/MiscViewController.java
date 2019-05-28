@@ -40,7 +40,7 @@ public class MiscViewController extends AbstractController {
 	public Object index(final HttpServletRequest request,
 			final HttpServletResponse response) {
 		ModelAndView result1 = new ModelAndView("index");
-		result1.getModel().put("msmode", sysconf.getString("msmode"));
+		result1.getModel().put("environment", sysconf.getString("environment"));
 		AccountDto loginUser = authUserService.getLoginUser(request);
 		User user = authUserService.findUserById(loginUser.getUserId());
 		if (loginUser != null) {

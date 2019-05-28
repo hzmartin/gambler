@@ -1,6 +1,6 @@
 <map>
     <prop>
-        <key name="msmode">DEV</key>
+        <key name="environment">DEV</key>
         <key name="siteurl"></key>
     </prop>
     <prop namespace="switch">
