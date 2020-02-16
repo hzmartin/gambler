@@ -92,4 +92,9 @@ public class PasswordService extends AbstractService {
 		return session.delete("EncryptedPassword.delete", p);
 	}
 
+	public int deleteAll() throws IOException {
+		SqlSession session = DBUtil.getSqlSessionFactory().openSession(true);
+		return session.delete("EncryptedPassword.deleteAll");
+	}
+
 }

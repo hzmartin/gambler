@@ -81,6 +81,14 @@ public class PasswordCommand extends AbstractCommand implements ICommand {
 			} catch (IOException ex) {
 				throw new ServiceException(ex);
 			}
+		} else if (isSubCommand("deleteAll")) {
+			try {
+				int count = passwordService.deleteAll();
+				System.out.println(String.format("allpassword deleted, affected count: %s", count));
+
+			} catch (IOException ex) {
+				throw new ServiceException(ex);
+			}
 		} else {
 			throw new CommandUsageException("command usage error!");
 		}
