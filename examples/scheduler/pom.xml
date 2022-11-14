@@ -11,7 +11,7 @@
 	<name>Example Scheduler</name>
 	<description></description>
 	<properties>
-		<spring.version>3.2.5.RELEASE</spring.version>
+		<spring.version>3.2.18.RELEASE</spring.version>
 	</properties>
 	<dependencies>
 		<dependency>
